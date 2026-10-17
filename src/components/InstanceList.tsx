@@ -120,9 +120,19 @@ export function InstanceList({
         }}
       >
         {visible.length === 0 && (
-          <p className="instances__empty">
-            没有匹配的作品。换个关键词，或者切回「全部」。
-          </p>
+          <div className="instances__empty">
+            <p className="instances__empty-title">没有匹配的作品</p>
+            <p>
+              {query
+                ? `「${query}」在${filter === 'mod' ? '模组' : filter === 'shader' ? '光影' : '全部作品'}里都找不到。换个关键词，或者先把搜索清掉。`
+                : '这个分类下还没有公开的条目。切到「全部」看看其它内容。'}
+            </p>
+            {query && (
+              <button type="button" className="instances__empty-action" onClick={() => onQuery('')}>
+                清空搜索
+              </button>
+            )}
+          </div>
         )}
 
         {visible.map((entry, index) => {

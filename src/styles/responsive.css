@@ -65,12 +65,16 @@
     display: none;
   }
 
+  /* 窄屏放弃"整屏窗口"，改成正常文档流：列表横向条带 + 详情自然展开 */
+  .shell {
+    height: auto;
+  }
+
   .window {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto minmax(0, 1fr);
-    height: auto;
-    max-height: none;
+    grid-template-rows: auto auto;
     margin-top: 12px;
+    min-height: 0;
     overflow: visible;
   }
 
@@ -133,7 +137,6 @@
   .detail {
     padding: 20px 16px 32px;
     overflow: visible;
-    max-height: none;
   }
 
   .detail__head {

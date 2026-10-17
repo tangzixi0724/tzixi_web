@@ -3,6 +3,9 @@
    ============================================================ */
 
 .detail {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   padding: clamp(20px, 2.6vw, 34px) clamp(20px, 3vw, 44px) clamp(28px, 3vw, 44px);
   display: flex;
   flex-direction: column;
@@ -67,7 +70,7 @@
   border: 1px solid currentColor;
   vertical-align: 0.5em;
   margin-left: 12px;
-  color: var(--torch);
+  color: var(--ink-dim);
 }
 
 .tag--shader {
@@ -115,12 +118,12 @@
 }
 
 .metric dt {
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.06em;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  font-weight: 550;
+  letter-spacing: 0.04em;
   color: var(--ink-faint);
   margin-bottom: 5px;
-  text-transform: uppercase;
 }
 
 .metric dd {
@@ -197,7 +200,7 @@
 }
 
 .rail__link:hover {
-  color: var(--torch);
+  color: var(--ink);
 }
 
 /* 适用条件：小定义表 */
@@ -359,16 +362,17 @@
 .filelist__get {
   font-size: 12.5px;
   font-weight: 550;
-  color: var(--torch);
+  color: var(--ink-soft);
   padding: 3px 8px;
-  border: 1px solid rgba(255, 122, 47, 0.34);
+  border: 1px solid var(--line-strong);
   border-radius: 2px;
-  transition: background-color 130ms ease, color 130ms ease;
+  transition: background-color 130ms ease, color 130ms ease, border-color 130ms ease;
 }
 
 .filelist__get:hover {
-  background: var(--torch);
-  color: #1a0f07;
+  background: var(--ink);
+  color: #0d1113;
+  border-color: var(--ink);
 }
 
 .filelist__get[data-disabled='true'] {
@@ -417,8 +421,10 @@
 }
 
 .params__hint {
+  font-family: var(--font-ui);
   font-size: 11.5px;
   color: var(--ink-faint);
+  letter-spacing: 0;
 }
 
 .params__list {
@@ -446,6 +452,7 @@
 }
 
 .param__key {
+  font-family: var(--font-mono);
   font-size: 12px;
   color: var(--emerald);
   overflow-wrap: anywhere;
@@ -453,8 +460,9 @@
 }
 
 .param__value {
+  font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--torch);
+  color: var(--ink);
   font-weight: 600;
   white-space: nowrap;
   justify-self: end;
@@ -514,7 +522,7 @@
 
 .changelog__version {
   font-size: 12px;
-  color: var(--torch);
+  color: var(--ink);
   font-weight: 600;
 }
 

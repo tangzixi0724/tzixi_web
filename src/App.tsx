@@ -50,45 +50,42 @@ export default function App() {
   return (
     <div className="page" id="top">
       <h1 className="visually-hidden">tzixi — Minecraft 模组与光影参数</h1>
-      <TopBar />
 
-      {site.sampleContent && (
-        <p className="sample-note">
-          <span className="sample-note__tag mono">示例</span>
-          下面的条目是占位内容，用来展示版式；下载链接要等你把文件传到 GitHub Release、
-          并在 <code className="mono">src/content/</code> 里填上真实文件名后才会生效。
-        </p>
-      )}
+      <div className="shell">
+        <TopBar />
 
-      <main className="window" aria-label="作品浏览区">
-        <InstanceList
-          visible={visible}
-          selectedId={selected?.data.id ?? ''}
-          onSelect={setSelectedId}
-          filter={filter}
-          onFilter={setFilter}
-          query={query}
-          onQuery={setQuery}
-        />
-
-        {selected ? (
-          <DetailPanel entry={selected} />
-        ) : (
-          <p className="detail__empty">
-            这类内容还没有公开的条目。切回「全部」，或者过几天再来看看。
+        {site.sampleContent && (
+          <p className="sample-note">
+            <span className="sample-note__tag mono">示例</span>
+            下面的条目是占位内容，用来展示版式；下载链接要等你把文件传到 GitHub Release、
+            并在 <code className="mono">src/content/</code> 里填上真实文件名后才会生效。
           </p>
         )}
-      </main>
 
-      <div className="statusbar">
-        <span>
-          <span className="statusbar__dot" aria-hidden="true" />
-          {modCount} 个模组 · {shaderCount} 套光影参数
-        </span>
-        <span className="statusbar__right">
-          <span>{site.host}</span>
-          <span>无中转页</span>
-        </span>
+        <main className="window" id="works" data-empty={selected ? undefined : 'true'} aria-label="作品浏览区">
+          <InstanceList
+            visible={visible}
+            selectedId={selected?.data.id ?? ''}
+            onSelect={setSelectedId}
+            onFilter={setFilter}
+            filter={filter}
+            query={query}
+            onQuery={setQuery}
+          />
+
+          {selected && <DetailPanel entry={selected} />}
+        </main>
+
+        <div className="statusbar">
+          <span>
+            <span className="statusbar__dot" aria-hidden="true" />
+            {modCount} 个模组 · {shaderCount} 套光影参数
+          </span>
+          <span className="statusbar__right">
+            <span>{site.host}</span>
+            <span>无中转页</span>
+          </span>
+        </div>
       </div>
 
       <section className="below" id="install">
