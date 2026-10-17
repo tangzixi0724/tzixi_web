@@ -27,6 +27,18 @@
   height: 0;
 }
 
+/* 滚动边界的柔化：只覆盖最后 10px（小于一行行高），
+   被切断的字形淡出，读作"还有内容"，而不是被裁坏。 */
+.detail {
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 10px), transparent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .detail {
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 10px), transparent);
+  }
+}
+
 @keyframes detail-in {
   from {
     opacity: 0;
@@ -549,8 +561,8 @@
   align-self: start;
   justify-self: start;
   width: min(100%, 46ch);
-  padding-top: clamp(8px, 1.5vw, 18px);
-  padding: clamp(24px, 4vw, 48px);
+  /* 顶部留出与左栏工具条 + 空态标题等高的距离，两栏标题落在同一水平线上 */
+  padding: 136px clamp(24px, 4vw, 48px) clamp(24px, 4vw, 48px);
   display: grid;
   gap: 16px;
 }
@@ -564,15 +576,7 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 3px;
-  gap: 12px;
   align-items: baseline;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--line);
-}
-
-.detail__blank dl > div:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
 }
 
 .detail__blank dt {
