@@ -11,10 +11,11 @@ export const site = {
   githubUrl: 'https://github.com/tangzixi0724/tzixi_web',
   host: 'Vercel · 静态托管',
   /**
-   * 示例内容开关。为 true 时站点顶部会出现一条说明，告诉访客这些条目是示例，
-   * 因为示例里的 Release 链接并不指向真实文件。换成你自己的内容后改成 false。
+   * 示例内容开关。为 true 时站点顶部会出现一条说明，告诉访客这些条目是示例。
+   * 内容已换成真实的模组，所以这里是 false；文件还没传到 Release 时，
+   * 界面会按「未上传」显示，不会变成死链。
    */
-  sampleContent: true,
+  sampleContent: false,
 } as const;
 
 /**

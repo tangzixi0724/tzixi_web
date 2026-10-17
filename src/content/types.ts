@@ -15,6 +15,11 @@ export interface DownloadFile {
   url: string;
   /** 主文件 / 兼容文件 */
   primary: boolean;
+  /**
+   * 这个构建对应的游戏版本。一个模组支持多个游戏版本时必填，
+   * 否则访客只能靠文件名里的数字猜自己该下哪个。
+   */
+  gameVersion?: string;
 }
 
 export interface Mod {
@@ -23,7 +28,10 @@ export interface Mod {
   /** 英文副名，列表里用等宽字体显示 */
   slug: string;
   tagline: string;
+  /** 自绘像素图标的兜底 */
   icon: IconName;
+  /** jar 里自带的真实图标（public/icons/*），有就优先用 */
+  iconImage?: string;
   loaders: Loader[];
   gameVersions: string[];
   categories: string[];
@@ -51,6 +59,7 @@ export interface ShaderPreset {
   base: string;
   baseVersion: string;
   icon: IconName;
+  iconImage?: string;
   apis: ShaderApi[];
   gameVersions: string[];
   updatedAt: string;

@@ -20,12 +20,26 @@ bun run preview    # 预览构建结果
 
 页面、样式、交互都不用碰，改完数据 `bun run build` 就是新站。
 
+## 现在的真实内容
+
+站上有三个模组，全部按 jar 里的 `fabric.mod.json` / `mods.toml` 与 `lang/zh_cn.json` 录入，不是编的：
+
+| 模组 | 加载器 | 游戏版本 | 文件 |
+| --- | --- | --- | --- |
+| GLB 转小方块 `glb2lt` | Forge | 1.20.1 | 1 个构建 |
+| 电影挡条 `cinematic-bars` | Fabric | 26.3 / 1.21.10 | **2 个构建**（各对应一个游戏版本） |
+| 落叶纷飞 `better-falling-leaves` | Fabric | 26.3 | 1 个构建 |
+
+图标是从 jar 里的 `icon.png` / `glb2lt.png` 解出来放进 `public/icons/` 的，不是占位图。
+
+文件目前状态是「未上传」：`url` 还空着，等传到 Release 之后填上就能点。
+
 ## 加一个模组（从上传到网站上能下）
 
 ### 1. 建 Release
 
 1. 打开 `https://github.com/tangzixi0724/tzixi_web/releases/new`
-2. **Tag** 填模组的 slug，比如 `aurelia-lanterns`（这个 tag 一辈子只用建一次，之后所有版本都往同一个 Release 里传）
+2. **Tag** 填模组的 slug，比如 `cinematic-bars`（这个 tag 一辈子只用建一次，之后所有版本都往同一个 Release 里传）
 3. 标题写模组名
 4. 把 `.jar` 拖进附件区
 
@@ -39,7 +53,9 @@ bun run preview    # 预览构建结果
 https://github.com/tangzixi0724/tzixi_web/releases/download/<tag>/<fileName>
 ```
 
-站里的 `releaseUrl('aurelia-lanterns', 'aurelia-lanterns-1.4.2_1.21.4-fabric.jar')` 生成的就是这个。
+站里的 `releaseUrl('cinematic-bars', 'cinematic-bars-1.0.0_26.3.jar')` 生成的就是这个。
+
+> **文件名里去掉了 `+`**。Minecraft 的 jar 习惯写 `1.0.0+26.3`，但 `+` 在 URL 里要编码、在 Release 附件里也容易被工具改掉，所以统一换成 `_`。上传时**把附件重命名成 `_` 的写法**，和 `mods.ts` 里的 `fileName` 保持一致。
 
 ### 3. 在 `mods.ts` 里加一条
 
@@ -49,7 +65,8 @@ https://github.com/tangzixi0724/tzixi_web/releases/download/<tag>/<fileName>
   name: '我的模组',
   slug: 'my-mod-build',            // 第二行小字显示的英文名
   tagline: '一句话说清它解决什么问题。',
-  icon: 'cube',                    // portal | lantern | cube | bolt | gear | book | prism | moon | leaf
+  icon: 'cube',                    // 兜底的自绘图标
+  iconImage: '/icons/my-mod.png',  // 可选：jar 里的真实图标，放进 public/icons/
   loaders: ['fabric'],
   gameVersions: ['1.21.4'],
   categories: ['工具'],
@@ -59,14 +76,28 @@ https://github.com/tangzixi0724/tzixi_web/releases/download/<tag>/<fileName>
   notes: ['装之前必须知道的事。'],
   changelog: [{ version: '1.0.0', date: '2026-10-17', changes: ['第一个版本。'] }],
   files: [
-    { fileName: 'my-mod-1.0.0.jar', size: '320 KB', url: releaseUrl('my-mod-build', 'my-mod-1.0.0.jar'), primary: true },
+    {
+      fileName: 'my-mod-1.0.0_1.21.4.jar',
+      size: '320 KB',
+      url: releaseUrl('my-mod-build', 'my-mod-1.0.0_1.21.4.jar'),
+      primary: true,
+      gameVersion: '1.21.4',       // 支持多个游戏版本时必填
+    },
   ],
 },
 ```
 
-### 4. 还没打算上传的文件
+### 4. 同一个模组有多个游戏版本
 
-`url` 填 `NOT_UPLOADED`（从 `site.ts` 导入）。界面上这个文件会显示成「未上传」的不可点击状态，不会变成死链。**别填假链接**。
+把每个构建都放进 `files`，`primary: true` 只给一个（默认展示的那个），其余自动出现在「其它构建」。**给每个文件写 `gameVersion`**——访客靠它决定下哪个，不会去数文件名里的数字。
+
+电影挡条就是这么做的：`cinematic-bars-1.0.0_26.3.jar` 和 `cinematic-bars-1.0.0_1.21.10.jar` 是两个独立构建，装错了游戏直接起不来。
+
+### 5. 还没上传的文件
+
+`url` 留空字符串（`NOT_UPLOADED`）。界面上会显示成「文件尚未上传」的不可点击状态，不会变成死链。**别填假链接**。
+
+填好之后状态自动变成真实的下载按钮。
 
 ## 加一套光影参数
 

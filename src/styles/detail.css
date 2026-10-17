@@ -653,3 +653,23 @@
   height: 1px;
   background: var(--ink-faint);
 }
+
+/* 多版本构建：把「这个文件对应哪个游戏版本」放到文件名前面 */
+.rail__for {
+  margin-left: 8px;
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--ink-dim);
+}
+
+.filelist__text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.filelist__ver {
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--ink-dim);
+}

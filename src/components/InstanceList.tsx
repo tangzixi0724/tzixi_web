@@ -153,7 +153,12 @@ export function InstanceList({
               onClick={() => onSelect(item.id)}
             >
               <span className="instance__icon" data-kind={entry.kind}>
-                <BlockIcon name={item.icon} size={26} />
+                <BlockIcon
+                  name={item.icon}
+                  image={item.iconImage}
+                  alt=""
+                  size={26}
+                />
               </span>
               <span className="instance__text">
                 <span className="instance__name">{item.name}</span>

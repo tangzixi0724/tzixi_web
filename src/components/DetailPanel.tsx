@@ -87,7 +87,7 @@ function ModDetail({ entry }: { entry: Extract<Entry, { kind: 'mod' }> }) {
     <>
       <div className="detail__head">
         <div className="detail__icon" data-kind="mod">
-          <BlockIcon name={mod.icon} size={44} />
+          <BlockIcon name={mod.icon} image={mod.iconImage} alt={`${mod.name} 的图标`} size={44} />
         </div>
         <div className="detail__title">
           <h2>
@@ -129,7 +129,12 @@ function ModDetail({ entry }: { entry: Extract<Entry, { kind: 'mod' }> }) {
 
         <aside className="rail" aria-label="下载">
           <div className="rail__card">
-            <p className="rail__label">主文件</p>
+            <p className="rail__label">
+              主文件
+              {primary?.gameVersion && (
+                <span className="rail__for mono">Minecraft {primary.gameVersion}</span>
+              )}
+            </p>
             <p className="rail__file mono">{primary?.fileName ?? '—'}</p>
             {missing ? (
               <span className="btn btn--primary btn--block" data-disabled="true" aria-disabled="true">
@@ -158,7 +163,12 @@ function ModDetail({ entry }: { entry: Extract<Entry, { kind: 'mod' }> }) {
               <ul>
                 {others.map((file) => (
                   <li key={file.fileName}>
-                    <span className="filelist__name mono">{file.fileName}</span>
+                    <span className="filelist__text">
+                      {file.gameVersion && (
+                        <span className="filelist__ver mono">MC {file.gameVersion}</span>
+                      )}
+                      <span className="filelist__name mono">{file.fileName}</span>
+                    </span>
                     <span className="filelist__size mono">{file.size}</span>
                     {file.url ? (
                       <a href={file.url} download className="filelist__get">
@@ -189,7 +199,7 @@ function ShaderDetail({ entry }: { entry: Extract<Entry, { kind: 'shader' }> }) 
     <>
       <div className="detail__head">
         <div className="detail__icon" data-kind="shader">
-          <BlockIcon name={shader.icon} size={44} />
+          <BlockIcon name={shader.icon} image={shader.iconImage} alt={`${shader.name} 的图标`} size={44} />
         </div>
         <div className="detail__title">
           <h2>

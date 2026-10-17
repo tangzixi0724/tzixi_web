@@ -245,3 +245,14 @@
   color: var(--amethyst);
   border-color: rgba(169, 139, 220, 0.42);
 }
+
+/* 真实图标在深色底上容易糊在一起，给它一块浅色底衬 */
+.instance__icon:has(.block-icon--image),
+.detail__icon:has(.block-icon--image) {
+  color: inherit;
+}
+
+.instance__icon .block-icon--image,
+.detail__icon .block-icon--image {
+  border-radius: 0;
+}

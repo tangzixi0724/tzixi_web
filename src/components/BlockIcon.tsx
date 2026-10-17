@@ -3,6 +3,9 @@ import type { IconName } from '../content/types';
 interface IconProps {
   name: IconName;
   size?: number;
+  /** jar 里自带的真实图标；有就用它，没有才退回自绘像素图 */
+  image?: string;
+  alt?: string;
 }
 
 /**
@@ -202,7 +205,22 @@ function toPath(rows: string[], ink: string, scale: number): string {
   return parts.join('');
 }
 
-export function BlockIcon({ name, size = 32 }: IconProps) {
+export function BlockIcon({ name, size = 32, image, alt = '' }: IconProps) {
+  // jar 里带了真实图标就用真实的，像素图要硬边放大
+  if (image) {
+    return (
+      <img
+        src={image}
+        width={size}
+        height={size}
+        alt={alt}
+        className="block-icon block-icon--image"
+        loading="lazy"
+        decoding="async"
+      />
+    );
+  }
+
   const rows = GRIDS[name] ?? [];
   return (
     <svg

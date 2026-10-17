@@ -175,3 +175,10 @@ li {
 .block-icon__shade {
   opacity: 0.5;
 }
+
+/* jar 里自带的真实图标：像素图，放大时必须硬边 */
+.block-icon--image {
+  image-rendering: pixelated;
+  display: block;
+  object-fit: contain;
+}
