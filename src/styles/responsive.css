@@ -137,6 +137,12 @@
   .detail {
     padding: 20px 16px 32px;
     overflow: visible;
+    /* 窄屏两栏已经上下排布，不需要用顶部内边距去对齐另一栏 */
+    mask-image: none;
+  }
+
+  .detail__blank {
+    padding: 0 16px 20px;
   }
 
 
