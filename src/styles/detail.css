@@ -6,24 +6,13 @@
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
+  /* 滚动条常驻：内容溢出这件事本身要能看见 */
+  scrollbar-gutter: stable;
   padding: clamp(20px, 2.6vw, 34px) clamp(20px, 3vw, 44px) clamp(28px, 3vw, 44px);
   display: flex;
   flex-direction: column;
   gap: clamp(20px, 2.2vw, 28px);
   animation: detail-in 320ms cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-/* 内部滚动时，底边一道渐隐，让被切断的行读作"还有更多" */
-.detail::after {
-  content: '';
-  position: sticky;
-  bottom: 0;
-  display: block;
-  flex: 0 0 auto;
-  height: 44px;
-  margin-top: -44px;
-  background: linear-gradient(transparent, var(--bg-shell) 82%);
-  pointer-events: none;
 }
 
 @keyframes detail-in {
