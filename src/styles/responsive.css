@@ -139,6 +139,11 @@
     overflow: visible;
   }
 
+  /* 窄屏不是内部滚动，底边渐隐就没有意义了 */
+  .detail::after {
+    display: none;
+  }
+
   .detail__head {
     grid-template-columns: 48px minmax(0, 1fr);
     gap: 14px;
