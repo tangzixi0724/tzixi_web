@@ -44,6 +44,7 @@ export function InstanceList({
     if (index >= 0) setFocusedIndex(index);
   }, [selectedId, visible]);
 
+
   const move = (delta: number) => {
     if (visible.length === 0) return;
     const next = Math.min(Math.max(focusedIndex + delta, 0), visible.length - 1);
@@ -54,6 +55,8 @@ export function InstanceList({
     const node = listRef.current?.querySelector<HTMLElement>(`[data-index="${next}"]`);
     node?.focus();
   };
+
+  const hasSelection = visible.some((entry) => entry.data.id === selectedId);
 
   return (
     <div className="instances">
@@ -133,7 +136,7 @@ export function InstanceList({
               className="instance"
               data-active={active}
               id={`entry-tab-${item.id}`}
-              tabIndex={active || (visible.length > 0 && index === 0 && !visible.some((e) => e.data.id === selectedId)) ? 0 : -1}
+              tabIndex={active || (!hasSelection && index === 0) ? 0 : -1}
               aria-selected={active}
               aria-controls="entry-panel"
               role="tab"
