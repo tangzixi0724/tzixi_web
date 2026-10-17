@@ -45,6 +45,8 @@
   --torch-wash: rgba(255, 122, 47, 0.12);
 
   /* 矿物料状态色 */
+  --ore: #9db8b1;
+  --ore-dim: #8fa8a2;
   --emerald: #6fd08c;
   --amber: #d9a441;
   --amethyst: #a98bdc;

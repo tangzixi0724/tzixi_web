@@ -185,7 +185,7 @@
 }
 
 .instance__icon[data-kind='mod'] {
-  color: #8fa8a2;
+  color: var(--ore-dim);
 }
 
 .instance__icon[data-kind='shader'] {

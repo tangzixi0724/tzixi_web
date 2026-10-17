@@ -49,7 +49,7 @@
 }
 
 .detail__icon[data-kind='mod'] {
-  color: #9db8b1;
+  color: var(--ore);
 }
 
 .detail__icon[data-kind='shader'] {
@@ -94,6 +94,7 @@
 
 .detail__slug {
   margin-top: 8px;
+  font-family: var(--font-mono);
   font-size: 11.5px;
   color: var(--ink-faint);
   letter-spacing: 0.01em;

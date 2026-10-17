@@ -120,6 +120,14 @@ https://github.com/tangzixi0724/tzixi_web/releases/download/<tag>/<fileName>
 - **月出站流量超过 100 GB**：按一个模组 500 KB 算，100 GB ≈ 20 万次下载/月。真到这个量，把 `dist` 换成 Cloudflare Pages（无限流量）只需要改一次部署配置，代码不用动。
 - **需要评论、下载计数、后台**：那就要后端了。下一步最省事的做法是 Vercel + Supabase 的免费额度，或者干脆把统计交给 GitHub Release 自带的下载计数。
 
+## 设计与产品文档
+
+- `PRODUCT.md` —— 产品事实：谁用、为什么免费、约束是什么
+- `DESIGN.md` —— 视觉系统：令牌、字号刻度、组件、禁忌
+- `.impeccable/surfaces/src-app-tsx.md` —— 首页的方向契约（THESIS / OWN-WORLD / FIRST VIEWPORT）
+
+改视觉前先读 `DESIGN.md` 的「Do's and Don'ts」，尤其是**火把橙只用于选中行与下载按钮**这条。
+
 ## 目录
 
 ```
