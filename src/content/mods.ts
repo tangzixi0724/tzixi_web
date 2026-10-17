@@ -1,4 +1,5 @@
 import type { Mod } from './types';
+import { releaseUrl } from './site';
 
 /**
  * 模组清单。这是全站唯一的模组数据源。
@@ -42,7 +43,7 @@ export const mods: Mod[] = [
       {
         fileName: 'glb2lt-1.31.0_1.20.1.jar',
         size: '195 KB',
-        url: '',
+        url: releaseUrl('glb2lt', 'glb2lt-1.31.0_1.20.1.jar'),
         primary: true,
         gameVersion: '1.20.1',
       },
@@ -83,14 +84,14 @@ export const mods: Mod[] = [
       {
         fileName: 'cinematic-bars-1.0.0_26.3.jar',
         size: '32 KB',
-        url: '',
+        url: releaseUrl('cinematic-bars', 'cinematic-bars-1.0.0_26.3.jar'),
         primary: true,
         gameVersion: '26.3',
       },
       {
         fileName: 'cinematic-bars-1.0.0_1.21.10.jar',
         size: '32 KB',
-        url: '',
+        url: releaseUrl('cinematic-bars', 'cinematic-bars-1.0.0_1.21.10.jar'),
         primary: false,
         gameVersion: '1.21.10',
       },
@@ -133,7 +134,7 @@ export const mods: Mod[] = [
       {
         fileName: 'better-falling-leaves-1.0.0_26.3.jar',
         size: '61 KB',
-        url: '',
+        url: releaseUrl('better-falling-leaves', 'better-falling-leaves-1.0.0_26.3.jar'),
         primary: true,
         gameVersion: '26.3',
       },
