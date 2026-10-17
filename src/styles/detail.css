@@ -30,13 +30,8 @@
 /* 滚动边界的柔化：只覆盖最后 10px（小于一行行高），
    被切断的字形淡出，读作"还有内容"，而不是被裁坏。 */
 .detail {
-  mask-image: linear-gradient(to bottom, #000 calc(100% - 10px), transparent);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .detail {
-    mask-image: linear-gradient(to bottom, #000 calc(100% - 10px), transparent);
-  }
+  /* opaque 到 transparent，不是颜色令牌 */
+  mask-image: linear-gradient(to bottom, black calc(100% - 10px), transparent);
 }
 
 @keyframes detail-in {
