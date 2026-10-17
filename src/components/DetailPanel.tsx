@@ -1,4 +1,6 @@
+import { useRef } from 'react';
 import { BlockIcon } from './BlockIcon';
+import { ScrollRail } from './ScrollRail';
 import { API_LABEL, LOADER_LABEL, type Entry } from '../content/entries';
 import { useCopy } from '../lib/useCopy';
 import { site } from '../content/site';
@@ -310,15 +312,21 @@ function ShaderDetail({ entry }: { entry: Extract<Entry, { kind: 'shader' }> }) 
 }
 
 export function DetailPanel({ entry }: Props) {
+  const scrollerRef = useRef<HTMLElement>(null);
+
   return (
-    <article
-      className="detail"
-      key={entry.data.id}
-      id="entry-panel"
-      role="tabpanel"
-      aria-labelledby={`entry-tab-${entry.data.id}`}
-    >
-      {entry.kind === 'mod' ? <ModDetail entry={entry} /> : <ShaderDetail entry={entry} />}
-    </article>
+    <div className="detail-pane">
+      <article
+        ref={scrollerRef}
+        className="detail"
+        key={entry.data.id}
+        id="entry-panel"
+        role="tabpanel"
+        aria-labelledby={`entry-tab-${entry.data.id}`}
+      >
+        {entry.kind === 'mod' ? <ModDetail entry={entry} /> : <ShaderDetail entry={entry} />}
+      </article>
+      <ScrollRail targetRef={scrollerRef} />
+    </div>
   );
 }

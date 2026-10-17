@@ -2,12 +2,17 @@
    详情面板（右栏）
    ============================================================ */
 
+/* 详情栏：外层钉住做定位基准，内层滚动 */
+.detail-pane {
+  position: relative;
+  min-height: 0;
+  display: grid;
+}
+
 .detail {
   min-height: 0;
   overflow-y: auto;
   overscroll-behavior: contain;
-  /* 滚动条常驻：内容溢出这件事本身要能看见 */
-  scrollbar-gutter: stable;
   padding: clamp(20px, 2.6vw, 34px) clamp(20px, 3vw, 44px) clamp(28px, 3vw, 44px);
   display: flex;
   flex-direction: column;
@@ -493,6 +498,38 @@
 
 .param__row:hover .param__copy {
   color: var(--ink-soft);
+}
+
+/* 自绘滚动条：常驻可见，不依赖系统叠加式滚动条 */
+.scroll-rail {
+  position: absolute;
+  top: 0;
+  right: 6px;
+  bottom: 0;
+  width: 3px;
+  opacity: 0;
+  transition: opacity 180ms ease;
+  pointer-events: none;
+}
+
+.scroll-rail[data-visible='true'] {
+  opacity: 1;
+}
+
+.scroll-rail__thumb {
+  position: absolute;
+  right: 0;
+  width: 3px;
+  min-height: 28px;
+  background: rgba(233, 240, 238, 0.28);
+  transition: background-color 160ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-rail,
+  .scroll-rail__thumb {
+    transition: none;
+  }
 }
 
 /* ---------- 空状态 ---------- */
