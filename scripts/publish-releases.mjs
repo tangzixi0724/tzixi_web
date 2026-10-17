@@ -7,7 +7,7 @@ if (!TOKEN) throw new Error('GH_TOKEN missing');
 const OWNER = 'tangzixi0724';
 const REPO = 'tzixi_web';
 const API = 'https://api.github.com';
-const DIR = 'C:/Users/Administrator/AppData/Local/Temp/mcmods';
+const DIR = process.env.MODS_DIR ?? "C:/Users/Administrator/AppData/Local/Temp/mcmods";
 
 const headers = {
   Authorization: `Bearer ${TOKEN}`,

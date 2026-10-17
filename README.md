@@ -32,7 +32,15 @@ bun run preview    # 预览构建结果
 
 图标是从 jar 里的 `icon.png` / `glb2lt.png` 解出来放进 `public/icons/` 的，不是占位图。
 
-文件目前状态是「未上传」：`url` 还空着，等传到 Release 之后填上就能点。
+四个 jar 已经传到 Release，页面上是可直接点开的下载按钮：
+
+| Release tag | 附件 |
+| --- | --- |
+| `glb2lt` | `glb2lt-1.31.0_1.20.1.jar` |
+| `cinematic-bars` | `cinematic-bars-1.0.0_26.3.jar`、`cinematic-bars-1.0.0_1.21.10.jar` |
+| `better-falling-leaves` | `better-falling-leaves-1.0.0_26.3.jar` |
+
+批量重新发布用 `scripts/publish-releases.mjs`（读 `GH_TOKEN` 环境变量）。
 
 ## 加一个模组（从上传到网站上能下）
 
