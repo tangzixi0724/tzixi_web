@@ -125,16 +125,9 @@ html {
   overflow: hidden;
 }
 
-/* 空结果时窗口收成单栏，不留大片空白 */
-.window[data-empty='true'] {
+/* 空结果时窗口仍占满一屏，两栏结构不变，只是右栏给出解释 */
+.window[data-empty='true'] .instances__list {
   flex: 0 1 auto;
-  grid-template-columns: minmax(0, 1fr);
-  min-height: 0;
-  max-height: 380px;
-}
-
-.window[data-empty='true'] .instances {
-  border-right: none;
 }
 
 
@@ -142,6 +135,8 @@ html {
 /* ---------- 状态栏 ---------- */
 .statusbar {
   flex: none;
+  /* 窗口不占满时（空结果）状态栏仍然贴底，整屏外壳不塌 */
+  margin-top: auto;
   display: flex;
   align-items: center;
   gap: 20px;

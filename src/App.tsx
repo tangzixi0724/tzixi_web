@@ -73,7 +73,27 @@ export default function App() {
             onQuery={setQuery}
           />
 
-          {selected && <DetailPanel entry={selected} />}
+          {selected ? (
+            <DetailPanel entry={selected} />
+          ) : (
+            <div className="detail__blank">
+              <p className="detail__blank-title">选中一个作品后，这里会显示</p>
+              <dl>
+                <div>
+                  <dt>五个测量值</dt>
+                  <dd>游戏版本、加载器、版本号、文件大小、更新时间</dd>
+                </div>
+                <div>
+                  <dt>下载卡片</dt>
+                  <dd>主文件名、文件大小，和直接指向 GitHub Release 的按钮</dd>
+                </div>
+                <div>
+                  <dt>安装须知与更新记录</dt>
+                  <dd>装之前的注意事项，以及每个版本改了什么</dd>
+                </div>
+              </dl>
+            </div>
+          )}
         </main>
 
         <div className="statusbar">

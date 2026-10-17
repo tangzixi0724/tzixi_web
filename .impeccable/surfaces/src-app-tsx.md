@@ -38,7 +38,13 @@ FIRST VIEWPORT: 一个刚好一屏高的外壳（100dvh）包住三件东西：�
 
 FORM: 启动器实例面板（Instance Panel）。
 
-出处逐字记清，避免和挑战者混淆：`concept-seed --scope direction --mode experience` 的输出是 `ASSIGNED INDEX: 3`，即「在我自己按共鸣度排序的 grounded 候选里，构建第 3 位」——第 3 位就是启动器实例面板。同一份输出里的六条 CHALLENGERS（缝纫纸样、中光层深潜、东湖木版、册居反透视、cracktro 队列、teletext 杂志）是**目录挑战者**，属于另一套集合，不是被指派的那一个，也没有被选中；它们在我的判断里分别是 declined 与 declined/competitive，最终只把「层级即深度」的纪律折算成了面板的明度台阶。用户在同一轮里看到的 4 张卡是：骰子指派项（本方向）、我自选的备选（光影配置文件本身）、一条挑战者（暗色 demo 层级队列）、以及退出选项（常见模组站卡片墙）；用户选了骰子指派项。
+出处逐字记清，避免把两套集合混成一套：
+
+- `concept-seed --scope direction --mode experience` 输出 `ASSIGNED INDEX: 3`，即「在我自己按共鸣度排序的 grounded 候选里构建第 3 位」。第 3 位就是启动器实例面板，`seed:9811f0918e6cec43` 可校验（`concept-seed --check-seed` 返回 SEED KNOWN）。
+- `.impeccable/questions/roll.json` 记的是同一颗骰子发出的**六条目录挑战者**（缝纫纸样、中光层深潜、东湖木版、册居反透视、cracktro 队列、teletext 杂志）。它们是挑战者集合，不是指派项，也没有一条被选中。
+- 用户在那一轮看到的是四张卡，来源是 GROUNDED 列表的第 3 位（指派）、我自选的备选、一条挑战者（cracktro 的层级队列）、以及退出选项（常见模组站卡片墙）。这四张卡不是 `roll.json` 里的六条世界，两者不能互相引用。
+- 本轮用的是 harness 的结构化提问工具而不是决策页，因此没有 `serve-question` 的 payload；四张卡的书面记录在 `.impeccable/questions/round-home.json`，标注为手工记录。
+- 用户的选择：启动器实例面板。最终只有 cracktro 的「层级即深度」这条纪律被折算进面板的明度台阶，其余挑战者不采用。
 
 seed:9811f0918e6cec43
 

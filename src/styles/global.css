@@ -147,7 +147,7 @@ li {
 /* 滚动条也属于设计 */
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--line-strong) transparent;
+  scrollbar-color: rgba(233, 240, 238, 0.32) transparent;
 }
 
 *::-webkit-scrollbar {
@@ -160,7 +160,7 @@ li {
 }
 
 *::-webkit-scrollbar-thumb {
-  background: var(--line-strong);
+  background: rgba(233, 240, 238, 0.32);
   border: 3px solid transparent;
   background-clip: padding-box;
   border-radius: 6px;
