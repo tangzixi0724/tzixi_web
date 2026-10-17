@@ -88,7 +88,8 @@ typography:
     letterSpacing: "0.07em"
 rounded:
   none: "0"
-  hair: "2px"
+  hair: "1px"
+  hair-sm: "2px"
   control: "3px"
   scrollbar: "6px"
 spacing:
@@ -226,7 +227,7 @@ components:
 
 ## Shapes
 
-圆角几乎为零：控件 3px、次级元素 2px、方块图标与标签 0。形状语言全部来自矩形与 1px 描边，和方块世界的正交感一致。图标是 16×16 的自绘像素网格（`BlockIcon`），每个像素对齐到 1 单位，用 crispEdges 渲染。
+圆角几乎为零：控件 3px、次级元素 2px、滑块与细条 1px、方块图标与标签 0。形状语言全部来自矩形与 1px 描边，和方块世界的正交感一致。图标是 16×16 的自绘像素网格（`BlockIcon`），每个像素对齐到 1 单位，用 crispEdges 渲染。
 
 ## Components
 
