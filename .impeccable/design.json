@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-17T19:20:00.000Z",
+  "title": "Design System: tzixi.cn",
+  "extensions": {
+    "colorMeta": {
+      "void": { "role": "neutral", "displayName": "虚空 Void", "canonical": "#080b0c", "tonalRamp": ["#080b0c", "#11171a", "#1c2428", "#2b3539", "#45514f", "#6d7a77", "#a7b2ae", "#e6ecea"] },
+      "shell": { "role": "neutral", "displayName": "外壳 Shell", "canonical": "#0d1113", "tonalRamp": ["#0d1113", "#161d21", "#222b2f", "#323d41", "#4a5754", "#74807d", "#adb7b3", "#eef3f1"] },
+      "panel": { "role": "neutral", "displayName": "面板 Panel", "canonical": "#11171a", "tonalRamp": ["#11171a", "#1a2226", "#262f33", "#374246", "#505c59", "#798482", "#b0b9b6", "#f0f4f3"] },
+      "raise": { "role": "neutral", "displayName": "抬起 Raise", "canonical": "#161d21", "tonalRamp": ["#161d21", "#1f272b", "#2b3539", "#3d484c", "#56625f", "#7f8a87", "#b6beba", "#f2f5f4"] },
+      "hover": { "role": "neutral", "displayName": "悬停 Hover", "canonical": "#1c2428", "tonalRamp": ["#1c2428", "#252e32", "#313b3f", "#434d51", "#5c6865", "#85908d", "#bbc3bf", "#f4f7f6"] },
+      "ink": { "role": "neutral", "displayName": "正文 Ink", "canonical": "#eef3f1", "tonalRamp": ["#20272a", "#333c3f", "#4d5856", "#6f7a77", "#96a29e", "#bcc7c3", "#dde4e1", "#eef3f1"] },
+      "ink-soft": { "role": "neutral", "displayName": "次级 Ink Soft", "canonical": "#bcc7c3", "tonalRamp": ["#1d2427", "#2f383b", "#48524f", "#68736f", "#8d9994", "#bcc7c3", "#dae1de", "#eef3f1"] },
+      "ink-dim": { "role": "neutral", "displayName": "三级 Ink Dim", "canonical": "#96a29e", "tonalRamp": ["#1a2023", "#2a3336", "#424b49", "#5f6a66", "#7d8884", "#96a29e", "#c4cdc9", "#e4eae7"] },
+      "ink-faint": { "role": "neutral", "displayName": "四级 Ink Faint", "canonical": "#828f8b", "tonalRamp": ["#171d20", "#262e31", "#3c4543", "#57615d", "#6f7a76", "#828f8b", "#b6bfbb", "#dde3e0"] },
+      "torch": { "role": "primary", "displayName": "火把橙 Torch", "canonical": "#ff7a2f", "tonalRamp": ["#2a1407", "#4d2410", "#7a3a19", "#ab5222", "#d6662a", "#ff7a2f", "#ffa575", "#ffd6bd"] },
+      "emerald": { "role": "tertiary", "displayName": "荧光绿 Emerald", "canonical": "#6fd08c", "tonalRamp": ["#13251a", "#1d3a27", "#2a5939", "#3a7d4d", "#4fa564", "#6fd08c", "#9fe2b3", "#d2f2dc"] },
+      "amber": { "role": "tertiary", "displayName": "赭黄 Amber", "canonical": "#d9a441", "tonalRamp": ["#2a1f0a", "#453312", "#6b4e1b", "#8f6824", "#b3862f", "#d9a441", "#e8c480", "#f6e4bc"] },
+      "amethyst": { "role": "tertiary", "displayName": "紫水晶 Amethyst", "canonical": "#a98bdc", "tonalRamp": ["#1c1728", "#2c2340", "#43355e", "#5c4a80", "#7c66a8", "#a98bdc", "#c8b4ea", "#e6dcf6"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "详情面板的作品名，每屏只有一个。" },
+      "body": { "displayName": "Body", "purpose": "正文段落与说明，最大 68ch。" },
+      "label": { "displayName": "Label / Mono", "purpose": "测量值键名、版本号、文件大小、参数 key/value。" }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "detail-in", "value": "320ms cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "切换实例时详情面板的入场：6px 上移 + 淡入，尊重 prefers-reduced-motion。" },
+      { "name": "state-ease", "value": "140ms ease", "purpose": "所有悬停、聚焦、颜色状态变化的默认缓动。" },
+      { "name": "press", "value": "100ms ease / translateY(1px)", "purpose": "按钮按下反馈。" }
+    ],
+    "breakpoints": [
+      { "name": "narrow-pane", "value": "1080px" },
+      { "name": "stacked", "value": "860px" },
+      { "name": "condensed", "value": "480px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "真正的下载动作，全站唯一的实心橙色块。",
+      "html": "<a class=\"ds-btn-primary\" href=\"#\"><svg viewBox=\"0 0 14 14\" width=\"14\" height=\"14\" aria-hidden=\"true\"><path d=\"M6.2 1h1.6v6.1l2.2-2.2 1.1 1.1L7 10.1 2.9 6l1.1-1.1 2.2 2.2V1zM2 11h10v1.6H2z\" fill=\"currentColor\"/></svg>下载 412 KB</a>",
+      "css": ".ds-btn-primary { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:42px; padding:0 18px; background:var(--torch,#ff7a2f); color:#1a0f07; border:1px solid var(--torch,#ff7a2f); border-radius:3px; font-family:Archivo,'Noto Sans SC',system-ui,sans-serif; font-size:14px; font-weight:620; letter-spacing:-0.005em; text-decoration:none; transition:background-color 140ms ease, border-color 140ms ease, transform 100ms ease; } .ds-btn-primary:hover { background:#ff8b48; border-color:#ff8b48; } .ds-btn-primary:active { transform:translateY(1px); } .ds-btn-primary:focus-visible { outline:2px solid var(--torch,#ff7a2f); outline-offset:2px; } .ds-btn-primary svg { flex:none; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "次级动作：复制参数、看更新记录。",
+      "html": "<button class=\"ds-btn-ghost\">复制全部参数</button>",
+      "css": ".ds-btn-ghost { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:42px; padding:0 18px; background:transparent; color:var(--ink-soft,#bcc7c3); border:1px solid rgba(233,240,238,.16); border-radius:3px; font-family:Archivo,'Noto Sans SC',system-ui,sans-serif; font-size:14px; font-weight:580; cursor:pointer; transition:background-color 140ms ease, color 140ms ease, border-color 140ms ease; } .ds-btn-ghost:hover { color:var(--ink,#eef3f1); border-color:#828f8b; background:var(--panel,#11171a); } .ds-btn-ghost:focus-visible { outline:2px solid var(--torch,#ff7a2f); outline-offset:2px; }"
+    },
+    {
+      "name": "Disabled Action",
+      "kind": "button",
+      "description": "文件尚未上传时替换下载按钮，虚线描边表示「这不是可点的东西」。",
+      "html": "<span class=\"ds-btn-disabled\" aria-disabled=\"true\">文件尚未上传</span>",
+      "css": ".ds-btn-disabled { display:inline-flex; align-items:center; justify-content:center; min-height:42px; padding:0 18px; background:transparent; color:#828f8b; border:1px dashed rgba(233,240,238,.16); border-radius:3px; font-family:Archivo,'Noto Sans SC',system-ui,sans-serif; font-size:14px; font-weight:500; cursor:not-allowed; }"
+    },
+    {
+      "name": "Instance Row",
+      "kind": "nav",
+      "refersTo": "instance-row",
+      "description": "左栏的签名组件：一行一个实例，选中时左侧橙线与背景光斑同时亮起。",
+      "html": "<button class=\"ds-instance\" data-active=\"true\"><span class=\"ds-instance-icon\"><svg viewBox=\"0 0 16 16\" width=\"26\" height=\"26\" shape-rendering=\"crispEdges\"><path d=\"M5 1h6v1h1v2h1v8h-1v2H9v1H5v-1H4v-2H3V4h1V2h1z\" fill=\"currentColor\"/></svg></span><span class=\"ds-instance-text\"><span class=\"ds-instance-name\">晨曦灯笼</span><span class=\"ds-instance-meta\">Fabric / NeoForge · 1.4.2</span></span><span class=\"ds-instance-kind\">MOD</span></button>",
+      "css": ".ds-instance { width:100%; display:grid; grid-template-columns:34px minmax(0,1fr) auto; gap:10px; align-items:center; padding:10px 14px; text-align:left; background:linear-gradient(90deg, rgba(255,122,47,.12), transparent 92%); border:none; border-left:2px solid var(--torch,#ff7a2f); cursor:pointer; } .ds-instance:hover { background:linear-gradient(90deg, rgba(255,122,47,.16), #161d21 92%); } .ds-instance-icon { display:grid; place-items:center; width:34px; height:34px; border:1px solid #c05a20; color:var(--torch,#ff7a2f); background:#11171a; } .ds-instance-text { display:grid; gap:2px; min-width:0; } .ds-instance-name { font-family:Archivo,'Noto Sans SC',system-ui,sans-serif; font-size:14.5px; font-weight:570; color:#eef3f1; letter-spacing:-0.01em; } .ds-instance-meta { font-family:'Spline Sans Mono',ui-monospace,monospace; font-size:11px; color:#828f8b; font-variant-numeric:tabular-nums; } .ds-instance-kind { font-family:'Spline Sans Mono',ui-monospace,monospace; font-size:9.5px; letter-spacing:.08em; padding:2px 5px; border:1px solid rgba(233,240,238,.09); color:#828f8b; align-self:start; margin-top:2px; }"
+    },
+    {
+      "name": "Segmented Control",
+      "kind": "chip",
+      "description": "全部 / 模组 / 光影 的类型切换，选中项用一条底部橙线标记而不是填充。",
+      "html": "<div class=\"ds-segmented\"><button class=\"ds-seg-btn\" data-active=\"true\">全部</button><button class=\"ds-seg-btn\">模组</button><button class=\"ds-seg-btn\">光影</button></div>",
+      "css": ".ds-segmented { display:flex; gap:2px; padding:2px; background:#080b0c; border:1px solid rgba(233,240,238,.09); } .ds-seg-btn { flex:1; padding:6px 4px; font-family:Archivo,'Noto Sans SC',system-ui,sans-serif; font-size:12.5px; font-weight:550; letter-spacing:.02em; color:#96a29e; background:none; border:none; border-radius:2px; cursor:pointer; transition:color 130ms ease, background-color 130ms ease; } .ds-seg-btn:hover { color:#bcc7c3; background:#11171a; } .ds-seg-btn[data-active=\"true\"] { color:#eef3f1; background:#161d21; box-shadow:inset 0 -1px 0 #ff7a2f; } .ds-seg-btn:focus-visible { outline:2px solid #ff7a2f; outline-offset:2px; }"
+    },
+    {
+      "name": "Search Field",
+      "kind": "input",
+      "description": "列表上方的搜索，凹陷表面 + 刻线，聚焦只改边框色。",
+      "html": "<label class=\"ds-search\"><svg viewBox=\"0 0 14 14\" width=\"13\" height=\"13\" aria-hidden=\"true\"><path d=\"M6 1a5 5 0 013.9 8.1l3 3-1 1-3-3A5 5 0 116 1zm0 1.8a3.2 3.2 0 100 6.4 3.2 3.2 0 000-6.4z\" fill=\"currentColor\"/></svg><input type=\"search\" placeholder=\"搜名字、版本、加载器\" /></label>",
+      "css": ".ds-search { position:relative; display:flex; align-items:center; background:#080b0c; border:1px solid rgba(233,240,238,.09); transition:border-color 140ms ease; } .ds-search:focus-within { border-color:#c05a20; } .ds-search svg { position:absolute; left:9px; color:#828f8b; pointer-events:none; } .ds-search input { width:100%; padding:7px 28px; font-family:Archivo,'Noto Sans SC',system-ui,sans-serif; font-size:13px; color:#eef3f1; background:none; border:none; outline:none; } .ds-search input::placeholder { color:#828f8b; } .ds-search input:focus-visible { outline:none; }"
+    },
+    {
+      "name": "Metric Cell",
+      "kind": "custom",
+      "description": "详情面板顶部那排测量值：等宽键名 + 等宽数值，用垂直刻线切分。",
+      "html": "<dl class=\"ds-metrics\"><div class=\"ds-metric\"><dt>游戏版本</dt><dd>1.21.4 · 1.21.1</dd></div><div class=\"ds-metric\"><dt>文件大小</dt><dd>412 KB</dd></div></dl>",
+      "css": ".ds-metrics { display:grid; grid-template-columns:repeat(auto-fit,minmax(112px,1fr)); margin:0; padding:0; border-top:1px solid rgba(233,240,238,.09); border-bottom:1px solid rgba(233,240,238,.09); } .ds-metric { padding:12px 14px 13px 0; border-right:1px solid rgba(233,240,238,.09); min-width:0; } .ds-metric:last-child { border-right:none; } .ds-metric dt { font-family:'Spline Sans Mono',ui-monospace,monospace; font-size:10.5px; letter-spacing:.06em; text-transform:uppercase; color:#828f8b; margin-bottom:5px; } .ds-metric dd { margin:0; font-family:'Spline Sans Mono',ui-monospace,monospace; font-size:13px; color:#eef3f1; font-variant-numeric:tabular-nums; line-height:1.4; }"
+    },
+    {
+      "name": "Param Row",
+      "kind": "custom",
+      "description": "签名组件：光影参数表的一行，整行可点即复制，右侧图标切换成对勾。",
+      "html": "<button class=\"ds-param\"><span class=\"ds-param-key\">LIGHT_SHADOW_SOFTNESS</span><span class=\"ds-param-value\">1.35</span><span class=\"ds-param-note\">阴影边缘变软，方块投影不会像刀切</span><span class=\"ds-param-copy\"><svg viewBox=\"0 0 14 14\" width=\"12\" height=\"12\" aria-hidden=\"true\"><path d=\"M4 1h7v9H9.4V2.6H4V1zm-1 3h6.2v9H3V4zm1.4 1.4v6.2h3.4V5.4H4.4z\" fill=\"currentColor\"/></svg></span></button>",
+      "css": ".ds-param { width:100%; display:grid; grid-template-columns:minmax(0,1fr) auto 18px; gap:4px 12px; align-items:baseline; padding:9px 12px 10px; text-align:left; background:none; border:none; border-top:1px solid rgba(233,240,238,.09); cursor:pointer; transition:background-color 120ms ease; } .ds-param:first-child { border-top:none; } .ds-param:hover { background:#11171a; } .ds-param-key { font-family:'Spline Sans Mono',ui-monospace,monospace; font-size:12px; color:#6fd08c; overflow-wrap:anywhere; } .ds-param-value { font-family:'Spline Sans Mono',ui-monospace,monospace; font-size:12px; font-weight:600; color:#ff7a2f; white-space:nowrap; justify-self:end; } .ds-param-note { grid-column:1 / 3; font-size:12px; color:#828f8b; line-height:1.5; } .ds-param-copy { grid-column:3; grid-row:1; color:#828f8b; display:grid; place-items:center; } .ds-param:focus-visible { outline:2px solid #ff7a2f; outline-offset:-2px; }"
+    },
+    {
+      "name": "Rail Card",
+      "kind": "card",
+      "description": "详情右栏的下载卡片：文件名在上，实心按钮在下，链接垫底。",
+      "html": "<div class=\"ds-rail\"><p class=\"ds-rail-label\">主文件</p><p class=\"ds-rail-file\">aurelia-lanterns-1.4.2_1.21.4-fabric.jar</p><a class=\"ds-btn-primary\" href=\"#\">下载 412 KB</a><a class=\"ds-rail-link\" href=\"#\">全部版本与更新日志 ↗</a></div>",
+      "css": ".ds-rail { display:grid; gap:10px; padding:16px; background:#11171a; border:1px solid rgba(233,240,238,.09); } .ds-rail-label { margin:0; font-family:'Spline Sans Mono',ui-monospace,monospace; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; color:#828f8b; } .ds-rail-file { margin:0; font-family:'Spline Sans Mono',ui-monospace,monospace; font-size:11.5px; color:#bcc7c3; overflow-wrap:anywhere; line-height:1.5; } .ds-rail-link { display:inline-flex; align-items:center; justify-content:center; gap:6px; margin-top:2px; font-family:Archivo,'Noto Sans SC',system-ui,sans-serif; font-size:12.5px; color:#96a29e; text-decoration:none; transition:color 140ms ease; } .ds-rail-link:hover { color:#ff7a2f; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "启动器面板（The Launcher Panel）",
+    "overview": "站点不是\"关于模组的网页\"，而是启动器里那个实例列表本身。左边一列实例，右边是选中实例的详情，窗口底部一条状态栏报数。访客认出这个界面，就同时理解了这里的文件是可以装进游戏的，以及它们各自适配什么版本。密度是这套系统的性格：信息先于留白，但每一层都靠位置和刻线区分，不靠阴影和卡片。整个界面只有一种强调色，且只出现在两处——当前选中的那一行，和真正的下载按钮。",
+    "keyCharacteristics": [
+      "近黑石板底，四级明度抬升，全部靠 1px 刻线分隔",
+      "火把橙是唯一强调色，占比极低",
+      "界面文字用 Archivo 可变字体，测量值用等宽字体",
+      "零投影、零圆角卡片、零渐变文字"
+    ],
+    "rules": [
+      { "name": "唯一强调色规则（The One Torch Rule）", "body": "火把橙只允许出现在\"当前选中\"与\"可执行下载\"两种语义上。它一旦被用于装饰，整套界面的选中逻辑就失效了。", "section": "colors" },
+      { "name": "刻线而非容器规则（The Score-Line Rule）", "body": "分隔用 1px 半透明线（rgba(233,240,238,0.09)），不用投影、不用卡片边框堆叠。深度靠明度台阶表达，不靠阴影。", "section": "elevation" },
+      { "name": "读数规则（The Reading Rule）", "body": "任何表示\"数值\"的东西——版本号、文件大小、日期、参数 key/value——必须用等宽字体。任何表示\"叙述\"的东西必须用 Archivo。这条线不许模糊。", "section": "typography" }
+    ],
+    "dos": [
+      "Do 保持火把橙只用于\"当前选中\"和\"下载\"两种语义。",
+      "Do 用 1px 刻线和明度台阶表达层次，需要分隔时就画一条线。",
+      "Do 让所有测量值走等宽字体并启用 tabular-nums。",
+      "Do 在窄屏把下载按钮提正文之前。",
+      "Do 用自绘的 16×16 像素图标，而不是图标字体或 emoji。"
+    ],
+    "donts": [
+      "Don't 给卡片加圆角、投影或发光边框。",
+      "Don't 用渐变文字做强调，强调只靠字重和字号。",
+      "Don't 在标题上方加 eyebrow / kicker 小标签。",
+      "Don't 用霓虹青、紫色渐变这类\"科技风\"默认色，强调色只有火把橙一个。",
+      "Don't 为了好看把版本号、加载器这些适配信息从列表层挪进详情或折叠区。"
+    ]
+  }
+}

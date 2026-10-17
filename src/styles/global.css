@@ -1,0 +1,175 @@
+/* ---------- 字体 ---------- */
+@font-face {
+  font-family: 'Archivo';
+  src: url('/fonts/archivo-var.woff2') format('woff2-variations');
+  font-weight: 100 900;
+  font-stretch: 62% 125%;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Spline Sans Mono';
+  src: url('/fonts/spline-mono.woff2') format('woff2-variations');
+  font-weight: 400 700;
+  font-display: swap;
+  font-style: normal;
+}
+
+/* ---------- 变量 ---------- */
+:root {
+  --font-ui: 'Archivo', 'Noto Sans SC', system-ui, -apple-system, 'PingFang SC',
+    'Microsoft YaHei', sans-serif;
+  --font-mono: 'Spline Sans Mono', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  /* 石板底：由外向内抬升 */
+  --bg-void: #080b0c;
+  --bg-shell: #0d1113;
+  --bg-panel: #11171a;
+  --bg-raise: #161d21;
+  --bg-hover: #1c2428;
+
+  /* 刻线而非卡片边缘 */
+  --line: rgba(233, 240, 238, 0.09);
+  --line-strong: rgba(233, 240, 238, 0.16);
+
+  /* 文字：从亮到暗四档 */
+  --ink: #eef3f1;
+  --ink-soft: #bcc7c3;
+  --ink-dim: #96a29e;
+  --ink-faint: #828f8b;
+
+  /* 火把橙 —— 全站唯一强调色 */
+  --torch: #ff7a2f;
+  --torch-dim: #c05a20;
+  --torch-wash: rgba(255, 122, 47, 0.12);
+
+  /* 矿物料状态色 */
+  --emerald: #6fd08c;
+  --amber: #d9a441;
+  --amethyst: #a98bdc;
+
+  --radius: 3px;
+
+  color-scheme: dark;
+}
+
+/* ---------- 基础 ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-void);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.65;
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--torch);
+  color: #12100e;
+}
+
+:focus-visible {
+  outline: 2px solid var(--torch);
+  outline-offset: 2px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-weight: 620;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+}
+
+ul,
+ol,
+dl,
+dd {
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style: none;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* 滚动条也属于设计 */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  border-radius: 6px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-faint);
+  background-clip: padding-box;
+}
+
+/* 方块图标：主色 + 一档暗部，模拟方块受光 */
+.block-icon__shade {
+  opacity: 0.5;
+}

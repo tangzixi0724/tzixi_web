@@ -1,0 +1,221 @@
+/* ============================================================
+   响应式：窗口在两栏 → 堆叠之间切换，窄屏时列表退化为横向条目带
+   ============================================================ */
+
+/* 中等宽度：左栏收窄 */
+@media (max-width: 1080px) {
+  .window {
+    grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
+  }
+
+  /* 单栏后，下载必须先于正文出现：让侧栏容器让位，把主卡片提到最前 */
+  .detail__grid {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 24px;
+  }
+
+  .rail {
+    display: contents;
+  }
+
+  .rail__card {
+    order: -2;
+  }
+
+  /* 适用条件属于"要不要用"的决策信息，紧跟在下载卡片后面 */
+  .rail__spec {
+    order: -1;
+  }
+
+  .detail__main {
+    order: 0;
+  }
+
+  .filelist {
+    order: 1;
+  }
+
+  .rail__card,
+  .filelist,
+  .rail__spec {
+    min-width: 0;
+  }
+
+  .instance {
+    grid-template-columns: 32px minmax(0, 1fr);
+    row-gap: 6px;
+  }
+
+  .instance__kind {
+    display: none;
+  }
+
+}
+
+/* 窄屏：窗口改成上下两段，列表变成可横向滑的条带 */
+@media (max-width: 860px) {
+  .topbar {
+    gap: 12px;
+    height: 52px;
+  }
+
+  .nav {
+    display: none;
+  }
+
+  .window {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr);
+    height: auto;
+    max-height: none;
+    margin-top: 12px;
+    overflow: visible;
+  }
+
+  .instances {
+    border-right: none;
+    border-bottom: 1px solid var(--line-strong);
+  }
+
+  .instances__head {
+    padding: 12px;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 12px;
+  }
+
+  .segmented {
+    width: auto;
+  }
+
+  .segmented__btn {
+    padding: 5px 10px;
+  }
+
+  .instances__list {
+    display: flex;
+    gap: 1px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 0 0 1px;
+    background: var(--line);
+    scroll-snap-type: x proximity;
+  }
+
+  .instance {
+    flex: 0 0 auto;
+    width: min(72vw, 240px);
+    grid-template-columns: 30px minmax(0, 1fr);
+    padding: 10px 12px;
+    border-left: none;
+    border-bottom: 2px solid transparent;
+    background: var(--bg-panel);
+    scroll-snap-align: start;
+  }
+
+  .instance[data-active='true'] {
+    background: linear-gradient(180deg, var(--torch-wash), transparent);
+    border-bottom-color: var(--torch);
+  }
+
+  .instance__icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .instances__empty {
+    padding: 18px;
+    width: 100%;
+  }
+
+  .detail {
+    padding: 20px 16px 32px;
+    overflow: visible;
+    max-height: none;
+  }
+
+  .detail__head {
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  .detail__icon {
+    width: 48px;
+    height: 48px;
+  }
+
+  .detail__title h2 {
+    font-size: clamp(24px, 6.4vw, 30px);
+  }
+
+  .metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .metric {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .metric:nth-child(2n) {
+    border-right: none;
+  }
+
+  .metric:nth-last-child(-n + 2) {
+    border-bottom: none;
+  }
+
+  .detail__actions .btn {
+    flex: 1 1 auto;
+  }
+
+  .param__row {
+    padding: 9px 10px 10px;
+  }
+
+  .param__note {
+    font-size: 11.5px;
+  }
+
+  .below {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+  }
+
+  .statusbar {
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    padding-bottom: 16px;
+  }
+
+  .statusbar__right {
+    margin-left: 0;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .footer__spacer {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand-tld {
+    display: none;
+  }
+
+  .filelist li {
+    grid-template-columns: minmax(0, 1fr) auto;
+    row-gap: 4px;
+  }
+
+  .filelist__size {
+    display: none;
+  }
+
+  .detail__kicker .mono {
+    display: none;
+  }
+}
