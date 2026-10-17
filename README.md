@@ -120,6 +120,14 @@ https://github.com/tangzixi0724/tzixi_web/releases/download/<tag>/<fileName>
 - **月出站流量超过 100 GB**：按一个模组 500 KB 算，100 GB ≈ 20 万次下载/月。真到这个量，把 `dist` 换成 Cloudflare Pages（无限流量）只需要改一次部署配置，代码不用动。
 - **需要评论、下载计数、后台**：那就要后端了。下一步最省事的做法是 Vercel + Supabase 的免费额度，或者干脆把统计交给 GitHub Release 自带的下载计数。
 
+## 关于中文字体
+
+中文不是个小数字。站里用的是自托管的 Noto Sans SC，按 unicode-range 切成 101 片，浏览器**只下载当前页面字符命中的那几片**（实测首屏 20 片，约 1.1 MB），且带 `immutable` 缓存头，第二次访问为 0。
+
+不用 Google Fonts CDN 的原因：国内不稳定、会泄露访客 IP、多一次跨域握手。也不裁剪成只包含现有字数的子集：那样每改一句文案就得重跑一次字体脚本，忘了就会缺字。
+
+如果你更在意首屏体积，可以把 `src/styles/global.css` 的 `--font-ui` 里 `'Noto Sans SC'` 去掉，改走系统字体（PingFang SC / 微软雅黑 / 思源黑体），首屏立刻少 1.1 MB，代价是不同系统字形略有差异。这是一行改动。
+
 ## 设计与产品文档
 
 - `PRODUCT.md` —— 产品事实：谁用、为什么免费、约束是什么
