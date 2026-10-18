@@ -44,12 +44,11 @@
   --torch-dim: #c05a20;
   --torch-wash: rgba(255, 122, 47, 0.12);
 
-  /* 矿物料状态色 */
+  /* 矿物料状态色：矿石青灰为主色，绿点表示在线，赭黄只用于提示条 */
   --ore: #9db8b1;
   --ore-dim: #8fa8a2;
   --emerald: #6fd08c;
   --amber: #d9a441;
-  --amethyst: #a98bdc;
 
   --radius: 3px;
 

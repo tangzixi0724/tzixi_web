@@ -24,23 +24,12 @@
     order: -2;
   }
 
-  /* 适用条件属于"要不要用"的决策信息，紧跟在下载卡片后面 */
-  .rail__spec {
-    order: -1;
-  }
-
   .detail__main {
     order: 0;
   }
 
   .filelist {
     order: 1;
-  }
-
-  .rail__card,
-  .filelist,
-  .rail__spec {
-    min-width: 0;
   }
 
   .instance {
@@ -51,7 +40,6 @@
   .instance__kind {
     display: none;
   }
-
 }
 
 /* 窄屏：窗口改成上下两段，列表变成可横向滑的条带 */
@@ -88,14 +76,6 @@
     grid-template-columns: auto minmax(0, 1fr);
     align-items: center;
     gap: 12px;
-  }
-
-  .segmented {
-    width: auto;
-  }
-
-  .segmented__btn {
-    padding: 5px 10px;
   }
 
   .instances__list {
@@ -145,7 +125,6 @@
     padding: 0 16px 20px;
   }
 
-
   .detail__head {
     grid-template-columns: 48px minmax(0, 1fr);
     gap: 14px;
@@ -178,14 +157,6 @@
 
   .detail__actions .btn {
     flex: 1 1 auto;
-  }
-
-  .param__row {
-    padding: 9px 10px 10px;
-  }
-
-  .param__note {
-    font-size: 11.5px;
   }
 
   .below {

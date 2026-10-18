@@ -1,6 +1,6 @@
 # tzixi.cn
 
-tzixi 的 Minecraft 模组与光影配置展示站。纯静态，零成本：Bun 管依赖和构建，Vite 出静态产物，Vercel 免费版托管，大文件走 GitHub Releases。
+tzixi 的 Minecraft 模组展示站。纯静态，零成本：Bun 管依赖和构建，Vite 出静态产物，Vercel 免费版托管，大文件走 GitHub Releases。
 
 ```
 bun install
@@ -15,7 +15,6 @@ bun run preview    # 预览构建结果
 | --- | --- |
 | 站名、域名、GitHub 仓库 | `src/content/site.ts` |
 | 模组清单 | `src/content/mods.ts` |
-| 光影参数清单 | `src/content/shaders.ts` |
 | 字段类型（加新字段时） | `src/content/types.ts` |
 
 页面、样式、交互都不用碰，改完数据 `bun run build` 就是新站。
@@ -107,14 +106,6 @@ https://github.com/tangzixi0724/tzixi_web/releases/download/<tag>/<fileName>
 
 填好之后状态自动变成真实的下载按钮。
 
-## 加一套光影参数
-
-光影是「参数配方」，不是模组：
-
-1. 把一个 Release 建在 tag `你的预设 slug` 上，把整包配置（zip）传上去
-2. 在 `shaders.ts` 里加一条，`params` 数组填要展示的 key/value，`file` 填 zip 的下载信息
-3. 访客可以整包下载，也可以在参数表里点任意一行单独复制
-
 ## 部署到 Vercel（一次性配置，之后每次 push 自动更新）
 
 1. `github.com/new` 建空仓库 `tzixi_web`（已存在就跳过），把本项目推上去：
@@ -147,7 +138,7 @@ https://github.com/tangzixi0724/tzixi_web/releases/download/<tag>/<fileName>
 | --- | --- | --- |
 | 构建与托管 | Vercel Hobby | 静态文件不限次访问，每月 100 GB 出站流量、100 万次请求 |
 | 源码 | GitHub 公开仓库 | 免费 |
-| 模组 / 光影文件 | GitHub Releases | 单文件 2 GB，下载不限量、不计费 |
+| 模组文件 | GitHub Releases | 单文件 2 GB，下载不限量、不计费 |
 | 字体 | 自托管进仓库（`public/fonts/`） | 无第三方请求 |
 | 域名 | 你自己已有的 `tzixi.cn` | 只有域名本身的续费 |
 
@@ -183,7 +174,6 @@ src/
   components/     顶栏、实例列表、详情面板、像素图标
   styles/         分层 CSS：变量 → 布局 → 列表 → 详情 → 响应式
   App.tsx         状态与页面拼装
-  lib/useCopy.ts  复制交互
 public/
   fonts/          自托管的 Archivo + Spline Sans Mono + Noto Sans SC 切片
   og.png          社交分享图（scripts/og.mjs 生成）

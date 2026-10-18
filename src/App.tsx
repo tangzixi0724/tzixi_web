@@ -2,54 +2,37 @@ import { useMemo, useState } from 'react';
 import { TopBar } from './components/TopBar';
 import { InstanceList } from './components/InstanceList';
 import { DetailPanel } from './components/DetailPanel';
-import { entries, filterEntries, type Entry, type Filter } from './content/entries';
+import { entries, type Mod } from './content/entries';
 import { site } from './content/site';
 
-const INITIAL = entries[0]?.data.id ?? '';
+const INITIAL = entries[0]?.id ?? '';
 
-function matches(entry: Entry, query: string): boolean {
+function matches(mod: Mod, query: string): boolean {
   const q = query.trim().toLowerCase();
   if (!q) return true;
-  const haystack =
-    entry.kind === 'mod'
-      ? [
-          entry.data.name,
-          entry.data.slug,
-          entry.data.tagline,
-          entry.data.version,
-          ...entry.data.loaders,
-          ...entry.data.gameVersions,
-          ...entry.data.categories,
-        ]
-      : [
-          entry.data.name,
-          entry.data.slug,
-          entry.data.tagline,
-          entry.data.base,
-          ...entry.data.apis,
-          ...entry.data.gameVersions,
-        ];
+  const haystack = [
+    mod.name,
+    mod.slug,
+    mod.tagline,
+    mod.version,
+    ...mod.loaders,
+    ...mod.gameVersions,
+    ...mod.categories,
+  ];
   return haystack.some((field) => field.toLowerCase().includes(q));
 }
 
 export default function App() {
-  const [filter, setFilter] = useState<Filter>('all');
   const [query, setQuery] = useState('');
   const [selectedId, setSelectedId] = useState(INITIAL);
 
-  const visible = useMemo(() => {
-    return filterEntries(filter).filter((entry) => matches(entry, query));
-  }, [filter, query]);
+  const visible = useMemo(() => entries.filter((mod) => matches(mod, query)), [query]);
 
-  const selected =
-    visible.find((entry) => entry.data.id === selectedId) ?? visible[0] ?? null;
-
-  const modCount = entries.filter((entry) => entry.kind === 'mod').length;
-  const shaderCount = entries.length - modCount;
+  const selected = visible.find((mod) => mod.id === selectedId) ?? visible[0] ?? null;
 
   return (
     <div className="page" id="top">
-      <h1 className="visually-hidden">tzixi — Minecraft 模组与光影参数</h1>
+      <h1 className="visually-hidden">tzixi — Minecraft 模组</h1>
 
       <div className="shell">
         <TopBar />
@@ -62,22 +45,20 @@ export default function App() {
           </p>
         )}
 
-        <main className="window" id="works" data-empty={selected ? undefined : 'true'} aria-label="作品浏览区">
+        <main className="window" id="works" data-empty={selected ? undefined : 'true'} aria-label="模组浏览区">
           <InstanceList
             visible={visible}
-            selectedId={selected?.data.id ?? ''}
+            selectedId={selected?.id ?? ''}
             onSelect={setSelectedId}
-            onFilter={setFilter}
-            filter={filter}
             query={query}
             onQuery={setQuery}
           />
 
           {selected ? (
-            <DetailPanel entry={selected} />
+            <DetailPanel mod={selected} />
           ) : (
             <div className="detail__blank">
-              <p className="detail__blank-title">选中一个作品后，这里会显示</p>
+              <p className="detail__blank-title">选中一个模组后，这里会显示</p>
               <dl>
                 <div>
                   <dt>五个测量值</dt>
@@ -99,7 +80,7 @@ export default function App() {
         <div className="statusbar">
           <span>
             <span className="statusbar__dot" aria-hidden="true" />
-            {modCount} 个模组 · {shaderCount} 套光影参数
+            {entries.length} 个模组
           </span>
           <span className="statusbar__right">
             <span>{site.host}</span>
@@ -124,12 +105,12 @@ export default function App() {
             </li>
             <li>
               <span>
-                <strong>光影要先有加载器。</strong>Iris 或 OptiFine 二选一装好，再把光影包放进 <code className="mono">shaderpacks/</code>。
+                <strong>再装依赖。</strong>每个模组页面的「装之前先看」里写清了它依赖哪些库，缺一个都起不来。
               </span>
             </li>
             <li>
               <span>
-                <strong>参数是配置。</strong>下载的配置包解开后覆盖光影包里的同名参数文件；只改几项的话，直接点参数表里的行复制粘贴到游戏内设置里。
+                <strong>启动器里选对实例。</strong>Forge 和 Fabric 的实例不能混用，装之前确认启动器里选的是对应加载器的那个版本。
               </span>
             </li>
           </ol>
@@ -138,7 +119,7 @@ export default function App() {
         <div className="block">
           <h2>关于这些文件</h2>
           <p>
-            这个站是纯静态页面，所有模组文件和光影配置都放在 GitHub Release 上，点下载就是直接拿到文件本身，中间没有广告页、没有跳转、也不需要注册。
+            这个站是纯静态页面，所有模组文件都放在 GitHub Release 上，点下载就是直接拿到文件本身，中间没有广告页、没有跳转、也不需要注册。
           </p>
           <p>
             遇到装不上或者想报 bug，去 GitHub 开个 issue 最快；版本号、加载器和报错日志贴全，我看到就会回。
@@ -150,7 +131,7 @@ export default function App() {
         <div className="block">
           <h2>关于</h2>
           <p>
-            我是 tzixi，写模组、调光影、偶尔录点东西。这里放的是我自己在用的东西——能放上来的都是我自己服务器里跑着的版本。
+            我是 tzixi，写模组，偶尔录点东西。这里放的是我自己在用的东西——能放上来的都是我自己服务器里跑着的版本。
           </p>
           <p>
             网站本身用 Bun 和 Vite 构建，托管在 Vercel 的免费额度上；文件放在 GitHub Release。之所以这么搭，是因为它一分钱不花，而且下载速度由 GitHub 的 CDN 决定，比我自己挂机器稳。

@@ -10,17 +10,17 @@ web
 
 原文要求使用 Bun 构建，部署目标为 Vercel 免费版（Hobby）。选定方案：Bun 负责依赖安装、开发与构建脚本（`bun install` / `bun run dev` / `bun run build`），应用层为 Vite + React + TypeScript 的纯静态 SPA，`bun run build` 产出 `dist/` 静态目录，Vercel 以零配置静态站点部署，不产生函数调用。
 
-模组 `.jar` 与光影配置包不进入 Git 仓库，托管在 GitHub Releases（`tangzixi0724/tzixi_web`）并通过 `downloadUrl` 字段直链；网站本体只存 JSON 元数据。理由：Vercel Hobby 单次静态上传上限 100MB、每月 Fast Data Transfer 100GB，而 GitHub Releases 存储与下载带宽免费，可保站点永久零成本。
+模组 `.jar` 不进入 Git 仓库，托管在 GitHub Releases（`tangzixi0724/tzixi_web`）并通过 `downloadUrl` 字段直链；网站本体只存 JSON 元数据。理由：Vercel Hobby 单次静态上传上限 100MB、每月 Fast Data Transfer 100GB，而 GitHub Releases 存储与下载带宽免费，可保站点永久零成本。
 
 ## Users
 
-中文 Minecraft 玩家为主：从视频、群聊或 Modrinth/CurseForge 页面点到这里的玩家，手里已经装好了 Fabric / NeoForge / Forge 整合包，想快速确认「这个模组适不适合我的游戏版本、光影配置能不能直接套用」，然后下载。
+中文 Minecraft 玩家为主：从视频、群聊或 Modrinth/CurseForge 页面点到这里的玩家，手里已经装好了 Fabric / NeoForge / Forge 整合包，想快速确认「这个模组适不适合我的游戏版本和加载器」，然后下载。
 
-第二类是同为模组作者与光影爱好者的人，来看参数是怎么调的。
+第二类是同为模组作者的人，来看某个效果是怎么实现的。
 
 ## Product Purpose
 
-个人作品发布页：把作者自己写的 Minecraft 模组和自己调好的光影配置文件集中展示，让访客在一分钟内看懂每个东西是什么、适配什么版本/加载器、怎么装，然后一键下载。
+个人作品发布页：把作者自己写的 Minecraft 模组集中展示，让访客在一分钟内看懂每个东西是什么、适配什么版本/加载器、怎么装，然后一键下载。
 
 成功 = 访客不需要问「下哪个、怎么装」，下载链接点下去就是真文件。
 
@@ -31,19 +31,19 @@ web
 ## Operating Context
 
 - 访客熟悉 Minecraft 的版本号语法（`1.21.1`、`1.20.1`）与加载器（Fabric / NeoForge / Forge），并知道模组必须与加载器和游戏版本同时对上。
-- 光影配置文件的安装方式是放进 `.minecraft/shaderpacks/` 内的光影包目录，用 Iris 或 OptiFine 载入；作者提供的是「参数配方」，访客多数会照着手动改，少数会直接下整包。
+- 模组的安装方式是放进 `.minecraft/mods/`，且必须与加载器、游戏版本同时对上；依赖库缺一个都起不来。
 - 下载动作发生在桌面浏览器，但很多访客是从手机上先看一眼再决定要不要开电脑。
 
 ## Capabilities and Constraints
 
-已确认功能：浏览模组与光影配置、按加载器与游戏版本筛选、查看详情、点击下载、复制配置参数、安装步骤说明。
+已确认功能：浏览模组、按关键字筛选、查看详情、点击下载、安装步骤说明。
 
 约束：
 - 全站零成本。Vercel Hobby 仅限非商业个人使用（fair use），不能挂广告、不能接付费下载。
 - 仓库与站点必须很小（Hobby 单次静态上传 100MB）；大文件只能在 GitHub Releases。
 - 域名 `tzixi.cn`，已持有，绑定到 Vercel。
 - 内容语言：中文为主。
-- 尚未确定的字段：模组真实清单、光影配置真实参数、作者显示名与头像。
+- 尚未确定的字段：作者显示名与头像。
 
 ## Brand Commitments
 
@@ -52,7 +52,7 @@ web
 
 ## Evidence on Hand
 
-目前没有任何真实模组文件、光影配置、下载链接、下载量或用户评价。站点首版使用明确标注为示例的占位条目，`src/content/` 是唯一数据源，替换成真实内容即可上线；不得虚构下载量、评分、用户评价或奖项。
+三个模组的清单、文件大小、更新日期都取自 jar 内的 `fabric.mod.json` / `mods.toml`，四个 jar 已传到 GitHub Release，页面上的下载按钮指向真实文件。目前没有任何下载量、评分或用户评价数据；不得虚构这些数字。`src/content/` 仍是唯一数据源。
 
 ## Product Principles
 

@@ -2,7 +2,6 @@
    Noto Sans SC 按 unicode-range 切成 100+ 片自托管。
    浏览器只下载当前页面字符所命中的那几片，首屏不会被整包 CJK 字体拖住。 */
 
-
 @font-face {
   font-family: 'Noto Sans SC';
   font-style: normal;
