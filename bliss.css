@@ -1,0 +1,376 @@
+/* ============================================================
+   四季流转 · Bliss Seasons
+   只写这个模组独有的部分：一块随季节换色的模拟场景，
+   以及驱动它的时间轴。纸面、字体、页头页脚全部复用 styles.css。
+   ============================================================ */
+
+/* ── 模拟场景 ────────────────────────────────────────────── */
+
+/* 场景的三种颜色由脚本按模组的混色算法算好后写成内联变量：
+   --leaf 树叶、--grass 草地、--skyTint 天空氛围乘子。
+   初始值是模组默认调色板里的夏季值，脚本没跑起来也不会白屏。 */
+.scene {
+  --leaf: #71a730;
+  --grass: #79c05a;
+  --skyTint: #ffffff;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.scene__sky {
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    180deg,
+    #b7dcef 0%,
+    #cbe6f2 22%,
+    #dcedf0 40%,
+    #e9f0e6 54%,
+    #f2eeda 62%
+  );
+}
+
+.scene__sun {
+  position: absolute;
+  left: 77%; top: 17%;
+  width: 16%; aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, #fffef8 0%, #fff7dc 32%, #fff0c6 48%, rgba(255, 240, 198, 0.5) 62%, rgba(255, 238, 190, 0) 78%);
+}
+
+/* 远山用 SVG 蒙版裁，边缘是贝塞尔曲线，不是折线 */
+.scene__hills { position: absolute; left: 0; right: 0; }
+
+.scene__hills--far {
+  top: 38%; height: 26%;
+  background: linear-gradient(180deg, #a8bfb4, #8ea89d);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 200' preserveAspectRatio='none'%3E%3Cpath d='M0,128 C70,106 120,142 190,116 C260,90 310,130 380,108 C450,86 500,124 570,102 C640,80 690,120 760,98 C830,76 880,116 940,96 C970,86 985,92 1000,88 L1000,200 L0,200 Z' fill='%23fff'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 200' preserveAspectRatio='none'%3E%3Cpath d='M0,128 C70,106 120,142 190,116 C260,90 310,130 380,108 C450,86 500,124 570,102 C640,80 690,120 760,98 C830,76 880,116 940,96 C970,86 985,92 1000,88 L1000,200 L0,200 Z' fill='%23fff'/%3E%3C/svg%3E");
+  -webkit-mask-size: 100% 100%; mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+}
+
+.scene__hills--near {
+  top: 47%; height: 22%;
+  background: linear-gradient(180deg, #86a58f, #6d8a77);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 200' preserveAspectRatio='none'%3E%3Cpath d='M0,156 C60,140 110,168 180,148 C250,128 300,160 370,142 C440,124 490,154 560,136 C630,118 680,148 750,130 C820,112 870,142 930,126 C960,118 985,122 1000,118 L1000,200 L0,200 Z' fill='%23fff'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 200' preserveAspectRatio='none'%3E%3Cpath d='M0,156 C60,140 110,168 180,148 C250,128 300,160 370,142 C440,124 490,154 560,136 C630,118 680,148 750,130 C820,112 870,142 930,126 C960,118 985,122 1000,118 L1000,200 L0,200 Z' fill='%23fff'/%3E%3C/svg%3E");
+  -webkit-mask-size: 100% 100%; mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+}
+
+/* 天空氛围染色：只压天空那一段，树冠和草地保持脚本算出的准确颜色。
+   multiply 一层接近白的颜色，得到模组里 ±5% 的冷暖偏移。 */
+.scene__tint {
+  position: absolute; left: 0; right: 0; top: 0; height: 62%;
+  background: var(--skyTint);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.scene__ground {
+  position: absolute; left: 0; right: 0; top: 62%; bottom: 0;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--grass) 66%, #ffffff) 0%,
+    var(--grass) 24%,
+    color-mix(in srgb, var(--grass) 86%, #1b1509) 100%
+  );
+}
+
+/* ── 树 ──────────────────────────────────────────────────── */
+
+.scene__trees { position: absolute; inset: 0; }
+
+.tree {
+  position: absolute;
+  left: var(--x);
+  bottom: var(--y);
+  width: var(--w);
+  height: var(--h);
+}
+
+.tree__trunk {
+  position: absolute;
+  left: 50%; bottom: 0;
+  width: 11%; height: 46%;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, #6d4b34 0%, #553a28 55%, #402a1d 100%);
+  border-radius: 1px 1px 0 0;
+}
+
+/* 树冠是三层叠起来的椭圆，颜色只有 --leaf 一个来源 */
+.tree__canopy {
+  position: absolute;
+  left: 0; right: 0; bottom: 32%;
+  height: 68%;
+  background: var(--leaf);
+  border-radius: 50% 50% 46% 54% / 58% 56% 44% 42%;
+  box-shadow: inset 0 -12px 16px -8px rgba(18, 12, 4, 0.26);
+}
+.tree__canopy::before,
+.tree__canopy::after {
+  content: "";
+  position: absolute;
+  background: inherit;
+  border-radius: 50%;
+}
+.tree__canopy::before { left: -17%; top: 15%; width: 64%; height: 68%; }
+.tree__canopy::after  { right: -17%; top: 21%; width: 60%; height: 64%; }
+
+/* ── 天气 ────────────────────────────────────────────────── */
+
+.scene__weather {
+  position: absolute; inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.scene[data-weather="rain"] .scene__weather {
+  opacity: 1;
+  /* 雨丝用 SVG 里的一根斜线平铺，不用 repeating-gradient：
+     斜度、长度、透明度都能直接写，也免得被当成装饰条纹。 */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='60'%3E%3Cline x1='2' y1='-4' x2='9' y2='64' stroke='%23e4f1fa' stroke-opacity='.62' stroke-width='1'/%3E%3C/svg%3E");
+  background-size: 22px 60px;
+  animation: bliss-rain 0.55s linear infinite;
+}
+@keyframes bliss-rain {
+  from { background-position: 0 0; }
+  to   { background-position: -22px 60px; }
+}
+
+.scene[data-weather="snow"] .scene__weather {
+  opacity: 1;
+  background-image:
+    radial-gradient(circle, rgba(255, 255, 255, 0.95) 0 1.3px, transparent 1.6px),
+    radial-gradient(circle, rgba(255, 255, 255, 0.72) 0 1px, transparent 1.3px);
+  background-size: 47px 47px, 31px 31px;
+  background-position: 0 0, 15px 21px;
+  animation: bliss-snow 3.4s linear infinite;
+}
+@keyframes bliss-snow {
+  to { background-position: 11px 47px, 26px 83px; }
+}
+
+.scene__grain {
+  position: absolute; inset: 0;
+  opacity: 0.16;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.86' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+  pointer-events: none;
+}
+
+/* 首映图上的两个标注：一个指树冠，一个指草地。
+   线要够长才读得出是「指到那儿」，所以给一段高度，文字贴着线的末端。 */
+.callout--canopy {
+  top: 20%; height: 14%;
+  align-items: flex-end;
+  padding-bottom: 5px;
+}
+.callout--ground {
+  top: 72%; height: 11%;
+  align-items: flex-start;
+  padding-top: 5px;
+}
+
+/* 首映图用秋季调色板：这是最能说明「植被会换色」的一帧 */
+.scene[data-preset="autumn"] {
+  --leaf: #cb7324;
+  --grass: #b5a848;
+  --skyTint: #fff8ee;
+}
+
+/* ── 时间轴 ──────────────────────────────────────────────── */
+
+.track { margin-top: clamp(16px, 2vw, 22px); }
+
+.track__seasons {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 7px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  color: var(--ink-3);
+}
+.track__seasons span { text-align: center; }
+
+/* 条带只画「保持」和「过渡」两种时段：
+   保持段是纸色，过渡段是金色 —— 曲线真正起作用的就是那几小截 */
+.track__bands {
+  position: relative;
+  display: flex;
+  height: 7px;
+  margin-bottom: 10px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--line-soft);
+}
+.track__bands i {
+  display: block;
+  height: 100%;
+  min-width: 0;
+}
+.track__bands i.is-trans { background: var(--gold); }
+.track__marker {
+  position: absolute;
+  top: -3px; bottom: -3px;
+  left: var(--pos, 12%);
+  width: 2px;
+  margin-left: -1px;
+  background: var(--ink);
+  border-radius: 1px;
+}
+
+/* ── 四季权重 ────────────────────────────────────────────── */
+
+.weights {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px clamp(14px, 2.2vw, 30px);
+  margin-top: 16px;
+}
+.weight__top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.weight__name {
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+.weight__val {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+.weight__bar {
+  position: relative;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--line-soft);
+  overflow: hidden;
+}
+.weight__bar i {
+  position: absolute; inset: 0 auto 0 0;
+  width: 0;
+  border-radius: 999px;
+  background: var(--gold);
+  transition: width 0.1s linear;
+}
+.weight.is-on .weight__name { color: var(--gold-deep); }
+.weight.is-on .weight__val { color: var(--ink); }
+
+/* ── 季节跳转 ────────────────────────────────────────────── */
+
+.jumps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+.jump {
+  min-height: 34px;
+  padding: 0.4em 1em;
+  font-family: var(--sans);
+  font-size: 0.84rem;
+  color: var(--ink-2);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+.jump:hover { background: var(--paper-2); color: var(--ink); border-color: var(--ink-3); }
+.jump:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.jump.is-on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.jump .mono { font-size: 0.72rem; opacity: 0.7; margin-left: 0.4em; }
+
+/* ── 调色板 ──────────────────────────────────────────────── */
+
+.palette {
+  display: grid;
+  gap: 22px;
+  margin-top: clamp(26px, 3.2vw, 40px);
+}
+.palette__label {
+  margin: 0 0 10px;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.palette__row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(10px, 1.4vw, 18px);
+}
+.swatch { display: grid; gap: 7px; }
+.swatch__chip {
+  height: 56px;
+  border-radius: 2px;
+  border: 1px solid rgba(24, 20, 14, 0.18);
+}
+.swatch__name { font-size: 0.82rem; color: var(--ink-2); }
+.swatch__hex {
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--ink-3);
+  letter-spacing: 0.02em;
+}
+
+/* ── 面板：六个字段排三列 ────────────────────────────────── */
+
+.panel--bliss .panel__fields { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+.field__switch { padding-top: 4px; }
+
+/* ── 只有一条构建：下载卡和说明并排，不要留半张空网格 ─────── */
+
+.builds--single {
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  align-items: start;
+}
+.builds--single .aside { margin-top: 0; }
+
+/* ── 窄屏 ────────────────────────────────────────────────── */
+
+@media (max-width: 1080px) {
+  .panel--bliss .panel__fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 860px) {
+  .panel--bliss .panel__fields { grid-template-columns: minmax(0, 1fr); }
+  .builds--single { grid-template-columns: minmax(0, 1fr); }
+  .weights { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .palette__row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .swatch__chip { height: 46px; }
+}
+
+@media (max-width: 560px) {
+  .track__seasons { font-size: 0.68rem; letter-spacing: 0.1em; }
+  .weights { gap: 12px; }
+  .swatch__chip { height: 40px; }
+}
+
+/* 关掉动画的人：雨雪静止，权重条直接跳到位 */
+@media (prefers-reduced-motion: reduce) {
+  .scene[data-weather="rain"] .scene__weather,
+  .scene[data-weather="snow"] .scene__weather { animation: none; }
+  .weight__bar i { transition: none; }
+  .scene__weather { transition: none; }
+}
+
+@media print {
+  .scene { display: none; }
+  .screen { border: 1px solid #bbb; }
+}

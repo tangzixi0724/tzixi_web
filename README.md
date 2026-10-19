@@ -1,186 +1,54 @@
 # tzixi.cn
 
-tzixi 的 Minecraft 模组展示站。纯静态，零成本：Bun 管依赖和构建，Vite 出静态产物，Vercel 免费版托管，大文件走 GitHub Releases。
+ZIXI 的 Minecraft 模组站。纯静态，没有构建步骤：仓库根目录就是站点根目录，改完文件推上去就是新站。
 
 ```
-bun install
-bun run dev        # 本地开发 http://localhost:5173
-bun run build      # 产出 dist/
-bun run preview    # 预览构建结果
+index.html            模组列表（首页）
+cinematic-bars.html   电影挡条 · Cinematic Bars
+bliss-seasons.html    四季流转 · Bliss Seasons
+styles.css            共用纸面/字体/页头页脚/放映室
+home.css  home.js     首页列表与封面动画
+bliss.css bliss.js    四季页与换季卡片
+app.js                电影挡条页的挡条模拟
+season-core.js        四季的混色与权重算法（两页共用）
+assets/               自托管字体子集、模组图标、桂花装饰
+DESIGN.md             视觉方向、事实来源、交互与无障碍取舍
 ```
 
-## 改内容，只动 `src/content/`
-
-| 想改什么 | 改哪个文件 |
-| --- | --- |
-| 站名、域名、GitHub 仓库 | `src/content/site.ts` |
-| 模组清单 | `src/content/mods.ts` |
-| 字段类型（加新字段时） | `src/content/types.ts` |
-
-页面、样式、交互都不用碰，改完数据 `bun run build` 就是新站。
-
-## 现在的真实内容
-
-站上有三个模组，全部按 jar 里的 `fabric.mod.json` / `mods.toml` 与 `lang/zh_cn.json` 录入，不是编的：
-
-| 模组 | 加载器 | 游戏版本 | 文件 |
-| --- | --- | --- | --- |
-| GLB 转小方块 `glb2lt` | Forge | 1.20.1 | 1 个构建 |
-| 电影挡条 `cinematic-bars` | Fabric | 26.3 / 1.21.10 | **2 个构建**（各对应一个游戏版本） |
-| 落叶纷飞 `better-falling-leaves` | Fabric | 26.3 | 1 个构建 |
-
-图标是从 jar 里的 `icon.png` / `glb2lt.png` 解出来放进 `public/icons/` 的，不是占位图。
-
-四个 jar 已经传到 Release，页面上是可直接点开的下载按钮：
-
-| Release tag | 附件 |
-| --- | --- |
-| `glb2lt` | `glb2lt-1.31.0_1.20.1.jar` |
-| `cinematic-bars` | `cinematic-bars-1.0.0_26.3.jar`、`cinematic-bars-1.0.0_1.21.10.jar` |
-| `better-falling-leaves` | `better-falling-leaves-1.0.0_26.3.jar` |
-
-批量重新发布用 `scripts/publish-releases.mjs`（读 `GH_TOKEN` 环境变量）。
-
-## 加一个模组（从上传到网站上能下）
-
-### 1. 建 Release
-
-1. 打开 `https://github.com/tangzixi0724/tzixi_web/releases/new`
-2. **Tag** 填模组的 slug，比如 `cinematic-bars`（这个 tag 一辈子只用建一次，之后所有版本都往同一个 Release 里传）
-3. 标题写模组名
-4. 把 `.jar` 拖进附件区
-
-> GitHub 单个 Release 附件上限 2 GB，下载流量不计量、不收费。这就是它比把文件塞进 Vercel 强的地方：Vercel 免费版整个部署只有 100 MB 上传额度，而且下载流量要吃每月 100 GB。
-
-### 2. 拿到文件名
-
-附件的文件名必须和 `src/content/mods.ts` 里 `fileName` 一模一样，包括大小写。链接是靠 tag + 文件名拼出来的：
+本地预览（任意静态服务器都行，不要用 `file://` 之外的路径拼接）：
 
 ```
-https://github.com/tangzixi0724/tzixi_web/releases/download/<tag>/<fileName>
+python -m http.server 4173
+# 打开 http://127.0.0.1:4173/
 ```
 
-站里的 `releaseUrl('cinematic-bars', 'cinematic-bars-1.0.0_26.3.jar')` 生成的就是这个。
+## 事实从哪来
 
-> **文件名里去掉了 `+`**。Minecraft 的 jar 习惯写 `1.0.0+26.3`，但 `+` 在 URL 里要编码、在 Release 附件里也容易被工具改掉，所以统一换成 `_`。上传时**把附件重命名成 `_` 的写法**，和 `mods.ts` 里的 `fileName` 保持一致。
+页面上的每个数值都来自 jar 本身，不是估的：
 
-### 3. 在 `mods.ts` 里加一条
+- `fabric.mod.json`：id、版本、加载器与游戏版本要求、Java 版本、作者、许可证
+- 配置类的常量池：每个默认值（挡条 8% / 羽化 22% / 600ms / SMOOTHSTEP；季节 30s / 过渡 2s / 四色）
+- `lang/zh_cn.json`：所有设置项的中文名
+- 缓动函数与混色逻辑：按反编译出的公式在 `app.js` / `season-core.js` 里逐条复刻，页面上的曲线小图和模拟画面都用同一份代码算
 
-```ts
-{
-  id: 'my-mod',                    // 站内唯一，不改
-  name: '我的模组',
-  slug: 'my-mod-build',            // 第二行小字显示的英文名
-  tagline: '一句话说清它解决什么问题。',
-  icon: 'cube',                    // 兜底的自绘图标
-  iconImage: '/icons/my-mod.png',  // 可选：jar 里的真实图标，放进 public/icons/
-  loaders: ['fabric'],
-  gameVersions: ['1.21.4'],
-  categories: ['工具'],
-  version: '1.0.0',
-  updatedAt: '2026-10-17',
-  summary: ['第一段：它是什么。', '第二段：怎么用、有什么取舍。'],
-  notes: ['装之前必须知道的事。'],
-  changelog: [{ version: '1.0.0', date: '2026-10-17', changes: ['第一个版本。'] }],
-  files: [
-    {
-      fileName: 'my-mod-1.0.0_1.21.4.jar',
-      size: '320 KB',
-      url: releaseUrl('my-mod-build', 'my-mod-1.0.0_1.21.4.jar'),
-      primary: true,
-      gameVersion: '1.21.4',       // 支持多个游戏版本时必填
-    },
-  ],
-},
+页面里的「模拟画面」是自己画的几何场景，不是录屏；两块场景都在 `figcaption` 里标了「模拟画面」。
+
+## 下载
+
+jar 不在仓库里，走 GitHub Releases：
+
+```
+https://github.com/tangzixi0724/tzixi_web/releases/download/<tag>/<文件名>
 ```
 
-### 4. 同一个模组有多个游戏版本
-
-把每个构建都放进 `files`，`primary: true` 只给一个（默认展示的那个），其余自动出现在「其它构建」。**给每个文件写 `gameVersion`**——访客靠它决定下哪个，不会去数文件名里的数字。
-
-电影挡条就是这么做的：`cinematic-bars-1.0.0_26.3.jar` 和 `cinematic-bars-1.0.0_1.21.10.jar` 是两个独立构建，装错了游戏直接起不来。
-
-### 5. 还没上传的文件
-
-`url` 留空字符串（`NOT_UPLOADED`）。界面上会显示成「文件尚未上传」的不可点击状态，不会变成死链。**别填假链接**。
-
-填好之后状态自动变成真实的下载按钮。
-
-## 部署到 Vercel（一次性配置，之后每次 push 自动更新）
-
-1. `github.com/new` 建空仓库 `tzixi_web`（已存在就跳过），把本项目推上去：
-
-   ```bash
-   git init
-   git add .
-   git commit -m "init"
-   git branch -M main
-   git remote add origin https://github.com/tangzixi0724/tzixi_web.git
-   git push -u origin main
-   ```
-
-2. 打开 [vercel.com/new](https://vercel.com/new)，用 GitHub 登录，Import 这个仓库。
-3. 框架会被 `vercel.json` 自动识别（Vite），构建命令 `bun run build`，输出目录 `dist`。什么都不用改，点 Deploy。
-4. 绑域名：项目 → Settings → Domains → 输入 `tzixi.cn`。然后去域名注册商改两条 DNS：
-
-   | 类型 | 主机记录 | 值 |
-   | --- | --- | --- |
-   | A | `@` | `76.76.21.21` |
-   | CNAME | `www` | `cname.vercel-dns.com` |
-
-   > Vercel 面板上显示的值优先——它偶尔会变，以面板为准。DNS 生效一般几分钟，证书自动签发。
-
-5. 完成。之后 `git push` 就会自动部署，PR 还会有预览链接。
-
-## 为什么这套组合是零成本的
-
-| 环节 | 用的是什么 | 免费额度 |
+| 模组 | tag | 文件 |
 | --- | --- | --- |
-| 构建与托管 | Vercel Hobby | 静态文件不限次访问，每月 100 GB 出站流量、100 万次请求 |
-| 源码 | GitHub 公开仓库 | 免费 |
-| 模组文件 | GitHub Releases | 单文件 2 GB，下载不限量、不计费 |
-| 字体 | 自托管进仓库（`public/fonts/`） | 无第三方请求 |
-| 域名 | 你自己已有的 `tzixi.cn` | 只有域名本身的续费 |
+| 电影挡条 26.3 | `cinematic-bars` | `cinematic-bars-1.0.0_26.3.jar` |
+| 电影挡条 1.21.10 | `cinematic-bars` | `cinematic-bars-1.0.0_1.21.10.jar` |
+| 四季流转 26.3 | `bliss-seasons` | `bliss-seasons-1.1.1_26.3.jar`（**还没上传**） |
 
-唯一的硬约束：**Vercel 免费版只能用于非商业的个人项目**（[fair use](https://vercel.com/docs/limits/fair-use-guidelines)）。挂广告、卖下载、接赞助商就算商业用途，会被要求升级。纯作品展示完全没问题。
+tag 和文件名都是约定，别在仓库里改名，否则旧链接会断。两个游戏版本的构建互相独立，不能互换。
 
-## 什么时候需要换方案
+## 部署
 
-- **单次部署超过 100 MB**：现在不会，因为 jar 全在 Release，仓库只有代码。但如果哪天要往 `public/` 塞大图，注意这个上限。
-- **月出站流量超过 100 GB**：按一个模组 500 KB 算，100 GB ≈ 20 万次下载/月。真到这个量，把 `dist` 换成 Cloudflare Pages（无限流量）只需要改一次部署配置，代码不用动。
-- **需要评论、下载计数、后台**：那就要后端了。下一步最省事的做法是 Vercel + Supabase 的免费额度，或者干脆把统计交给 GitHub Release 自带的下载计数。
-
-## 关于中文字体
-
-中文不是个小数字。站里用的是自托管的 Noto Sans SC，按 unicode-range 切成 101 片，浏览器**只下载当前页面字符命中的那几片**（实测首屏 20 片，约 1.1 MB），且带 `immutable` 缓存头，第二次访问为 0。
-
-不用 Google Fonts CDN 的原因：国内不稳定、会泄露访客 IP、多一次跨域握手。也不裁剪成只包含现有字数的子集：那样每改一句文案就得重跑一次字体脚本，忘了就会缺字。
-
-如果你更在意首屏体积，可以把 `src/styles/global.css` 的 `--font-ui` 里 `'Noto Sans SC'` 去掉，改走系统字体（PingFang SC / 微软雅黑 / 思源黑体），首屏立刻少 1.1 MB，代价是不同系统字形略有差异。这是一行改动。
-
-## 设计与产品文档
-
-- `PRODUCT.md` —— 产品事实：谁用、为什么免费、约束是什么
-- `DESIGN.md` —— 视觉系统：令牌、字号刻度、组件、禁忌
-- `.impeccable/surfaces/src-app-tsx.md` —— 首页的方向契约（THESIS / OWN-WORLD / FIRST VIEWPORT）
-
-改视觉前先读 `DESIGN.md` 的「Do's and Don'ts」，尤其是**火把橙只用于选中行与下载按钮**这条。
-
-## 目录
-
-```
-src/
-  content/        数据层（改内容只改这里）
-  components/     顶栏、实例列表、详情面板、像素图标
-  styles/         分层 CSS：变量 → 布局 → 列表 → 详情 → 响应式
-  App.tsx         状态与页面拼装
-public/
-  fonts/          自托管的 Archivo + Spline Sans Mono + Noto Sans SC 切片
-  og.png          社交分享图（scripts/og.mjs 生成）
-scripts/
-  fetch-cjk-font.py  重新拉取中文字体切片（一般不用跑）
-  og/                share 图的 HTML 模板
-  og.mjs             重新生成 share 图
-  screenshots.mjs    本地预览起好后，批量截图（需要 Chrome，路径可用 CHROME_PATH 覆盖）
-  check.mjs          交互与溢出回归检查（键盘切换、复制、空态、六种视口）
-```
+Vercel 直接读仓库根目录（`vercel.json` 里 `framework: null`、`outputDirectory: "."`，没有构建命令），推 `main` 即部署。字体与图片带一年强缓存，`cleanUrls` 让 `/cinematic-bars` 也能直接访问。

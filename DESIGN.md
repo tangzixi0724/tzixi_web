@@ -1,282 +1,186 @@
----
-name: tzixi.cn
-description: 个人 Minecraft 模组的展示站，界面即启动器的实例面板
-colors:
-  void: "#080b0c"
-  shell: "#0d1113"
-  panel: "#11171a"
-  raise: "#161d21"
-  hover: "#1c2428"
-  ink: "#eef3f1"
-  ink-soft: "#bcc7c3"
-  ink-dim: "#96a29e"
-  ink-faint: "#828f8b"
-  torch: "#ff7a2f"
-  torch-hover: "#ff8b48"
-  ink-on-torch: "#1a0f07"
-  ore-green: "#9db8b1"
-  ore-green-dim: "#8fa8a2"
-  emerald: "#6fd08c"
-  amber: "#d9a441"
-  amethyst: "#a98bdc"
-typography:
-  display:
-    fontFamily: "Archivo, Noto Sans SC, system-ui, sans-serif"
-    fontSize: "clamp(28px, 3.2vw, 38px)"
-    fontWeight: 660
-    lineHeight: 1.15
-    letterSpacing: "-0.035em"
-  body:
-    fontFamily: "Archivo, Noto Sans SC, system-ui, sans-serif"
-    fontSize: "14.8px"
-    fontWeight: 400
-    lineHeight: 1.72
-    letterSpacing: "normal"
-  display-sm:
-    fontFamily: "Archivo, Noto Sans SC, system-ui, sans-serif"
-    fontSize: "clamp(24px, 6.4vw, 30px)"
-    fontWeight: 660
-    lineHeight: 1.15
-    letterSpacing: "-0.035em"
-  headline:
-    fontFamily: "Archivo, Noto Sans SC, system-ui, sans-serif"
-    fontSize: "clamp(20px, 2vw, 24px)"
-    fontWeight: 620
-    lineHeight: 1.15
-    letterSpacing: "-0.02em"
-  brand:
-    fontFamily: "Archivo, Noto Sans SC, system-ui, sans-serif"
-    fontSize: "17px"
-    fontWeight: 680
-    lineHeight: 1.2
-    letterSpacing: "-0.03em"
-  title:
-    fontFamily: "Archivo, Noto Sans SC, system-ui, sans-serif"
-    fontSize: "14.5px"
-    fontWeight: 570
-    lineHeight: 1.4
-    letterSpacing: "-0.01em"
-  lead:
-    fontFamily: "Archivo, Noto Sans SC, system-ui, sans-serif"
-    fontSize: "clamp(14.5px, 1.1vw, 15.5px)"
-    fontWeight: 400
-    lineHeight: 1.65
-    letterSpacing: "normal"
-  body-sm:
-    fontFamily: "Archivo, Noto Sans SC, system-ui, sans-serif"
-    fontSize: "13.5px"
-    fontWeight: 400
-    lineHeight: 1.62
-    letterSpacing: "normal"
-  code:
-    fontFamily: "Spline Sans Mono, ui-monospace, monospace"
-    fontSize: "12px"
-    fontWeight: 400
-    lineHeight: 1.5
-    letterSpacing: "-0.01em"
-  label:
-    fontFamily: "Archivo, Noto Sans SC, system-ui, sans-serif"
-    fontSize: "11px"
-    fontWeight: 550
-    lineHeight: 1.4
-    letterSpacing: "0.04em"
-  micro:
-    fontFamily: "Archivo, Noto Sans SC, system-ui, sans-serif"
-    fontSize: "9.5px"
-    fontWeight: 600
-    lineHeight: 1.3
-    letterSpacing: "0.07em"
-rounded:
-  none: "0"
-  hair: "1px"
-  hair-sm: "2px"
-  control: "3px"
-  scrollbar: "6px"
-spacing:
-  xs: "6px"
-  sm: "10px"
-  md: "16px"
-  lg: "24px"
-  xl: "40px"
-components:
-  button-primary:
-    backgroundColor: "{colors.torch}"
-    textColor: "#1a0f07"
-    rounded: "{rounded.control}"
-    padding: "0 18px"
-    height: "42px"
-  button-primary-hover:
-    backgroundColor: "#ff8b48"
-    textColor: "#1a0f07"
-  button-ghost:
-    backgroundColor: "{colors.shell}"
-    textColor: "{colors.ink-soft}"
-    rounded: "{rounded.control}"
-    padding: "0 18px"
-    height: "42px"
-  instance-row:
-    backgroundColor: "{colors.panel}"
-    textColor: "{colors.ink-soft}"
-    padding: "10px 14px"
-    width: "100%"
+# ZIXI · Minecraft 模组 — 设计说明
+
+三页静态站，没有构建步骤，双击 `index.html` 就能看；`tools/serve.js` 只是为了本地预览和截图。
+
+```
+index.html          首页（模组列表）        home.css   home.js
+cinematic-bars.html 电影挡条介绍页          styles.css app.js
+bliss-seasons.html  Bliss 季节介绍页        bliss.css  bliss.js  season-core.js
+assets/             字体子集 · 模组图标 · 桂花
+tools/              本地预览、截图、审计脚本
+```
+
+`styles.css` 是三页共用的底座：纸面色板、三款自托管字体、页头、按钮、页脚，以及那块模拟帧和挡条。`home.css` 只加首页的列表与规格，`bliss.css` 只加四季场景、时间轴与调色盘。`app.js` 只属于电影挡条，`bliss.js` 只属于 Bliss 季节；`season-core.js` 是两份模组算法的浏览器移植，介绍页和首页封面都从它取函数。
+
 ---
 
-# Design System: tzixi.cn
+## 1. 这是什么
 
-## Overview
+一个 Minecraft Fabric 模组站。首页列出全部模组，点进去是单个模组的介绍与下载页。
 
-**Creative North Star: "启动器面板"（The Launcher Panel）**
+目前两个模组：
 
-站点不是"关于模组的网页"，而是启动器里那个实例列表本身。左边一列实例，右边是选中实例的详情，窗口底部一条状态栏报数。访客认出这个界面，就同时理解了这里的文件是可以装进游戏的，以及它们各自适配什么版本。
+- **电影挡条（Cinematic Bars）**——按住一个键，上下两条黑边从画面外滑进来，把游戏压成电影画幅；松手，它们沿同一条缓动曲线退回去。
+- **Bliss 季节（Bliss Seasons）**——把 Bliss Shaders 的季节换色抽成独立模组。树叶、草和天空按四个权重在线性光里混色，三十秒一季，任何光影包都能叠着用。
 
-密度是这套系统的性格：信息先于留白，但每一层都靠位置和刻线区分，不靠阴影和卡片。整个界面只有一种强调色，且只出现在两处——当前选中的那一行，和真正的下载按钮。
+页面要解决的矛盾是同一个：**这两个模组的效果都只有动起来才看得见**。静态截图既不能证明缓动曲线，也不能证明换色是渐变的而不是跳变的。所以页面不摆截图，而是各自画了一块模拟场景，把 jar 里那份函数原样搬进浏览器跑。
 
-**Key Characteristics:**
-- 近黑石板底，四级明度抬升，全部靠 1px 刻线分隔
-- 火把橙是唯一强调色，占比极低
-- 界面文字用 Archivo 可变字体，测量值用等宽字体
-- 零投影、零圆角卡片、零渐变文字
+## 2. 事实来源
 
-## Colors
+页面上每一个数字都能在 jar 或 GitHub 上找到出处，没有一条是编的。
 
-一套冷调石板灰，配一个暖橙强调，其余颜色都是"矿物料"状态色。
+**电影挡条**
 
-### Primary
-- **火把橙 Torch** (#ff7a2f)：只出现在两处——当前选中的实例行（2px 左边框 + 向左消散的橙光 + 图标着色），和主下载按钮。全站任何一屏里它的面积都小于 2%。链接、标签、序号、参数值、焦点环一律不用橙色。
+| 内容 | 来源 |
+| --- | --- |
+| `barHeightPercent = 8`、`edgeFeatherPercent = 22`、`animationDurationMs = 600`、`curve = SMOOTHSTEP`、`keybindEnabled = true`、`activationKey = "key.keyboard.left.shift"`、`showWhenHudHidden = false` | `com/zixi/cinebars/CinematicBarsConfig` 构造函数的字节码常量池 |
+| 九条曲线与其 `apply(t)` 公式 | `Curve` 枚举的 `apply` 方法 |
+| 中文名（挡条宽度 / 边缘羽化 / 变化时长 / 变化曲线 …） | `assets/cinebars/lang/zh_cn.json` |
+| 26.3 版依赖 Fabric Loader ≥ 0.19.0；1.21.10 版依赖 ≥ 0.16.0；两版都要求 Java ≥ 21 | 两个 jar 各自的 `fabric.mod.json` |
+| 下载地址、`v1.0.0`、发布日期 2026-10-17 | GitHub Releases `cinematic-bars` 标签下的两个资产，逐个验证 200 |
+| 可选依赖 YACL / Mod Menu | 两个 `fabric.mod.json` 的 `suggests` |
 
-### Neutral
-- **虚空 Void** (#080b0c)：页面最外层底色，以及参数表、搜索框这类"凹陷"表面。
-- **外壳 Shell** (#0d1113)：应用窗口本体与列表行背景。
-- **面板 Panel** (#11171a)：左栏顶部渐变起点、下载侧栏卡片、方块图标底。
-- **抬起 Raise** (#161d21)：悬停行、分段控件的选中态。
-- **悬停 Hover** (#1c2428)：导航项与按钮的悬停背景。
-- **正文 Ink** (#eef3f1)：标题与关键数值。
-- **次级 Ink Soft** (#bcc7c3)：正文段落、列表行名称。
-- **三级 Ink Dim** (#96a29e)：说明文字、未选中项。
-- **四级 Ink Faint** (#828f8b)：标签、测量值的键名、页脚。
+**Bliss 季节**
 
-### Tertiary
-- **荧光绿 Emerald** (#6fd08c)：状态栏左侧的在线点，只出现在这一处。
-- **赭黄 Amber** (#d9a441)：注意事项前的方块标点、示例内容提示条。
-- **矿青 Ore-Green** (#9db8b1)：模组条目的图标色，仅用于图标，不用于文字。
-- **橙上墨 Ink-on-Torch** (#1a0f07)：主按钮上的文字色。橙色按钮配橙字是错的，深棕才够反差（实测 7.2:1）。
-- **橙悬停 Torch Hover** (#ff8b48)：主按钮悬停时的提亮值，不用于其它任何地方。
+| 内容 | 来源 |
+| --- | --- |
+| `seasonDurationSeconds = 30`、`transitionDurationSeconds = 2.0`、`transitionCurve = SMOOTHSTEP`、`startSeason = 0`、`colorIntensity = 1.0`、`skyTint = true`、`chunkRefreshMode = ADAPTIVE`、`fixedRefreshIntervalTicks = 4`、`chunkRefreshBudget = 96`、`customWeather = false`、`weatherFadeSeconds = 1.0` | `com/zixi/seasonalbliss/config/ModConfig` 的静态初始化字节码 |
+| 八个默认颜色（`#71A730` 夏叶、`#CB7324` 秋叶、`#FFFFFF` 冬叶、`#86C644` 春叶、`#79C05A` 夏草 …） | 同上，整型常量逐个换算 |
+| `blendFactors()` 的四权重算法、`apply()` 的九条曲线 | `SeasonalCalculator`、`TransitionCurve` |
+| 线性光混色与保亮度重着色 | `SeasonalColorApplier.applySeasonal` / `applyBlockColor` |
+| 天空乘子 SUMMER (1,1,1)、AUTUMN (1.05, 0.98, 0.92)、WINTER (0.92, 0.95, 1.05)、SPRING (0.98, 1.02, 1.02) | `SeasonState` 的四个 `Vector3f` 常量 |
+| 按距离分帧刷新 2 / 4 / 8 tick | `SmoothChunkScheduler.intervalForDistanceSq` |
+| 春/夏/秋 rain、冬 snow 与淡入淡出 | `SeasonWeather.precipitationFor` / `tick` |
+| `Java ≥ 25`、`Fabric Loader ≥ 0.19.0`、内嵌 `emlib-1.0.2+26.3` | `fabric.mod.json` 与 `META-INF/jars/` |
+| 中文标签（季节持续时长 / 过渡缓动曲线 / 起始季节 …） | `assets/seasonalbliss/lang/zh_cn.json` |
 
-### Named Rules
-**唯一强调色规则（The One Torch Rule）。** 火把橙只允许出现在"当前选中"与"可执行下载"两种语义上，别的任何地方——序号、链接、焦点环、标签——都不许借它做装饰。它一旦被稀释，整套界面的选中逻辑就失效了。
+游戏截图一张都没有，所以页面上凡是画面都是本页绘制的，并且都在旁边写明了「模拟画面」。
 
-**焦点用墨色规则（The Ink Focus Rule）。** 键盘焦点环是 2px `--ink`，不是橙色。橙色表示"这里是当前的/可下载的"，不表示"键盘停在这里"。
+## 3. 视觉方向
 
-**刻线而非容器规则（The Score-Line Rule）。** 分隔用 1px 半透明线（`rgba(233,240,238,0.09)`），不用投影、不用卡片边框堆叠。深度靠明度台阶表达，不靠阴影。
+纸面 + 纯黑。底色是米白纸（`#f2ede3`），字是墨色（`#171410`），金色只留给桂花和少数几个数字。电影挡条页里唯一的纯黑是挡条本身——它一出现，纸面就被压成了画幅，这是把产品的行为直接当成排版语言在用。
 
-## Typography
+- **字体**：思源宋体（子集 277 KB）做标题，思源黑体（209 KB）做正文，Archivo 做拉丁字母和数字。三款都自托管，不依赖系统字体，所以「电影挡条」四个字在任何机器上都是同一副样子。
+- **桂花**：用户提供的 PowerShell 脚本生成的 `osmanthus-branch.png`（1100×1100 透明底，棕枝、十片叶、十二朵四瓣金花）。两张介绍页里它出现在放映室右上方和页脚，首页只在页脚；永远不压在参数面板、演示画面、卡片或下载按钮上。放映室右上那一株在 1180px 以下隐藏，页脚那一株保留但降低不透明度（0.6 → 窄屏 0.5）——小屏幕上它只会变成障碍。
+- **两种模拟场景**。电影挡条用一块金色黄昏的帧：天空从奶白渐变到暮紫，中间一条橙金色的地面，三层山脊用内联 SVG `mask-image` 切出贝塞尔轮廓，上面再叠一层噪点。刻意做亮，因为挡条是黑的，黑压黑就什么都看不见了。Bliss 季节换成白天的林线：天空五段蓝到米白，两层山脊，四棵树各由树干和三层椭圆树冠拼成，树冠和草地直接吃 `--leaf` / `--grass` 两个变量——换季就是换这两个值。
 
-**Display Font:** Archivo（可变字重，宽度轴收到 88–92%）
-**Body Font:** Archivo + Noto Sans SC（自托管，按 unicode-range 切成 101 片按需加载）
-**Label/Mono Font:** Spline Sans Mono
+## 4. 首页结构
 
-**Character:** Archivo 带一点工程制图的机械感，收紧宽度轴后标题有压缩感但不夸张；等宽字体只承担测量值，让版本号、文件大小、参数值在视觉上自动成为"读数"。
+```
+页头     ZIXI / 模组 / 规格 / 关于 / GitHub / 下载
+抬头     「Minecraft 模组」+ 一句解释 + 计数（2 个模组 · 3 个游戏版本 · MIT）
+列表     电影挡条：会动的封面 → 标题 → 拉丁名 → 摘要 → 四条元信息 → 查看介绍
+         四季流转：会换季的封面 → 标题 → 拉丁名 → 摘要 → 四条元信息 → 查看介绍
+规格     运行环境 · 依赖 · 最近更新 · 许可证
+关于     这是什么、放映室在哪、源码与反馈
+页脚     桂花 + 站内链接 + 「画面都是模拟帧」的声明
+```
 
-### Hierarchy
-- **Display** (660, clamp(28px, 3.2vw, 38px), 1.15, -0.035em)：详情面板的作品名，唯一的大字。中文因字量走自托管的 Noto Sans SC 切片（101 个 unicode-range 分片按需加载），拉丁与数字由 Archivo 承担。
-- **Headline** (620, clamp(20px, 2vw, 24px), 1.15, 88% stretch)：页面下方说明区的分节标题。
-- **Title** (570, 14.5px, 1.4)：列表行里的作品名。
-- **Body** (400, 14.8px, 1.72)：正文段落，最大宽度 68ch。
-- **Label** (550, 11px, 0.04em, 无衬线)：测量值的键名（游戏版本 / 加载器 / 文件大小…）。
-- **Code** (400–600, 12px, 等宽)：参数表的 key 与 value、文件名、Release 里的构建名。
+单栏。内容列和页头页脚同宽（`--max` 含 `--gut` 内边距），正文各自限到 62–70 字符，靠行宽而不是靠收窄整列来控制阅读长度，这样上下的边线才对得齐。
 
-### 字号刻度
-界面文字实际只用这几个台阶，不要临时插新值：
+**每张卡片的封面就是这个模组的样子**：
 
-| 台阶 | 值 | 用在哪 |
-| --- | --- | --- |
-| `display` | `clamp(28px, 3.2vw, 38px)` | 详情面板作品名 |
-| `display-sm` | `clamp(24px, 6.4vw, 30px)` | 窄屏作品名 |
-| `headline` | `clamp(20px, 2vw, 24px)` | 下方分节标题 |
-| `brand` | `17px` | 顶栏站名，全站唯一一处 |
-| `title` | `14.5px` | 列表行名称 |
-| `body-lg` | `16px` | 正文基准（`body` 字号） |
-| `lead` | `clamp(14.5px, 1.1vw, 15.5px)` / `15px` | 一句话简介 / 说明段落 |
-| `body` | `14.8px` / `14px` | 正文 / 步骤与注意事项 |
-| `body-sm` | `13.5px` / `13px` / `12.5px` | 更新记录、按钮、行内说明 |
-| `code` | `12px` / `11.5px` | 参数 key/value、文件名、slug |
-| `label` | `11px` / `10.5px` / `10px` | 测量值标签、角标、小标签 |
-| `micro` | `9.5px` | MOD 角标 |
+- 电影挡条卡默认是「按住」的展开态，上下两条黑边已经在位；鼠标移进卡片等于松开按键，挡条按 `SMOOTHSTEP` 退回画面外，露出完整的帧，移出再滑回来。
+- 四季流转卡默认停在夏天；鼠标移进卡片等于时间开始走，一轮七秒，树冠和草地按真实权重在夏→秋→冬→春之间连续变色，标签同步写出当前季节，移出立刻回夏。
 
-### Named Rules
-**读数规则（The Reading Rule）。** 等宽字体只给三类东西：真正的数值（版本号、文件大小、日期、FPS）、配置里的字面量（参数 key/value、文件名），以及站内 slug。分类角标（MOD）、测量值标签、说明文字一律无衬线——等宽不是"技术感"的装饰。
+两处都用 `season-core.js` / 同一份缓动函数，不是 CSS 近似。触屏没有悬停，所以默认态本身就是完整、可读的——信息不依赖悬停才能拿到。
 
-## Layout
+**整张卡片可点，但只有一个链接**：`h2` 里包一根 `a.mod-entry__link`，它的 `::after` 铺满卡片（stretched link），点封面、点摘要、点空白处都跳转。这样读屏听到的链接名就是模组名，摘要仍然是普通段落，不会变成一长串链接名；Tab 也只停一次。
 
-首屏是一个高 `100dvh` 的 `.shell`，里面纵向排三件：56px 顶栏、（可选的）示例提示条、应用窗口，最后是窗口状态栏。窗口 `flex: 1; min-height: 0; overflow: hidden`，即**被视口钉死**；内容超出时由右侧 `.detail` 内部滚动，左栏 `.instances__list` 也自己滚动。这样窗口底边的状态栏永远在首屏之内，这是首屏契约的一部分。
+## 5. 电影挡条介绍页
 
-窗口内部：左栏固定 336px，右栏自适应，面板之间只有 1px 刻线。
+```
+首屏     标题 / 一句解释 / 两个下载按钮 / 四条规格
+放映室   可交互的模拟帧 + 五项读数 + 参数面板
+机制     滑入 / 外黑内透 / 原路退回 + 为什么不直接开光影
+参数表   七个 JSON 字段 + 九条曲线（每条一张真实采样的小图）
+安装     两个版本卡片 + 三步安装 + YACL 提示
+```
 
-下移到 1080px：左栏收到 280px，详情内的"正文 + 下载侧栏"双栏折成单栏，下载卡片用 `order: -1` 提到正文之前——窄屏的访客最需要先拿到按钮。
+顺序是按「先让他看见，再让他相信，最后让他下载」排的。放映室放在第二屏而不是最底下，因为那是唯一能证明这东西好用的地方。
 
-下移到 860px：放弃"整屏窗口"，`.shell` 回到 `height: auto`，页面变回正常文档流；左栏退化为一条可横向滑动的实例条带（每项宽 `min(72vw, 240px)`，滚动吸附），选中项用底部 2px 橙线标记而不是左边框；详情面板与下载侧栏展开为单栏。
+## 6. Bliss 季节介绍页
 
-间距节奏：组件内 6–12px，组件间 20–28px，分节 40–64px，页脚前 48–88px。
+```
+首屏     标题 / 一段解释 / 一个下载按钮 / 四条规格 + 秋天的模拟场景
+放映室   会换季的场景 + 时间轴 + 四个权重条 + 季节跳转 + 五项读数 + 参数面板
+机制     权重 / 线性光 / 分帧刷新 三步 + 关于天气只改本地的旁注
+参数表   八个颜色（四个树叶、四个草地，色块直接取自 jar）+ 九条曲线
+安装     26.3 单一构建 + 三步安装 + 关于 Java 25 的旁注
+```
 
-## Elevation & Depth
+和电影挡条页同构，但放映室换成「时间轴 + 权重」：**这一页要证明的不是「会变色」，而是「怎么变」**。
 
-**没有投影，也不打算有。** 深度完全由明度台阶承担：void → shell → panel → raise → hover 五级。页面底是纯色 `#080b0c`，没有径向光晕；窗口四边是均匀的 1px `--line-strong`，没有渐变窗沿、没有内阴影、没有斜面——想要"启动器窗体"的质感，靠的是这层台阶和状态栏，不是一道假的金属高光。
+- 时间轴把一轮 120 秒摊成一条带子：纸色段是保持，金色段是过渡。滑杆拖时间，标记线跟着走。改「季节持续时长」时带子会重新分段，金色段宽度 = 过渡秒数 ÷ 季节秒数。
+- 四个权重条就是 `blendFactors()` 的返回值，两条加起来永远是 1。过渡时只有相邻两季有值，其余两季是 0。
+- 场景里的树冠、草地、天空乘子全部由这四个权重算出来，走的是 `applySeasonal` 那条线性光混色路径，不是简单的 sRGB 平均——所以在黄和绿之间过渡时不会经过脏灰。
+- 「天空氛围染色」开关关掉时天空乘子强制回到 ×1，可以单独看出它贡献了多少。
+- 「色彩浓度」滑到 0 时颜色回到原版，滑到 2 时是加倍的季节色。
+- 天气开关打开后，当前季节是雨就下雨、是冬就下雪，切换季节时按 `weatherFadeSeconds` 淡入淡出。
 
-需要让某块区域"凹下去"（参数表、搜索框、分段控件外框）时，用比周围更暗的 void 底色 + 1px 刻线，而不是内阴影。
+## 7. 交互
 
-## Shapes
+**电影挡条页**
 
-圆角几乎为零：控件 3px、次级元素 2px、滑块与细条 1px、方块图标与标签 0。形状语言全部来自矩形与 1px 描边，和方块世界的正交感一致。图标是 16×16 的自绘像素网格（`BlockIcon`），每个像素对齐到 1 单位，用 crispEdges 渲染。
+- **按住 Shift**：全局监听，和游戏里同一个键。焦点在输入框里时不触发。
+- **按住画面本身**或**按住面板底部那颗按钮**：同样有效，触屏也能用。
+- **空格 / 回车**：画面获得焦点时同样触发。
+- 高度滑杆 0–24%，羽化 0–80%，时长 80–2000 ms，曲线九选一。改任何一个，画面、读数、按钮状态同步更新。
+- 读数里的「可见画幅」按 `宽 / (高 × (1 − 2×挡条比例))` 实时算，8% 时是 2.39:1，正好是宽银幕。
+- **重置**回到 jar 里的默认值（8 / 22 / 600 / SMOOTHSTEP）。
+- **复制这组参数**把七个字段序列化成 JSON 放进剪贴板。
+- 点曲线小图 = 切换放映室的曲线，两边状态互相同步。
 
-## Components
+九条曲线的小图不是装饰图：页面加载时用 `CURVES` 里同一份函数按 `t = 0…1` 采样 48 个点画成折线。图上那条线就是待会儿挡条要走的路。
 
-### Buttons
-- **Shape:** 3px 圆角，最小高度 42px，内边距 0 18px。
-- **Primary:** 火把橙底 + 深棕字（#1a0f07），字重 620；带一个 14×14 的下载箭头图标。
-- **Hover / Focus:** 悬停时背景提亮到 #ff8b48；按下时 `translateY(1px)`；焦点环是 2px `--ink` 外扩 2px。
-- **Ghost:** 透明底 + `--line-strong` 描边，悬停时底色变为面板色、文字提亮。
-- **Disabled:** 改成 1px 虚线描边 + 四级灰，`cursor: not-allowed`，用于"文件尚未上传"。
+**Bliss 季节页**
 
-### Chips
-- **Style:** 分类角标（MOD）用 9.5px 无衬线、字重 600、1px 描边、0 圆角；标题旁的类型标签（模组）用 10px 无衬线 + `--ink-dim` 描边。
-- **State:** 角标只用三级灰，不使用橙色——橙色是下载与选中行的专属。
+- **播放 / 暂停**：让时间自己走，一轮 120 秒。暂停后可以用滑杆精确停在某一帧。
+- **跳转按钮**：夏 / 秋 / 冬 / 春各一颗，跳到那一季的正中（纯色、无过渡），方便对比四个季度的颜色。
+- 季节持续 1–60 s、过渡 1–5 s、起始季节四选一、色彩浓度 0–2、曲线九选一、天空染色与自定义天气两个开关。
+- 改任何一个参数，场景、时间轴分段、权重条、五项读数、曲线卡选中态同步更新。
+- **重置**回到 jar 里的默认值（30 / 2.0 / SMOOTHSTEP / 夏 / 1.0）。
+- **复制这组参数**把整个 `ModConfig` 序列化成 JSON。
+- 曲线小图和电影挡条页用的是同一份采样代码，九条曲线公式逐字相同——两个模组的缓动算法本来就是同一套。
 
-### Cards / Containers
-- **Corner Style:** 0–3px。
-- **Background:** 下载侧栏用 Panel 色，参数表用 Void 色。
-- **Border:** 1px `--line`，不用投影。
-- **Internal Padding:** 16px。
+**首页**
 
-### Inputs / Fields
-- **Style:** Void 底色 + 1px 刻线，左侧放大镜图标，高 32px。
-- **Focus:** 边框提亮到 `--ink-faint`，不发光、不加外环、不变橙。
+- 整张卡片可点，但只有标题里的那根链接可聚焦；`::after` 铺满卡片负责点击区域，链接名是模组名，摘要不会被读成链接文本。
+- 挡条卡的悬停与移出都在 600 ms 内跑完，中途移出会从当前位置接着往回走，不会跳。
+- 换季卡在指针进入时开始走表，离开时立刻回夏并停表。
+- 键盘 Tab 到标题链接时和鼠标移上去一样触发（`focusin` / `focusout`），焦点离开卡片再复位。
 
-### Navigation
-- **Style:** 顶部 56px 高，等宽风格的品牌标记 + 三个文字链接 + GitHub 外链按钮。悬停只改文字色与背景，不加下划线。
+## 8. 无障碍
 
-### 滚动指示条（签名组件）
-详情栏是唯一会内部滚动的区域。系统滚动条在不同平台上要么是叠加式（默认不显示）、要么是 10px 宽的亮条，两种都破坏这套刻线语言，所以这里自绘一条并把系统的那条关掉（`scrollbar-width: none` + `::-webkit-scrollbar { width: 0 }`）。
+- 三页都有跳到主内容的 skip link；所有控件都有可见标签，滑杆与下拉都有 `aria-describedby` 指向说明文字。
+- 两块演示画面都是 `role="img"`，可聚焦、可键盘触发，`aria-label` 写明了怎么操作；里面的帧、挡条、树、雨雪都是 `aria-hidden`，屏幕阅读器不会读到一堆空 div。
+- 曲线按钮用 `aria-pressed` 表示选中，不用颜色单独承载状态。
+- 正文对比度最低 4.64:1，小字最低 5.07:1，都过 4.5。三页的卡片元信息、规格表、页脚小字逐个量过。
+- 正文里的行内链接用 `padding-block: 6px` 配等量负外边距把命中区域撑到 33px，行高不变；页头、页脚、卡片按钮的点击目标都 ≥ 32px。
+- `prefers-reduced-motion: reduce` 下挡条直接跳到终态、换季停在夏天、雨雪动画关掉：画面照旧出现，只是不动。两个模组在游戏里也是同样的取舍。
+- 打印样式去掉了动画和装饰图。
 
-规格：轨道宽 5px、距窗口右内缘 5px，滑块高度 = 可视比例、位置 = 滚动比例，最小高度 32px，常态 `rgba(233,240,238,0.46)`（在 shell 底上实测 **4.18:1**，超过非文本指示件 3:1 的底线），悬停提到 0.62，内容装得下时整条 `opacity: 0`。它挂在**不滚动的外层** `.detail-pane` 上，所以不会被内容滚走，也不随内容重绘。
+## 9. 已知取舍
 
-### 实例行（签名组件）
-列表里的一行实例：34px 方块图标 + 名称/加载器·版本两行 + 右侧 MOD 角标。选中时左边框变成 2px 火把橙，背景是一道向左消散的橙光（`linear-gradient(90deg, rgba(255,122,47,0.12), transparent 92%)`），图标与名称同时提亮。方向键可以上下切换，切换后焦点跟着走。
+- **模拟场景不是游戏截图**。它证明的是几何、缓动和混色算法，不是 Minecraft 里的实际观感。页面上多处写明了这一点，没有假装。
+- **Bliss 季节的下载按钮指向一个还没上传的 release**。按站点的命名约定写死成 `bliss-seasons-1.1.1_26.3.jar`，上传之后就能直接下载；在那之前按钮会 404，所以安装区写明了这一点，并把人指向「全部版本」。
+- **触屏上按住 Shift 不可用**，所以画面和按钮都支持按住。这是移动端的替代路径，不是原生体验。
+- **Bliss 季节的树是几何图形**，不是方块。它要说明的是颜色怎么变，不是 Minecraft 的渲染长什么样；用体素画反而会让人以为这是截图。
+- 两个模组的 jar 下载链接都指向 GitHub Releases。如果那边改了资产名，链接会失效——页面本身不会。
+- 小屏（< 700px）曲线改成两列、图在上字在下；< 560px 规格条换行。320px 宽下没有横向滚动。
 
-### 参数行（签名组件）
-文件列表的一行（「其它构建」）：左侧「MC x.y」版本标签，右侧文件名与大小；未上传时右侧是灰底「未上传」，不可点击。
+## 10. 验证方式
 
-## Do's and Don'ts
+没有可用的图像输入，所以全部靠数值探针：
 
-### Do:
-- **Do** 保持火把橙只用于"当前选中"和"下载"两种语义，其它一律走灰阶。
-- **Do** 用 1px 刻线和明度台阶表达层次，需要分隔时就画一条线。
-- **Do** 让所有测量值走等宽字体并启用 `tabular-nums`。
-- **Do** 在窄屏把下载按钮提正文之前。
-- **Do** 用自绘的 16×16 像素图标，而不是图标字体或 emoji。
-
-### Don't:
-- **Don't** 给卡片加圆角、投影或发光边框，也不要用渐变窗沿去模仿窗体斜面。
-- **Don't** 用渐变文字做强调，强调只靠字重和字号。
-- **Don't** 在标题上方加 eyebrow / kicker 小标签。
-- **Don't** 用霓虹青、紫色渐变这类"科技风"默认色，强调色只有火把橙一个。
-- **Don't** 为了好看把版本号、加载器这些适配信息从列表层挪进详情或折叠区。
+- `tools/home-audit.js` — 首页在 1440/1280/1024/768/390 五个宽度下的横向溢出、文字截断、点击目标尺寸、对比度、标题层级、链接可达性、两张卡片的悬停行为（挡条退回、换季走到秋与冬）、吸顶、运行时异常。
+- `tools/home-pixels.js` — 截图后在页面内用 canvas 解码，采样封面上下两处与中央，确认挡条真的是黑的（亮度 ≈ 1）且退回后亮度抬升 176–222。
+- `tools/cardtest.js` — 首页卡片的交互验收：默认 `--p` 为 1、悬停中途 0.87 → 落定 0、移开回 1、`focus()` 后退开、回车与点封面都跳到介绍页、卡片内可聚焦元素只有 1 个、摘要不是链接。
+- `tools/audit.js` — 电影挡条页的同一套检查，外加放映室的行为（按住 → 0.55 → 1.0 → 松手回 0）、曲线切换、滑杆、重置、减少动效。
+- `tools/bliss-audit.js` — Bliss 季节页的布局检查，外加换季行为：`t=0` 权重 `[1,0,0,0]`、`t=29` 是 `[0.5,0.5,0,0]`（正好卡在过渡中点）、跳转四季、天气、天空开关、浓度、曲线、重置、剪贴板兜底、减少动效。
+- `tools/bliss-pixels.js` — 在四个季节各采一次渲染像素：夏叶 `#75ab32`、秋叶 `#cd7826`、冬叶 `#ffffff`、春叶 `#8bc847`，天空也跟着从 `#c2e2f1` 偏到 `#abcef1`；下雪时白色像素占 23.31%。
+- `tools/map.js` — 把截图压成 ASCII 亮度图，用来看版面的明暗分布（因为看不到图）。
+- `tools/boxes.js` — 按选择器打印 bounding box 与计算样式，用来核对页头、内容列、页脚是否对齐（三者现在都是 x=124 / 宽 1192 @1440）。
+- `tools/home-foot.js` — 五个宽度下把页脚桂花和品牌块、页脚链接、声明逐对做盒子相交，确认装饰不压文字（三页都是零相交）。
+- `tools/filetest.js` — 用 `file://` 直接打开三页，确认没有服务器时字体、图片、脚本、九张曲线图、挡条初始态、四季调色盘都正常，且无运行时异常。
+- `tools/fontcov.js` — 收集页面用到的每个字符，比对子集字体里是否真的存在（三页当前 0 缺失）。

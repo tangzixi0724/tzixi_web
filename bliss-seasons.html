@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bliss 季节 · Bliss Seasons — 树叶、草和天空跟着季节换色</title>
+<meta name="description" content="Bliss 季节（Bliss Seasons）是一个 Fabric 客户端模组：把 Bliss Shaders 的季节渲染抽出来，树叶、草和天空按四季换色，过渡在线性光里算，任何 Iris 光影包都能叠着用，不开光影也生效。">
+<meta name="theme-color" content="#f2ede3">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23f2ede3'/%3E%3Cpath d='M4 5h24v5H4z' fill='%23CB7324'/%3E%3Cpath d='M4 22h24v5H4z' fill='%2371A730'/%3E%3C/svg%3E">
+<link rel="preload" href="assets/noto-serif-sc-subset.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="bliss.css">
+</head>
+<body>
+
+<a class="skip" href="#lab">跳到时间轴</a>
+
+<header class="masthead" id="top">
+  <div class="masthead__inner">
+    <a class="mark" href="index.html" aria-label="回到模组列表">
+      <svg class="mark__glyph" viewBox="0 0 28 20" aria-hidden="true" focusable="false">
+        <rect x="0" y="0" width="28" height="6.2" fill="currentColor"/>
+        <rect x="0" y="13.8" width="28" height="6.2" fill="currentColor"/>
+      </svg>
+      <span class="mark__name">Bliss 季节</span>
+      <span class="mark__latin">Bliss&nbsp;Seasons</span>
+    </a>
+    <nav class="nav" aria-label="页面">
+      <a href="index.html">模组</a>
+      <a href="#lab">四季</a>
+      <a href="#how">机制</a>
+      <a href="#config">参数</a>
+      <a href="#install">安装</a>
+    </nav>
+    <div class="masthead__meta">
+      <span class="mono">v1.1.1 · MIT</span>
+      <a class="btn btn--solid btn--sm" href="#install">下载</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ── 01 · 首映 ───────────────────────────────────────────── -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero__grid">
+
+      <div class="hero__text">
+        <h1 class="display" id="hero-title">Bliss 季节</h1>
+        <p class="display__latin" aria-hidden="true">BLISS SEASONS</p>
+
+        <p class="lead">树叶、草和天空跟着季节换色。三十秒一季，一轮两分钟。从夏天走进秋天的时候，树冠是慢慢烧红的，不会在某一帧突然跳过去。</p>
+
+        <p class="lead lead--sub">这是从 Bliss Shaders 里抽出来的季节渲染。一棵树一年该有的颜色，现在不依赖光影包也能有：开着任何 Iris 光影包都能叠着用，关掉光影也照样生效。</p>
+
+        <div class="cta-row">
+          <a class="btn btn--solid" href="https://github.com/tangzixi0724/tzixi_web/releases/download/bliss-seasons/bliss-seasons-1.1.1_26.3.jar" download>
+            下载 <span class="btn__sub">Minecraft 26.3</span>
+          </a>
+          <a class="link-quiet" href="https://github.com/tangzixi0724/tzixi_web">源码<span aria-hidden="true">↗</span></a>
+        </div>
+
+        <dl class="spec-strip">
+          <div><dt>版本</dt><dd>1.1.1 · 26.3</dd></div>
+          <div><dt>依赖</dt><dd>Fabric API</dd></div>
+          <div><dt>Java</dt><dd>25</dd></div>
+          <div><dt>安装位置</dt><dd>仅客户端</dd></div>
+        </dl>
+      </div>
+
+      <figure class="hero__plate">
+        <div class="screen screen--hero">
+          <div class="scene" data-preset="autumn" aria-hidden="true">
+            <div class="scene__sky"></div>
+            <div class="scene__sun"></div>
+            <div class="scene__hills scene__hills--far"></div>
+            <div class="scene__hills scene__hills--near"></div>
+            <div class="scene__tint"></div>
+            <div class="scene__ground"></div>
+            <div class="scene__trees">
+              <div class="tree" style="--x:6%;--y:9%;--w:15%;--h:34%"><div class="tree__trunk"></div><div class="tree__canopy"></div></div>
+              <div class="tree" style="--x:23%;--y:13%;--w:10%;--h:25%"><div class="tree__trunk"></div><div class="tree__canopy"></div></div>
+              <div class="tree" style="--x:61%;--y:10%;--w:13%;--h:31%"><div class="tree__trunk"></div><div class="tree__canopy"></div></div>
+              <div class="tree" style="--x:79%;--y:15%;--w:9%;--h:22%"><div class="tree__trunk"></div><div class="tree__canopy"></div></div>
+            </div>
+            <div class="scene__weather"></div>
+            <div class="scene__grain"></div>
+          </div>
+          <span class="tag">模拟画面 · SIMULATED</span>
+
+          <div class="callout callout--canopy" aria-hidden="true">
+            <span class="callout__line"></span>
+            <span class="callout__label">树冠 #CB7324</span>
+          </div>
+          <div class="callout callout--ground" aria-hidden="true">
+            <span class="callout__line"></span>
+            <span class="callout__label">草地 #B5A848</span>
+          </div>
+        </div>
+        <figcaption>
+          <span class="mono">帧 01</span>
+          16:10 模拟帧 · 秋季调色板 · 过渡 2.0 s。画面由本页绘制，不是游戏截图。
+        </figcaption>
+      </figure>
+
+    </div>
+  </section>
+
+  <!-- ── 02 · 四季 ───────────────────────────────────────────── -->
+  <section class="section section--lab" id="lab" aria-labelledby="lab-title">
+    <img class="osmanthus" src="assets/osmanthus-branch.png" alt="" aria-hidden="true" width="1100" height="1100" decoding="async">
+    <div class="section__head">
+      <h2 class="h2" id="lab-title">三十秒过完一年</h2>
+      <p class="section__note">这块场景里的每一片颜色，都是脚本按模组的四季权重算出来、再在线性光里混好的。拖下面的时间轴，或者按季节直接跳过去。</p>
+    </div>
+
+    <div class="lab">
+      <div class="screen screen--lab" id="labScreen" role="img"
+           aria-label="模拟画面：一片随季节换色的树林与草地，颜色由下方时间轴控制。">
+        <div class="scene" id="labScene" aria-hidden="true">
+          <div class="scene__sky"></div>
+          <div class="scene__sun"></div>
+          <div class="scene__hills scene__hills--far"></div>
+          <div class="scene__hills scene__hills--near"></div>
+          <div class="scene__tint"></div>
+          <div class="scene__ground"></div>
+          <div class="scene__trees">
+            <div class="tree" style="--x:5%;--y:8%;--w:14%;--h:32%"><div class="tree__trunk"></div><div class="tree__canopy"></div></div>
+            <div class="tree" style="--x:21%;--y:12%;--w:9%;--h:23%"><div class="tree__trunk"></div><div class="tree__canopy"></div></div>
+            <div class="tree" style="--x:34%;--y:6%;--w:11%;--h:26%"><div class="tree__trunk"></div><div class="tree__canopy"></div></div>
+            <div class="tree" style="--x:57%;--y:9%;--w:15%;--h:33%"><div class="tree__trunk"></div><div class="tree__canopy"></div></div>
+            <div class="tree" style="--x:74%;--y:14%;--w:9%;--h:22%"><div class="tree__trunk"></div><div class="tree__canopy"></div></div>
+            <div class="tree" style="--x:87%;--y:7%;--w:12%;--h:28%"><div class="tree__trunk"></div><div class="tree__canopy"></div></div>
+          </div>
+          <div class="scene__weather"></div>
+          <div class="scene__grain"></div>
+        </div>
+        <span class="tag">模拟画面 · SIMULATED</span>
+      </div>
+
+      <div class="track">
+        <div class="track__seasons" aria-hidden="true">
+          <span>夏</span><span>秋</span><span>冬</span><span>春</span>
+        </div>
+
+        <div class="track__bands" id="trackBands" aria-hidden="true">
+          <i class="track__marker" id="trackMarker"></i>
+        </div>
+
+        <div class="field">
+          <div class="field__top">
+            <label for="inT">时间轴</label>
+            <output class="mono" id="outT" for="inT">0.0 s</output>
+          </div>
+          <input type="range" id="inT" min="0" max="120" step="0.05" value="0" aria-describedby="hintT">
+          <p class="hint" id="hintT">金色段是过渡，纸色段是保持。曲线只在那几小截金色里起作用。</p>
+        </div>
+
+        <div class="weights" id="weights">
+          <div class="weight">
+            <div class="weight__top"><span class="weight__name">夏</span><span class="weight__val" id="wv0">0.00</span></div>
+            <div class="weight__bar"><i id="wb0"></i></div>
+          </div>
+          <div class="weight">
+            <div class="weight__top"><span class="weight__name">秋</span><span class="weight__val" id="wv1">0.00</span></div>
+            <div class="weight__bar"><i id="wb1"></i></div>
+          </div>
+          <div class="weight">
+            <div class="weight__top"><span class="weight__name">冬</span><span class="weight__val" id="wv2">0.00</span></div>
+            <div class="weight__bar"><i id="wb2"></i></div>
+          </div>
+          <div class="weight">
+            <div class="weight__top"><span class="weight__name">春</span><span class="weight__val" id="wv3">0.00</span></div>
+            <div class="weight__bar"><i id="wb3"></i></div>
+          </div>
+        </div>
+
+        <div class="jumps" id="jumps">
+          <button class="jump" type="button" data-season="0">夏<span class="mono">SUMMER</span></button>
+          <button class="jump" type="button" data-season="1">秋<span class="mono">AUTUMN</span></button>
+          <button class="jump" type="button" data-season="2">冬<span class="mono">WINTER</span></button>
+          <button class="jump" type="button" data-season="3">春<span class="mono">SPRING</span></button>
+        </div>
+      </div>
+
+      <div class="readout" role="status" aria-live="off">
+        <div class="readout__cell"><span class="mono">当前季节</span><strong id="roSeason">夏季</strong></div>
+        <div class="readout__cell"><span class="mono">季节内</span><strong id="roLocal">0%</strong></div>
+        <div class="readout__cell"><span class="mono">一轮</span><strong id="roPeriod">120 s</strong></div>
+        <div class="readout__cell"><span class="mono">天空乘子</span><strong id="roSky">×1.00 1.00 1.00</strong></div>
+        <div class="readout__cell"><span class="mono">树叶色</span><strong id="roLeaf">#71A730</strong></div>
+      </div>
+
+      <div class="panel panel--bliss" aria-labelledby="panel-title">
+        <div class="panel__head">
+          <h3 id="panel-title">参数</h3>
+          <button class="link-quiet link-quiet--btn" type="button" id="resetLab">重置</button>
+        </div>
+
+        <div class="panel__fields">
+          <div class="field">
+            <div class="field__top">
+              <label for="inS">季节时长</label>
+              <output class="mono" id="outS" for="inS">30 s</output>
+            </div>
+            <input type="range" id="inS" min="1" max="60" step="1" value="30" aria-describedby="hintS">
+            <p class="hint" id="hintS">一个季节持续多少秒。模组默认 30，走完一轮是 120 秒。</p>
+          </div>
+
+          <div class="field">
+            <div class="field__top">
+              <label for="inTr">过渡时间</label>
+              <output class="mono" id="outTr" for="inTr">2.0 s</output>
+            </div>
+            <input type="range" id="inTr" min="1" max="5" step="0.1" value="2" aria-describedby="hintTr">
+            <p class="hint" id="hintTr">每个季节末尾用来换色的秒数，其余时间颜色不动。</p>
+          </div>
+
+          <div class="field">
+            <div class="field__top">
+              <label for="inC">过渡曲线</label>
+            </div>
+            <div class="select-wrap">
+              <select id="inC" aria-describedby="hintC">
+                <option value="LINEAR">线性 Linear</option>
+                <option value="SMOOTHSTEP" selected>平滑阶梯 Smoothstep</option>
+                <option value="SMOOTHERSTEP">超平滑阶梯 Smootherstep</option>
+                <option value="EASE_IN_QUAD">缓入二次方 Ease In Quad</option>
+                <option value="EASE_IN_OUT">缓入缓出 Ease In Out</option>
+                <option value="EASE_OUT_QUAD">缓出二次方 Ease Out Quad</option>
+                <option value="EASE_OUT_CUBIC">缓出三次方 Ease Out Cubic</option>
+                <option value="EASE_OUT_QUARTIC">缓出四次方 Ease Out Quartic</option>
+                <option value="EASE_OUT_EXPO">缓出指数 Ease Out Expo</option>
+              </select>
+            </div>
+            <p class="hint" id="hintC">九条曲线都来自模组的 TransitionCurve 枚举，下面有对照图。</p>
+          </div>
+
+          <div class="field">
+            <div class="field__top">
+              <label for="inStart">起始季节</label>
+            </div>
+            <div class="select-wrap">
+              <select id="inStart" aria-describedby="hintStart">
+                <option value="0" selected>夏季 Summer</option>
+                <option value="1">秋季 Autumn</option>
+                <option value="2">冬季 Winter</option>
+                <option value="3">春季 Spring</option>
+              </select>
+            </div>
+            <p class="hint" id="hintStart">世界刚加载时从哪一季开始。枚举里 0 是夏，不是春。</p>
+          </div>
+
+          <div class="field">
+            <div class="field__top">
+              <label for="inI">色彩浓度</label>
+              <output class="mono" id="outI" for="inI">1.00</output>
+            </div>
+            <input type="range" id="inI" min="0" max="2" step="0.05" value="1" aria-describedby="hintI">
+            <p class="hint" id="hintI">0 等于不染色，场景回到原本的绿色。</p>
+          </div>
+
+          <div class="field">
+            <div class="field__top">
+              <label for="inSky">天空氛围</label>
+            </div>
+            <div class="field--row">
+              <input type="checkbox" id="inSky" role="switch" checked aria-describedby="hintSky">
+              <p class="hint" id="hintSky">给天空叠一层冷暖偏移：秋偏暖，冬偏冷。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel__actions">
+          <button class="btn btn--solid" type="button" id="playBtn">暂停</button>
+          <div class="field--row">
+            <label for="inW">季节天气</label>
+            <input type="checkbox" id="inW" role="switch">
+          </div>
+          <button class="link-quiet link-quiet--btn" type="button" id="copyBtn">复制这组参数</button>
+        </div>
+        <p class="hint hint--tight" id="copyNote" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 03 · 机制 ───────────────────────────────────────────── -->
+  <section class="section section--how" id="how" aria-labelledby="how-title">
+    <div class="section__head">
+      <h2 class="h2" id="how-title">权重、线性光、分帧</h2>
+    </div>
+
+    <ol class="steps">
+      <li class="step">
+        <p class="step__num mono">01</p>
+        <h3>先拆成四个权重</h3>
+        <p>一个周期是四段季节时长。每段末尾留出一小截过渡，长度就是「过渡时间」；过渡之外权重是干净的 1，也就是纯色，不掺下一季。上面时间轴上那几截金色就是曲线真正起作用的地方。</p>
+      </li>
+      <li class="step">
+        <p class="step__num mono">02</p>
+        <h3>在线性光里混</h3>
+        <p>季节色先转进线性光再按权重加权，最后转回 8 位 sRGB。直接在 sRGB 里平均，中间色会比两端都暗：冬天的白和秋天的红各占一半时，会混出一片发灰的粉。</p>
+      </li>
+      <li class="step">
+        <p class="step__num mono">03</p>
+        <h3>按距离分帧刷新</h3>
+        <p>48 格内每 2 tick 重刷一次，96 格内 4 tick，更远的地方 8 tick。自适应模式每 tick 最多推 96 个区块，改这个预算就是拿流畅度换显存带宽。</p>
+      </li>
+    </ol>
+
+    <div class="aside">
+      <p class="aside__label mono">为什么不直接用光影自带的季节</p>
+      <p>Bliss Shaders 的季节写死在那个 shader 里，换一套光影就没了。这个模组把它抽成独立的客户端模组：任何 Iris 光影包都能叠着用，不开光影也照样换色。它只改客户端看到的颜色，不动群系、不动掉落、不动服务端，也不会让别人的屏幕变色。</p>
+    </div>
+  </section>
+
+  <!-- ── 04 · 参数表 ─────────────────────────────────────────── -->
+  <section class="section section--config" id="config" aria-labelledby="config-title">
+    <div class="section__head">
+      <h2 class="h2" id="config-title">一个 JSON，八个颜色</h2>
+      <p class="section__note">装了 Mod Menu 就能在游戏里调；没装就直接改 <code>config/seasonalbliss.json</code>，下次启动生效。EmLib 是配置库，jar 里已经带了，不用单独装。</p>
+    </div>
+
+    <div class="table-wrap">
+      <table class="spec-table">
+        <caption class="sr-only">配置字段与默认值</caption>
+        <thead>
+          <tr><th scope="col">参数</th><th scope="col">字段</th><th scope="col">默认</th><th scope="col">说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">启用季节变换</th><td class="mono">enableSeasons</td><td class="mono num">true</td><td>总开关，关掉就回到原版颜色。</td></tr>
+          <tr><th scope="row">季节持续时长</th><td class="mono">seasonDurationSeconds</td><td class="mono num">30</td><td>1 到 60 秒。四段相加是一轮。</td></tr>
+          <tr><th scope="row">季节过渡时间</th><td class="mono">transitionDurationSeconds</td><td class="mono num">2.0</td><td>1.0 到 5.0 秒，超出季节时长会被夹住。</td></tr>
+          <tr><th scope="row">过渡缓动曲线</th><td class="mono">transitionCurve</td><td class="mono">SMOOTHSTEP</td><td>九种之一，见下。</td></tr>
+          <tr><th scope="row">起始季节</th><td class="mono">startSeason</td><td class="mono num">0</td><td>0 夏 · 1 秋 · 2 冬 · 3 春。</td></tr>
+          <tr><th scope="row">色彩浓度</th><td class="mono">colorIntensity</td><td class="mono num">1.0</td><td>0.0 到 2.0。0 就是不染色。</td></tr>
+          <tr><th scope="row">天空氛围染色</th><td class="mono">skyTint</td><td class="mono num">true</td><td>给天空叠一层乘性冷暖偏移。</td></tr>
+          <tr><th scope="row">区块刷新模式</th><td class="mono">chunkRefreshMode</td><td class="mono">ADAPTIVE</td><td>自适应分帧，或固定间隔一次全刷。</td></tr>
+          <tr><th scope="row">刷新预算</th><td class="mono">chunkRefreshBudget</td><td class="mono num">96</td><td>16 到 256，每 tick 最多重刷多少区块。</td></tr>
+          <tr><th scope="row">自定义季节天气</th><td class="mono">customWeather</td><td class="mono num">false</td><td>默认关。开了只改客户端看到的下雨下雪。</td></tr>
+          <tr><th scope="row">天气淡入淡出</th><td class="mono">weatherFadeSeconds</td><td class="mono num">1.0</td><td>0.1 到 5.0 秒。</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="palette">
+      <div class="palette__group">
+        <p class="palette__label">树叶 foliage</p>
+        <div class="palette__row">
+          <div class="swatch"><div class="swatch__chip" style="background:#86C644"></div><span class="swatch__name">春季</span><span class="swatch__hex">#86C644</span></div>
+          <div class="swatch"><div class="swatch__chip" style="background:#71A730"></div><span class="swatch__name">夏季</span><span class="swatch__hex">#71A730</span></div>
+          <div class="swatch"><div class="swatch__chip" style="background:#CB7324"></div><span class="swatch__name">秋季</span><span class="swatch__hex">#CB7324</span></div>
+          <div class="swatch"><div class="swatch__chip" style="background:#FFFFFF"></div><span class="swatch__name">冬季</span><span class="swatch__hex">#FFFFFF</span></div>
+        </div>
+      </div>
+      <div class="palette__group">
+        <p class="palette__label">草地 grass</p>
+        <div class="palette__row">
+          <div class="swatch"><div class="swatch__chip" style="background:#6CC84B"></div><span class="swatch__name">春季</span><span class="swatch__hex">#6CC84B</span></div>
+          <div class="swatch"><div class="swatch__chip" style="background:#79C05A"></div><span class="swatch__name">夏季</span><span class="swatch__hex">#79C05A</span></div>
+          <div class="swatch"><div class="swatch__chip" style="background:#B5A848"></div><span class="swatch__name">秋季</span><span class="swatch__hex">#B5A848</span></div>
+          <div class="swatch"><div class="swatch__chip" style="background:#FFFFFF"></div><span class="swatch__name">冬季</span><span class="swatch__hex">#FFFFFF</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="curves">
+      <div class="curves__head">
+        <p class="curves__label mono">transitionCurve 的九个取值</p>
+        <p class="curves__note">每张小图都是把该曲线的 <code>apply(t)</code> 从 0 到 1 采样画出来的，和上面时间轴用的是同一份函数。点一下，过渡段就换成这一条。</p>
+      </div>
+      <ul class="curve-list" id="curveList">
+        <li><button type="button" class="curve" data-curve="LINEAR" aria-pressed="false">
+          <svg class="curve__plot" viewBox="0 0 100 60" aria-hidden="true" focusable="false" preserveAspectRatio="none"><polyline points=""/></svg>
+          <span class="curve__cn">线性</span><span class="curve__en mono">LINEAR</span>
+        </button></li>
+        <li><button type="button" class="curve is-on" data-curve="SMOOTHSTEP" aria-pressed="true">
+          <svg class="curve__plot" viewBox="0 0 100 60" aria-hidden="true" focusable="false" preserveAspectRatio="none"><polyline points=""/></svg>
+          <span class="curve__cn">平滑阶梯</span><span class="curve__en mono">SMOOTHSTEP</span>
+        </button></li>
+        <li><button type="button" class="curve" data-curve="SMOOTHERSTEP" aria-pressed="false">
+          <svg class="curve__plot" viewBox="0 0 100 60" aria-hidden="true" focusable="false" preserveAspectRatio="none"><polyline points=""/></svg>
+          <span class="curve__cn">超平滑阶梯</span><span class="curve__en mono">SMOOTHERSTEP</span>
+        </button></li>
+        <li><button type="button" class="curve" data-curve="EASE_IN_QUAD" aria-pressed="false">
+          <svg class="curve__plot" viewBox="0 0 100 60" aria-hidden="true" focusable="false" preserveAspectRatio="none"><polyline points=""/></svg>
+          <span class="curve__cn">缓入二次方</span><span class="curve__en mono">EASE_IN_QUAD</span>
+        </button></li>
+        <li><button type="button" class="curve" data-curve="EASE_IN_OUT" aria-pressed="false">
+          <svg class="curve__plot" viewBox="0 0 100 60" aria-hidden="true" focusable="false" preserveAspectRatio="none"><polyline points=""/></svg>
+          <span class="curve__cn">缓入缓出</span><span class="curve__en mono">EASE_IN_OUT</span>
+        </button></li>
+        <li><button type="button" class="curve" data-curve="EASE_OUT_QUAD" aria-pressed="false">
+          <svg class="curve__plot" viewBox="0 0 100 60" aria-hidden="true" focusable="false" preserveAspectRatio="none"><polyline points=""/></svg>
+          <span class="curve__cn">缓出二次方</span><span class="curve__en mono">EASE_OUT_QUAD</span>
+        </button></li>
+        <li><button type="button" class="curve" data-curve="EASE_OUT_CUBIC" aria-pressed="false">
+          <svg class="curve__plot" viewBox="0 0 100 60" aria-hidden="true" focusable="false" preserveAspectRatio="none"><polyline points=""/></svg>
+          <span class="curve__cn">缓出三次方</span><span class="curve__en mono">EASE_OUT_CUBIC</span>
+        </button></li>
+        <li><button type="button" class="curve" data-curve="EASE_OUT_QUARTIC" aria-pressed="false">
+          <svg class="curve__plot" viewBox="0 0 100 60" aria-hidden="true" focusable="false" preserveAspectRatio="none"><polyline points=""/></svg>
+          <span class="curve__cn">缓出四次方</span><span class="curve__en mono">EASE_OUT_QUARTIC</span>
+        </button></li>
+        <li><button type="button" class="curve" data-curve="EASE_OUT_EXPO" aria-pressed="false">
+          <svg class="curve__plot" viewBox="0 0 100 60" aria-hidden="true" focusable="false" preserveAspectRatio="none"><polyline points=""/></svg>
+          <span class="curve__cn">缓出指数</span><span class="curve__en mono">EASE_OUT_EXPO</span>
+        </button></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── 05 · 安装 ───────────────────────────────────────────── -->
+  <section class="section section--install" id="install" aria-labelledby="install-title">
+    <div class="section__head">
+      <h2 class="h2" id="install-title">只有 26.3 一条构建</h2>
+      <p class="section__note">这个模组只发布了 26.3 一版，没有 1.21.10 的构建。别拿别的版本的 jar 硬塞进 26.3。</p>
+    </div>
+
+    <div class="builds builds--single">
+      <article class="build">
+        <p class="build__ver mono">build 26.3</p>
+        <h3 class="build__mc">Minecraft 26.3</h3>
+        <p class="build__file mono">bliss-seasons-1.1.1_26.3.jar</p>
+        <dl class="build__req">
+          <div><dt>Fabric Loader</dt><dd>≥ 0.19.0</dd></div>
+          <div><dt>Java</dt><dd>≥ 25</dd></div>
+          <div><dt>Fabric API</dt><dd>必需</dd></div>
+          <div><dt>Iris</dt><dd>可选</dd></div>
+        </dl>
+        <a class="btn btn--solid btn--full" href="https://github.com/tangzixi0724/tzixi_web/releases/download/bliss-seasons/bliss-seasons-1.1.1_26.3.jar" download>下载 jar · 26.3</a>
+        <p class="hint hint--tight">这一版还没传到 GitHub Releases。上传之后这颗按钮就直接下载 <code>bliss-seasons-1.1.1_26.3.jar</code>；在那之前，去页脚的「全部版本」看已发布的文件。</p>
+      </article>
+
+      <div class="aside">
+        <p class="aside__label mono">关于 Java 25</p>
+        <p>这个 jar 编译到 Java 25 的字节码，Java 21 的运行时加载不了。电影挡条只要 Java 21，两者要求不同，别混着配。启动器里把 Java 路径指到 25 的 JDK 就行，游戏本身不用换。</p>
+      </div>
+    </div>
+
+    <ol class="install-steps">
+      <li><span class="mono">01</span> 在启动器里装 Fabric Loader 0.19.0 以上，Java 用 25。</li>
+      <li><span class="mono">02</span> 把 jar 和 Fabric API 一起放进 <code>mods/</code>。EmLib 已经在这个 jar 里，不用再放。</li>
+      <li><span class="mono">03</span> 启动游戏。季节会自己开始轮转，默认从夏天开始。</li>
+    </ol>
+    <p class="hint hint--wide">想调参数就再装 Mod Menu，EmLib 不用另装。想立刻看到原版颜色，把 <code>colorIntensity</code> 调成 0，或者关掉 <code>enableSeasons</code>。天气默认是关的，开了也只改你自己屏幕上的雨雪。</p>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <img class="osmanthus osmanthus--foot" src="assets/osmanthus-branch.png" alt="" aria-hidden="true" width="1100" height="1100" loading="lazy" decoding="async">
+  <div class="footer__grid">
+    <div class="footer__brand">
+      <svg class="mark__glyph mark__glyph--lg" viewBox="0 0 28 20" aria-hidden="true" focusable="false">
+        <rect x="0" y="0" width="28" height="6.2" fill="currentColor"/>
+        <rect x="0" y="13.8" width="28" height="6.2" fill="currentColor"/>
+      </svg>
+      <p class="footer__name">Bliss 季节</p>
+      <p class="mono footer__fine">ZIXI · MIT · v1.1.1</p>
+    </div>
+    <nav class="footer__links" aria-label="外部链接">
+      <a href="index.html">模组列表</a>
+      <a href="cinematic-bars.html">电影挡条</a>
+      <a href="https://github.com/tangzixi0724/tzixi_web">源码</a>
+      <a href="https://github.com/tangzixi0724/tzixi_web/releases">全部版本</a>
+      <a href="https://github.com/tangzixi0724/tzixi_web/issues">问题反馈</a>
+    </nav>
+  </div>
+  <p class="footer__note">页面上的画面都是本页绘制的模拟帧，不是游戏截图。四季权重、混色与曲线按模组的实际算法实现。</p>
+</footer>
+
+<script src="season-core.js"></script>
+<script src="bliss.js"></script>
+</body>
+</html>

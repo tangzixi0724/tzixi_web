@@ -1,59 +1,200 @@
 <!doctype html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>tzixi — Minecraft 模组</title>
-    <meta
-      name="description"
-      content="tzixi 自己写的 Minecraft 模组。按加载器与游戏版本筛选，点开就是文件本身。"
-    />
-    <meta name="theme-color" content="#0b0e10" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="tzixi — Minecraft 模组" />
-    <meta
-      property="og:description"
-      content="tzixi 自己写的 Minecraft 模组。按加载器与游戏版本筛选，点开就是文件本身。"
-    />
-    <meta property="og:url" content="https://tzixi.cn/" />
-    <meta property="og:image" content="https://tzixi.cn/og.png" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="https://tzixi.cn/og.png" />
-    <link rel="canonical" href="https://tzixi.cn/" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "tzixi — Minecraft 模组",
-        "url": "https://tzixi.cn/",
-        "inLanguage": "zh-CN",
-        "author": {
-          "@type": "Person",
-          "name": "tzixi",
-          "url": "https://github.com/tangzixi0724"
-        }
-      }
-    </script>
-    <link
-      rel="preload"
-      href="/fonts/archivo-var.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="/fonts/spline-mono.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZIXI · Minecraft 模组</title>
+<meta name="description" content="自己写的 Minecraft Fabric 客户端模组。电影挡条：按住左 Shift 上下两条黑边滑进画面。四季流转：把 Bliss Shaders 的季节换色抽成独立模组，任何光影包都能叠着用。">
+<meta name="theme-color" content="#f2ede3">
+<link rel="icon" href="assets/cinebars-icon.png" sizes="any">
+<link rel="preload" href="assets/noto-serif-sc-subset.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="home.css">
+<link rel="stylesheet" href="bliss.css">
+</head>
+<body class="home">
+
+<a class="skip" href="#mods">跳到模组列表</a>
+
+<header class="masthead" id="top">
+  <div class="masthead__inner">
+    <a class="mark" href="index.html" aria-label="ZIXI 首页">
+      <svg class="mark__glyph" viewBox="0 0 28 20" aria-hidden="true" focusable="false">
+        <rect x="0" y="0" width="28" height="6.2" fill="currentColor"/>
+        <rect x="0" y="13.8" width="28" height="6.2" fill="currentColor"/>
+      </svg>
+      <span class="mark__name">ZIXI</span>
+      <span class="mark__latin">Minecraft&nbsp;Mods</span>
+    </a>
+    <nav class="nav" aria-label="站点">
+      <a href="#mods">模组</a>
+      <a href="#specs">规格</a>
+      <a href="#about">关于</a>
+      <a href="https://github.com/tangzixi0724/tzixi_web">GitHub<span aria-hidden="true">↗</span></a>
+    </nav>
+    <div class="masthead__meta">
+      <span class="mono">Fabric · 客户端</span>
+      <a class="btn btn--solid btn--sm" href="cinematic-bars.html#install">下载</a>
+    </div>
+  </div>
+</header>
+
+<main class="home-main">
+
+  <header class="home-intro">
+    <h1 class="home-title">Minecraft 模组</h1>
+    <p class="home-lead">自己写的 Fabric 客户端小工具。装上就能用，不碰服务端，也不依赖光影包。</p>
+    <p class="home-count mono">2 个模组 · 3 个游戏版本 · MIT</p>
+  </header>
+
+  <ul class="mods" id="mods">
+
+    <li class="mod-item">
+      <article class="mod-entry" data-mod-card>
+
+        <span class="mod-entry__cover">
+          <span class="screen screen--card" data-card-bars>
+            <span class="frame" aria-hidden="true">
+              <span class="frame__sky"></span>
+              <span class="frame__sun"></span>
+              <span class="frame__field"></span>
+              <span class="frame__glow"></span>
+              <span class="frame__ridge frame__ridge--far"></span>
+              <span class="frame__ridge frame__ridge--mid"></span>
+              <span class="frame__ridge frame__ridge--near"></span>
+              <span class="frame__haze"></span>
+              <span class="frame__grain"></span>
+            </span>
+            <span class="bars" aria-hidden="true">
+              <span class="bar bar--top"></span>
+              <span class="bar bar--bottom"></span>
+            </span>
+            <span class="tag">模拟画面</span>
+          </span>
+        </span>
+
+        <span class="mod-entry__body">
+          <h2 class="mod-entry__title">
+            <a class="mod-entry__link" href="cinematic-bars.html">电影挡条</a>
+          </h2>
+          <p class="mod-entry__latin mono" aria-hidden="true">CINEMATIC BARS</p>
+          <p class="mod-entry__excerpt">按住左 Shift，上下两条黑边从画面外滑进来，把游戏压成电影画幅。挡条高度、边缘羽化、过渡时长和九条缓动曲线都能调，录素材时不用再开光影包。</p>
+          <p class="mod-entry__meta mono">
+            <span>v1.0.0</span>
+            <span>MC 26.3 / 1.21.10</span>
+            <span>Fabric</span>
+            <span>仅客户端</span>
+          </p>
+          <span class="mod-entry__go" aria-hidden="true">查看介绍<span>→</span></span>
+        </span>
+
+      </article>
+    </li>
+
+    <li class="mod-item">
+      <article class="mod-entry" data-mod-card>
+
+        <span class="mod-entry__cover">
+          <span class="screen screen--card" data-card-season>
+            <span class="scene" aria-hidden="true">
+              <span class="scene__sky"></span>
+              <span class="scene__sun"></span>
+              <span class="scene__hills scene__hills--far"></span>
+              <span class="scene__hills scene__hills--near"></span>
+              <span class="scene__tint"></span>
+              <span class="scene__ground"></span>
+              <span class="scene__trees">
+                <span class="tree" style="--x:5%;--y:8%;--w:14%;--h:32%"><span class="tree__trunk"></span><span class="tree__canopy"></span></span>
+                <span class="tree" style="--x:21%;--y:12%;--w:9%;--h:23%"><span class="tree__trunk"></span><span class="tree__canopy"></span></span>
+                <span class="tree" style="--x:34%;--y:6%;--w:11%;--h:26%"><span class="tree__trunk"></span><span class="tree__canopy"></span></span>
+                <span class="tree" style="--x:57%;--y:9%;--w:15%;--h:33%"><span class="tree__trunk"></span><span class="tree__canopy"></span></span>
+                <span class="tree" style="--x:74%;--y:14%;--w:9%;--h:22%"><span class="tree__trunk"></span><span class="tree__canopy"></span></span>
+                <span class="tree" style="--x:87%;--y:7%;--w:12%;--h:28%"><span class="tree__trunk"></span><span class="tree__canopy"></span></span>
+              </span>
+              <span class="scene__weather"></span>
+              <span class="scene__grain"></span>
+            </span>
+            <span class="tag">模拟画面 · 悬停换季</span>
+          </span>
+        </span>
+
+        <span class="mod-entry__body">
+          <h2 class="mod-entry__title">
+            <a class="mod-entry__link" href="bliss-seasons.html">四季流转</a>
+          </h2>
+          <p class="mod-entry__latin mono" aria-hidden="true">BLISS SEASONS</p>
+          <p class="mod-entry__excerpt">把 Bliss Shaders 里的季节换色抽成独立的客户端模组。树叶、草地和天空在线性光里按权重过渡，三十秒一季，任何 Iris 光影包都能叠着用，不开光影也照样换。</p>
+          <p class="mod-entry__meta mono">
+            <span>v1.1.1</span>
+            <span>MC 26.3</span>
+            <span>Fabric</span>
+            <span>仅客户端</span>
+          </p>
+          <span class="mod-entry__go" aria-hidden="true">查看介绍<span>→</span></span>
+        </span>
+
+      </article>
+    </li>
+
+  </ul>
+
+  <section class="specs" id="specs" aria-labelledby="specs-title">
+    <h2 class="specs__title" id="specs-title">规格</h2>
+    <dl class="specs__list">
+      <div class="specs__row">
+        <dt>运行环境</dt>
+        <dd>电影挡条 Minecraft 26.3 与 1.21.10 两条构建；四季流转 26.3。都是 Fabric Loader，前者要 Java 21，后者要 Java 25。</dd>
+      </div>
+      <div class="specs__row">
+        <dt>依赖</dt>
+        <dd>两个都要 Fabric API。电影挡条可选 YACL 与 Mod Menu；四季流转可选 Mod Menu 与 Iris，它用的配置库已经打进 jar，不用另装。</dd>
+      </div>
+      <div class="specs__row">
+        <dt>最近更新</dt>
+        <dd>电影挡条 v1.0.0 · 2026-10-17 发布；四季流转 v1.1.1 已构建，还没上传到 Releases。同名模组的多条构建互相独立，下载前看清游戏版本。</dd>
+      </div>
+      <div class="specs__row">
+        <dt>许可证</dt>
+        <dd>MIT</dd>
+      </div>
+    </dl>
+  </section>
+
+  <section class="about" id="about" aria-labelledby="about-title">
+    <h2 class="about__title" id="about-title">关于</h2>
+    <p>这里放我自己写的 Minecraft 模组，目前都是 Fabric 客户端向的小工具：不改服务端，不改存档，装错了删掉就行。</p>
+    <p>每个介绍页里都有一块能动手的模拟画面，不用开游戏就能看到效果：挡条能按着进出，季节能拖着时间轴换色。两处的几何与配色都按模组的实际算法算，不是录屏 —— <a href="cinematic-bars.html#lab">去放映室按一下</a>，或者 <a href="bliss-seasons.html#lab">拖一拖季节时间轴</a>。</p>
+    <p>源码在 <a href="https://github.com/tangzixi0724/tzixi_web">GitHub</a>，问题反馈走 <a href="https://github.com/tangzixi0724/tzixi_web/issues">issues</a>。每个模组页上都有可以直接下载的 jar，下载前先看清对应的游戏版本。</p>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <img class="osmanthus osmanthus--foot" src="assets/osmanthus-branch.png" alt="" aria-hidden="true" width="1100" height="1100" loading="lazy" decoding="async">
+  <div class="footer__grid">
+    <div class="footer__brand">
+      <svg class="mark__glyph mark__glyph--lg" viewBox="0 0 28 20" aria-hidden="true" focusable="false">
+        <rect x="0" y="0" width="28" height="6.2" fill="currentColor"/>
+        <rect x="0" y="13.8" width="28" height="6.2" fill="currentColor"/>
+      </svg>
+      <p class="footer__name">ZIXI</p>
+      <p class="mono footer__fine">MINECRAFT MODS · MIT</p>
+    </div>
+    <nav class="footer__links" aria-label="站内与外部链接">
+      <a href="#mods">模组</a>
+      <a href="#specs">规格</a>
+      <a href="cinematic-bars.html">电影挡条</a>
+      <a href="bliss-seasons.html">四季流转</a>
+      <a href="https://github.com/tangzixi0724/tzixi_web">源码</a>
+      <a href="https://github.com/tangzixi0724/tzixi_web/releases">全部版本</a>
+      <a href="https://github.com/tangzixi0724/tzixi_web/issues">问题反馈</a>
+    </nav>
+  </div>
+  <p class="footer__note">页面上的画面都是本页绘制的模拟帧，不是游戏截图。挡条的几何、四季的权重与混色都按模组的实际算法实现。</p>
+</footer>
+
+<script src="season-core.js"></script>
+<script src="home.js"></script>
+</body>
 </html>

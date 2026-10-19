@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>电影挡条 · Cinematic Bars — 按住 Shift，把画面压成电影画幅</title>
+<meta name="description" content="电影挡条（Cinematic Bars）是一个 Fabric 客户端模组：按住左 Shift，两条黑边从画面外滑入，把游戏画面压成电影画幅。挡条高度、边缘羽化、过渡时长与九条缓动曲线全部可调，不需要光影包，不需要服务端。">
+<meta name="theme-color" content="#f2ede3">
+<link rel="icon" href="assets/cinebars-icon.png" sizes="any">
+<link rel="preload" href="assets/noto-serif-sc-subset.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a class="skip" href="#lab">跳到演示</a>
+
+<header class="masthead" id="top">
+  <div class="masthead__inner">
+    <a class="mark" href="index.html" aria-label="回到模组列表">
+      <svg class="mark__glyph" viewBox="0 0 28 20" aria-hidden="true" focusable="false">
+        <rect x="0" y="0" width="28" height="6.2" fill="currentColor"/>
+        <rect x="0" y="13.8" width="28" height="6.2" fill="currentColor"/>
+      </svg>
+      <span class="mark__name">电影挡条</span>
+      <span class="mark__latin">Cinematic&nbsp;Bars</span>
+    </a>
+    <nav class="nav" aria-label="页面">
+      <a href="index.html">模组</a>
+      <a href="#lab">放映室</a>
+      <a href="#how">机制</a>
+      <a href="#config">参数</a>
+      <a href="#install">安装</a>
+    </nav>
+    <div class="masthead__meta">
+      <span class="mono">v1.0.0 · MIT</span>
+      <a class="btn btn--solid btn--sm" href="#install">下载</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ── 01 · 首映 ───────────────────────────────────────────── -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero__grid">
+
+      <div class="hero__text">
+        <h1 class="display" id="hero-title">电影挡条</h1>
+        <p class="display__latin" aria-hidden="true">CINEMATIC BARS</p>
+
+        <p class="lead">按住左 Shift，上下两条黑边从画面外滑进来，把游戏压成电影画幅。松手，它们沿同一条曲线退回原处。</p>
+
+        <p class="lead lead--sub">从 AstraLex 光影包里的「潜行挡条」抽出来的一件独立小模组：不需要光影包，不需要服务端，任何整合包里都能直接用。挡条高度、边缘羽化、过渡时长和缓动曲线都可以改。</p>
+
+        <div class="cta-row">
+          <a class="btn btn--solid" href="https://github.com/tangzixi0724/tzixi_web/releases/download/cinematic-bars/cinematic-bars-1.0.0_26.3.jar" download>
+            下载 <span class="btn__sub">Minecraft 26.3</span>
+          </a>
+          <a class="btn" href="https://github.com/tangzixi0724/tzixi_web/releases/download/cinematic-bars/cinematic-bars-1.0.0_1.21.10.jar" download>
+            下载 <span class="btn__sub">Minecraft 1.21.10</span>
+          </a>
+          <a class="link-quiet" href="https://github.com/tangzixi0724/tzixi_web">源码<span aria-hidden="true">↗</span></a>
+        </div>
+
+        <dl class="spec-strip">
+          <div><dt>版本</dt><dd>26.3 · 1.21.10</dd></div>
+          <div><dt>依赖</dt><dd>Fabric API</dd></div>
+          <div><dt>Java</dt><dd>21</dd></div>
+          <div><dt>安装位置</dt><dd>仅客户端</dd></div>
+        </dl>
+      </div>
+
+      <figure class="hero__plate">
+        <div class="screen screen--hero" data-bars-view data-h="8" data-feather="22" data-duration="600" data-curve="SMOOTHSTEP" data-state="closed">
+          <div class="frame" aria-hidden="true">
+            <div class="frame__sky"></div>
+            <div class="frame__sun"></div>
+            <div class="frame__field"></div>
+            <div class="frame__glow"></div>
+            <div class="frame__ridge frame__ridge--far"></div>
+            <div class="frame__ridge frame__ridge--mid"></div>
+            <div class="frame__ridge frame__ridge--near"></div>
+            <div class="frame__haze"></div>
+            <div class="frame__grain"></div>
+          </div>
+          <div class="bars" aria-hidden="true">
+            <div class="bar bar--top"></div>
+            <div class="bar bar--bottom"></div>
+          </div>
+          <span class="tag">模拟画面 · SIMULATED</span>
+
+          <div class="callout callout--bar" aria-hidden="true">
+            <span class="callout__line"></span>
+            <span class="callout__label">单侧挡条 8%</span>
+          </div>
+          <div class="callout callout--feather" aria-hidden="true">
+            <span class="callout__line"></span>
+            <span class="callout__label">羽化 22%</span>
+          </div>
+        </div>
+        <figcaption>
+          <span class="mono">帧 01</span>
+          16:10 模拟帧 · 8% 挡条 · SMOOTHSTEP · 600 ms。画面由本页绘制，不是游戏截图。
+        </figcaption>
+      </figure>
+
+    </div>
+  </section>
+
+  <!-- ── 02 · 放映室 ─────────────────────────────────────────── -->
+  <section class="section section--lab" id="lab" aria-labelledby="lab-title">
+    <img class="osmanthus" src="assets/osmanthus-branch.png" alt="" aria-hidden="true" width="1100" height="1100" decoding="async">
+    <div class="section__head">
+      <h2 class="h2" id="lab-title">先在这里按一下</h2>
+      <p class="section__note">这块画面是页面自己画的模拟帧，不是游戏截图。按住 Shift，挡条会走模组里九条曲线中的一条，高度和羽化也按你的设置算。</p>
+    </div>
+
+    <div class="lab">
+      <div class="screen screen--lab" id="labScreen"
+           data-bars-view
+           data-h="8" data-feather="22" data-duration="600" data-curve="SMOOTHSTEP" data-state="closed"
+           tabindex="0" role="img"
+           aria-label="模拟画面：按住 Shift 或点击并按住，挡条会滑入画面。">
+        <div class="frame" aria-hidden="true">
+          <div class="frame__sky"></div>
+          <div class="frame__sun"></div>
+          <div class="frame__field"></div>
+          <div class="frame__glow"></div>
+          <div class="frame__ridge frame__ridge--far"></div>
+          <div class="frame__ridge frame__ridge--mid"></div>
+          <div class="frame__ridge frame__ridge--near"></div>
+          <div class="frame__haze"></div>
+          <div class="frame__grain"></div>
+        </div>
+        <div class="bars" aria-hidden="true">
+          <div class="bar bar--top"></div>
+          <div class="bar bar--bottom"></div>
+        </div>
+        <span class="tag">模拟画面 · SIMULATED</span>
+        <div class="screen__hint" id="holdHint">按住 Shift</div>
+      </div>
+
+      <div class="readout" role="status" aria-live="off">
+        <div class="readout__cell"><span class="mono">挡条</span><strong id="roH">8.0%</strong></div>
+        <div class="readout__cell"><span class="mono">可见画幅</span><strong id="roAspect">2.39 : 1</strong></div>
+        <div class="readout__cell"><span class="mono">实际高度</span><strong id="roPx">—</strong></div>
+        <div class="readout__cell"><span class="mono">曲线</span><strong id="roCurve">SMOOTHSTEP</strong></div>
+        <div class="readout__cell"><span class="mono">时长</span><strong id="roDur">600 ms</strong></div>
+      </div>
+
+      <div class="panel" aria-labelledby="panel-title">
+        <div class="panel__head">
+          <h3 id="panel-title">参数</h3>
+          <button class="link-quiet link-quiet--btn" type="button" id="resetLab">重置</button>
+        </div>
+
+        <div class="panel__fields">
+          <div class="field">
+            <div class="field__top">
+              <label for="inH">挡条高度</label>
+              <output class="mono" id="outH" for="inH">8.0%</output>
+            </div>
+            <input type="range" id="inH" min="0" max="24" step="0.1" value="8" aria-describedby="hintH">
+            <p class="hint" id="hintH">单侧挡条占屏幕高度的百分比。模组默认 8%。</p>
+          </div>
+
+          <div class="field">
+            <div class="field__top">
+              <label for="inF">边缘羽化</label>
+              <output class="mono" id="outF" for="inF">22%</output>
+            </div>
+            <input type="range" id="inF" min="0" max="80" step="1" value="22" aria-describedby="hintF">
+            <p class="hint" id="hintF">挡条内侧的柔和程度，占挡条高度的百分比。0% 是硬边。</p>
+          </div>
+
+          <div class="field">
+            <div class="field__top">
+              <label for="inD">变化时长</label>
+              <output class="mono" id="outD" for="inD">600 ms</output>
+            </div>
+            <input type="range" id="inD" min="80" max="2000" step="20" value="600" aria-describedby="hintD">
+            <p class="hint" id="hintD">一次完全展开或收起所需的时间。</p>
+          </div>
+
+          <div class="field">
+            <div class="field__top">
+              <label for="inC">变化曲线</label>
+            </div>
+            <div class="select-wrap">
+              <select id="inC" aria-describedby="hintC">
+                <option value="LINEAR">线性 Linear</option>
+                <option value="SMOOTHSTEP" selected>平滑阶梯 Smoothstep</option>
+                <option value="SMOOTHERSTEP">更平滑阶梯 Smootherstep</option>
+                <option value="EASE_IN_QUAD">二次缓入 Ease In Quad</option>
+                <option value="EASE_IN_OUT">缓入缓出 Ease In Out</option>
+                <option value="EASE_OUT_QUAD">二次缓出 Ease Out Quad</option>
+                <option value="EASE_OUT_CUBIC">三次缓出 Ease Out Cubic</option>
+                <option value="EASE_OUT_QUARTIC">四次缓出 Ease Out Quartic</option>
+                <option value="EASE_OUT_EXPO">指数缓出 Ease Out Expo</option>
+              </select>
+            </div>
+            <p class="hint" id="hintC">九条曲线都来自模组的 Curve 枚举，下面那张表有对照。</p>
+          </div>
+        </div>
+
+        <div class="panel__actions">
+          <div class="field--row">
+            <label for="inA">动画</label>
+            <input type="checkbox" id="inA" role="switch" checked>
+          </div>
+          <button class="link-quiet link-quiet--btn" type="button" id="copyCfg">复制这组参数</button>
+          <button class="btn btn--solid" type="button" id="holdBtn">按住显示挡条</button>
+        </div>
+        <p class="hint hint--tight" id="copyNote" aria-live="polite"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 03 · 机制 ───────────────────────────────────────────── -->
+  <section class="section section--how" id="how" aria-labelledby="how-title">
+    <div class="section__head">
+      <h2 class="h2" id="how-title">两条边，一条曲线</h2>
+    </div>
+
+    <ol class="steps">
+      <li class="step">
+        <p class="step__num mono">01</p>
+        <h3>滑入</h3>
+        <p>上下两条挡条从画面外同时进入，左右对称，永远一起动。画面本身不裁切，FOV 也不动。</p>
+      </li>
+      <li class="step">
+        <p class="step__num mono">02</p>
+        <h3>外黑内透</h3>
+        <p>外缘是纯黑；向内 22% 的挡条高度里逐渐透明。所以挡条不会在画面上切出一道硬边，而是像画面自己暗下去。</p>
+      </li>
+      <li class="step">
+        <p class="step__num mono">03</p>
+        <h3>原路退回</h3>
+        <p>松手后沿同一条曲线反向滑出。曲线只决定加减速的形状，不改变挡条最后停在哪。</p>
+      </li>
+    </ol>
+
+    <div class="aside">
+      <p class="aside__label mono">为什么不直接开光影</p>
+      <p>光影包里的潜行挡条只存在于那个 shader 里，换一套光影就没了。这个模组不依赖任何光影包：开不开光影、用哪个整合包，行为都一样。它是纯客户端的，服务端既不需要它，也察觉不到它。</p>
+    </div>
+  </section>
+
+  <!-- ── 04 · 参数表 ─────────────────────────────────────────── -->
+  <section class="section section--config" id="config" aria-labelledby="config-title">
+    <div class="section__head">
+      <h2 class="h2" id="config-title">全部写在一个 JSON 里</h2>
+      <p class="section__note">装了 YACL 和 Mod Menu 就能在游戏里调；没装的话直接改 <code>config/cinebars.json</code>，下次启动生效。</p>
+    </div>
+
+    <div class="table-wrap">
+      <table class="spec-table">
+        <caption class="sr-only">配置字段与默认值</caption>
+        <thead>
+          <tr><th scope="col">参数</th><th scope="col">字段</th><th scope="col">默认</th><th scope="col">说明</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">挡条高度</th><td class="mono">barHeightPercent</td><td class="mono num">8</td><td>单侧挡条占屏幕高度的百分比。</td></tr>
+          <tr><th scope="row">边缘羽化</th><td class="mono">edgeFeatherPercent</td><td class="mono num">22</td><td>内侧边缘的柔和程度，占挡条高度的百分比。</td></tr>
+          <tr><th scope="row">变化时长</th><td class="mono">animationDurationMs</td><td class="mono num">600</td><td>一次完全展开或收起所需的毫秒数。</td></tr>
+          <tr><th scope="row">变化曲线</th><td class="mono">curve</td><td class="mono">SMOOTHSTEP</td><td>九种之一，见下。</td></tr>
+          <tr><th scope="row">启用快捷键</th><td class="mono">keybindEnabled</td><td class="mono num">true</td><td>关掉后按键不再触发挡条。</td></tr>
+          <tr><th scope="row">触发按键</th><td class="mono">activationKey</td><td class="mono">key.keyboard.left.shift</td><td>点击后按下想用的键或鼠标键。</td></tr>
+          <tr><th scope="row">隐藏 HUD 时显示</th><td class="mono">showWhenHudHidden</td><td class="mono num">false</td><td>按 F1 之后仍然绘制，便于录干净素材。</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="curves">
+      <div class="curves__head">
+        <p class="curves__label mono">curve 的九个取值</p>
+        <p class="curves__note">每张小图都是把该曲线的 <code>apply(t)</code> 从 0 到 1 采样画出来的，和演示里用的是同一份函数。点一下，上面的放映室就换成这一条。</p>
+      </div>
+      <ul class="curve-list" id="curveList">
+        <li><button type="button" class="curve" data-curve="LINEAR" aria-pressed="false">
+          <svg class="curve__plot" viewBox="0 0 100 60" aria-hidden="true" focusable="false" preserveAspectRatio="none"><polyline points=""/></svg>
+          <span class="curve__cn">线性</span><span class="curve__en mono">LINEAR</span>
+        </button></li>
+        <li><button type="button" class="curve is-on" data-curve="SMOOTHSTEP" aria-pressed="true">
+          <svg class="curve__plot" viewBox="0 0 100 60" aria-hidden="true" focusable="false" preserveAspectRatio="none"><polyline points=""/></svg>
+          <span class="curve__cn">平滑阶梯</span><span class="curve__en mono">SMOOTHSTEP</span>
+        </button></li>
+        <li><button type="button" class="curve" data-curve="SMOOTHERSTEP" aria-pressed="false">
+          <svg class="curve__plot" viewBox="0 0 100 60" aria-hidden="true" focusable="false" preserveAspectRatio="none"><polyline points=""/></svg>
+          <span class="curve__cn">更平滑阶梯</span><span class="curve__en mono">SMOOTHERSTEP</span>
+        </button></li>
+        <li><button type="button" class="curve" data-curve="EASE_IN_QUAD" aria-pressed="false">
+          <svg class="curve__plot" viewBox="0 0 100 60" aria-hidden="true" focusable="false" preserveAspectRatio="none"><polyline points=""/></svg>
+          <span class="curve__cn">二次缓入</span><span class="curve__en mono">EASE_IN_QUAD</span>
+        </button></li>
+        <li><button type="button" class="curve" data-curve="EASE_IN_OUT" aria-pressed="false">
+          <svg class="curve__plot" viewBox="0 0 100 60" aria-hidden="true" focusable="false" preserveAspectRatio="none"><polyline points=""/></svg>
+          <span class="curve__cn">缓入缓出</span><span class="curve__en mono">EASE_IN_OUT</span>
+        </button></li>
+        <li><button type="button" class="curve" data-curve="EASE_OUT_QUAD" aria-pressed="false">
+          <svg class="curve__plot" viewBox="0 0 100 60" aria-hidden="true" focusable="false" preserveAspectRatio="none"><polyline points=""/></svg>
+          <span class="curve__cn">二次缓出</span><span class="curve__en mono">EASE_OUT_QUAD</span>
+        </button></li>
+        <li><button type="button" class="curve" data-curve="EASE_OUT_CUBIC" aria-pressed="false">
+          <svg class="curve__plot" viewBox="0 0 100 60" aria-hidden="true" focusable="false" preserveAspectRatio="none"><polyline points=""/></svg>
+          <span class="curve__cn">三次缓出</span><span class="curve__en mono">EASE_OUT_CUBIC</span>
+        </button></li>
+        <li><button type="button" class="curve" data-curve="EASE_OUT_QUARTIC" aria-pressed="false">
+          <svg class="curve__plot" viewBox="0 0 100 60" aria-hidden="true" focusable="false" preserveAspectRatio="none"><polyline points=""/></svg>
+          <span class="curve__cn">四次缓出</span><span class="curve__en mono">EASE_OUT_QUARTIC</span>
+        </button></li>
+        <li><button type="button" class="curve" data-curve="EASE_OUT_EXPO" aria-pressed="false">
+          <svg class="curve__plot" viewBox="0 0 100 60" aria-hidden="true" focusable="false" preserveAspectRatio="none"><polyline points=""/></svg>
+          <span class="curve__cn">指数缓出</span><span class="curve__en mono">EASE_OUT_EXPO</span>
+        </button></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── 05 · 安装 ───────────────────────────────────────────── -->
+  <section class="section section--install" id="install" aria-labelledby="install-title">
+    <div class="section__head">
+      <h2 class="h2" id="install-title">先选对版本</h2>
+      <p class="section__note">两个 jar 互不通用。装错的那个不会给你崩溃报告，加载器直接拒绝加载，游戏停在那里。</p>
+    </div>
+
+    <div class="builds">
+      <article class="build">
+        <p class="build__ver mono">build 26.3</p>
+        <h3 class="build__mc">Minecraft 26.3</h3>
+        <p class="build__file mono">cinematic-bars-1.0.0_26.3.jar</p>
+        <dl class="build__req">
+          <div><dt>Fabric Loader</dt><dd>≥ 0.19.0</dd></div>
+          <div><dt>Java</dt><dd>≥ 21</dd></div>
+          <div><dt>Fabric API</dt><dd>必需</dd></div>
+        </dl>
+        <a class="btn btn--solid btn--full" href="https://github.com/tangzixi0724/tzixi_web/releases/download/cinematic-bars/cinematic-bars-1.0.0_26.3.jar" download>下载 jar · 26.3</a>
+      </article>
+
+      <article class="build">
+        <p class="build__ver mono">build 1.21.10</p>
+        <h3 class="build__mc">Minecraft 1.21.10</h3>
+        <p class="build__file mono">cinematic-bars-1.0.0_1.21.10.jar</p>
+        <dl class="build__req">
+          <div><dt>Fabric Loader</dt><dd>≥ 0.16.0</dd></div>
+          <div><dt>Java</dt><dd>≥ 21</dd></div>
+          <div><dt>Fabric API</dt><dd>必需</dd></div>
+        </dl>
+        <a class="btn btn--solid btn--full" href="https://github.com/tangzixi0724/tzixi_web/releases/download/cinematic-bars/cinematic-bars-1.0.0_1.21.10.jar" download>下载 jar · 1.21.10</a>
+      </article>
+    </div>
+
+    <ol class="install-steps">
+      <li><span class="mono">01</span> 在启动器里装 Fabric Loader，版本按上面那张表。</li>
+      <li><span class="mono">02</span> 把对应版本的 jar 放进 <code>mods/</code>，Fabric API 也放进去。</li>
+      <li><span class="mono">03</span> 启动游戏，按住左 Shift。</li>
+    </ol>
+    <p class="hint hint--wide">想要游戏内调参数，再装 YACL 和 Mod Menu；不装也能用，改 <code>config/cinebars.json</code> 即可。不确定自己是哪个版本？看启动器里写的是「26.3」还是「1.21.10」，照这个数字选。</p>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <img class="osmanthus osmanthus--foot" src="assets/osmanthus-branch.png" alt="" aria-hidden="true" width="1100" height="1100" loading="lazy" decoding="async">
+  <div class="footer__grid">
+    <div class="footer__brand">
+      <svg class="mark__glyph mark__glyph--lg" viewBox="0 0 28 20" aria-hidden="true" focusable="false">
+        <rect x="0" y="0" width="28" height="6.2" fill="currentColor"/>
+        <rect x="0" y="13.8" width="28" height="6.2" fill="currentColor"/>
+      </svg>
+      <p class="footer__name">电影挡条</p>
+      <p class="mono footer__fine">ZIXI · MIT · v1.0.0</p>
+    </div>
+    <nav class="footer__links" aria-label="外部链接">
+      <a href="index.html">模组列表</a>
+      <a href="https://github.com/tangzixi0724/tzixi_web">源码</a>
+      <a href="https://github.com/tangzixi0724/tzixi_web/releases">全部版本</a>
+      <a href="https://github.com/tangzixi0724/tzixi_web/issues">问题反馈</a>
+    </nav>
+  </div>
+  <p class="footer__note">页面上的画面都是本页绘制的模拟帧，不是游戏截图。挡条的几何与曲线按模组的实际行为实现。</p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
