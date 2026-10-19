@@ -53,6 +53,7 @@ tools/              本地预览、截图、审计脚本
 | 春/夏/秋 rain、冬 snow 与淡入淡出 | `SeasonWeather.precipitationFor` / `tick` |
 | `Java ≥ 25`、`Fabric Loader ≥ 0.19.0`、内嵌 `emlib-1.0.2+26.3` | `fabric.mod.json` 与 `META-INF/jars/` |
 | 中文标签（季节持续时长 / 过渡缓动曲线 / 起始季节 …） | `assets/seasonalbliss/lang/zh_cn.json` |
+| 下载地址、`v1.1.1`、发布日期 2026-10-19 | GitHub Releases `bliss-seasons` 标签下的 `bliss-seasons-1.1.1_26.3.jar`，验证 200 且 md5 与源文件一致 |
 
 游戏截图一张都没有，所以页面上凡是画面都是本页绘制的，并且都在旁边写明了「模拟画面」。
 
@@ -163,7 +164,7 @@ tools/              本地预览、截图、审计脚本
 ## 9. 已知取舍
 
 - **模拟场景不是游戏截图**。它证明的是几何、缓动和混色算法，不是 Minecraft 里的实际观感。页面上多处写明了这一点，没有假装。
-- **Bliss 季节的下载按钮指向一个还没上传的 release**。按站点的命名约定写死成 `bliss-seasons-1.1.1_26.3.jar`，上传之后就能直接下载；在那之前按钮会 404，所以安装区写明了这一点，并把人指向「全部版本」。
+- **Bliss 季节的下载按钮指向 `bliss-seasons` 这个 release**，资产名 `bliss-seasons-1.1.1_26.3.jar`，2026-10-19 发布。发版由 `tools/publish_release.py` 完成（读 git 凭据里的 token，建 release 再上传），下载回来与源文件做过 md5 比对。
 - **触屏上按住 Shift 不可用**，所以画面和按钮都支持按住。这是移动端的替代路径，不是原生体验。
 - **Bliss 季节的树是几何图形**，不是方块。它要说明的是颜色怎么变，不是 Minecraft 的渲染长什么样；用体素画反而会让人以为这是截图。
 - 两个模组的 jar 下载链接都指向 GitHub Releases。如果那边改了资产名，链接会失效——页面本身不会。
