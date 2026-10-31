@@ -1,6 +1,10 @@
 /* 二级页面共用交互：入场、指针柔光、玻璃高光、阅读进度、目录高亮 */
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+/* ---- 页面类型：模组 / 地图 / 光影，各自一套排版 ---- */
+var typeMatch = location.pathname.match(/\/(mods|saves|shaders)\//);
+if (typeMatch) document.body.setAttribute("data-type", typeMatch[1]);
+
 /* ---- 入场：依次浮现（主页同款节奏） ---- */
 const revealables = [
   document.querySelector(".topbar"),
@@ -14,6 +18,13 @@ revealables.forEach((el, i) => {
   el.style.transitionDelay = reduceMotion ? "0ms" : Math.min(60 * i, 540) + "ms";
 });
 requestAnimationFrame(() => requestAnimationFrame(() => revealables.forEach((el) => el.classList.add("is-in"))));
+
+/* 从浏览器缓存返回时不要再播一次入场：字体/排版会先被压缩再展开（用户反馈的 bug） */
+window.addEventListener("pageshow", (e) => {
+  if (!e.persisted) return;
+  document.documentElement.classList.add("no-anim");
+  revealables.forEach((el) => { el.style.transitionDelay = "0ms"; el.classList.add("is-in"); });
+});
 
 /* ---- 指针柔光 ---- */
 const light = document.querySelector(".cursor-light");
@@ -122,6 +133,14 @@ document.querySelectorAll("[data-dl]").forEach((root) => {
       var cur = list[idx];
       var prev = list[idx - 1] || null;
       var next = list[idx + 1] || null;
+      /* 预取相邻页与上级列表：静态站也能做到点了就到位（放在提前 return 之前，单页时也要预热列表） */
+      [prev, next, { slug: "" }].forEach(function (p) {
+        var l = document.createElement("link");
+        l.rel = "prefetch";
+        l.href = prefix + type + "/" + p.slug;
+        document.head.appendChild(l);
+      });
+
       if (!prev && !next) return;
 
       var myTags = cur.tags || [];

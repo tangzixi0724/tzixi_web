@@ -5,19 +5,19 @@
 
 @font-face {
   font-family: "Kuro";
-  src: url("./assets/fonts/KuroHanaMincho-ExtraBold.ttf") format("truetype");
+  src: url("./assets/fonts/KuroHanaMincho-ExtraBold.woff2") format("woff2"), url("./assets/fonts/KuroHanaMincho-ExtraBold.ttf") format("truetype");
   font-weight: 800;
   font-display: swap;
 }
 @font-face {
   font-family: "ZhongSong";
-  src: url("./assets/fonts/STZHONGS.TTF") format("truetype");
+  src: url("./assets/fonts/STZHONGS.woff2") format("woff2"), url("./assets/fonts/STZHONGS.TTF") format("truetype");
   font-weight: 400;
   font-display: swap;
 }
 @font-face {
   font-family: "Minecraft";
-  src: url("./assets/fonts/Minecraft.ttf") format("truetype");
+  src: url("./assets/fonts/Minecraft.woff2") format("woff2"), url("./assets/fonts/Minecraft.ttf") format("truetype");
   font-weight: 400;
   font-display: swap;
 }

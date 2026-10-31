@@ -727,3 +727,122 @@ a:focus-visible, button:focus-visible {
 }
 .block a:hover, .sub-sub a:hover, .endnote a:hover { border-bottom-color: var(--ink); }
 .block a:focus-visible { outline: 1.5px solid var(--ink); outline-offset: 2px; border-radius: 2px; }
+
+/* ============================================================
+   返回浏览器缓存页时的稳定态
+   之前在 bfcache 命中后会重播入场动画（scale + translateY），
+   字体先被压扁再展开——现在带 .no-anim 直接落到终态
+   ============================================================ */
+html.no-anim *,
+html.no-anim *::before,
+html.no-anim *::after { animation: none !important; transition: none !important; }
+html.no-anim .reveal { opacity: 1 !important; transform: none !important; }
+.sub-body, .lib-body { font-synthesis: none; }
+.sub-title, .lib-title { text-wrap: balance; }
+.sub-sub { text-wrap: pretty; }
+
+/* ---------- 列表页：概览卡上的规格行（模组/地图/光影各不同） ---------- */
+.lib-card__facts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.lib-card__facts span {
+  font-family: var(--font-en, monospace);
+  font-size: 10px; letter-spacing: .05em; line-height: 1;
+  color: rgba(16, 16, 16, 0.52);
+  border: 1px solid rgba(16, 16, 16, 0.1);
+  border-radius: 999px; padding: 4px 8px; white-space: nowrap;
+}
+
+/* 模组：一屏能扫完的横向清单 */
+.lib-grid--mods { grid-template-columns: 1fr; gap: 12px; }
+.lib-grid--mods .lib-card { padding: 18px 22px; }
+.lib-grid--mods .lib-card__body { display: flex; align-items: center; gap: 18px; }
+.lib-grid--mods .lib-card__thumb { width: 66px; height: 66px; border-radius: 16px; flex: 0 0 auto; }
+.lib-grid--mods .lib-card__text { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 14px; }
+.lib-grid--mods .lib-card__zh { font-size: 21px; }
+.lib-grid--mods .lib-card__en { font-size: 10.5px; }
+.lib-grid--mods .lib-card__facts { margin: 0 0 0 auto; flex-wrap: nowrap; }
+
+/* 地图：大图卡，16:10 */
+.lib-grid--saves { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 22px; }
+.lib-grid--saves .lib-card__thumb { aspect-ratio: 16 / 10; border-radius: 20px; }
+.lib-grid--saves .lib-card__zh { font-size: 23px; }
+
+/* 光影：16:9 封面卡 */
+.lib-grid--shaders { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+.lib-grid--shaders .lib-card__thumb { aspect-ratio: 16 / 9; border-radius: 18px; }
+.lib-grid--shaders .lib-card__zh { font-size: 21px; }
+
+/* ---------- 详情页：三套内容三套骨架，不再共用一种排版 ---------- */
+/* 模组：版本清单是主角，侧栏规格贴顶 */
+.sub-body[data-type="mods"] .dl { border-radius: 20px; }
+.sub-body[data-type="mods"] .dl__file { padding: 13px 16px; border-radius: 14px; }
+.sub-body[data-type="mods"] .dl__file + .dl__file { margin-top: 8px; }
+.sub-body[data-type="mods"] .dl__name { font-family: var(--font-theme, serif); font-size: 17px; }
+.sub-body[data-type="mods"] .info { position: sticky; top: 24px; }
+
+/* 地图：图优先，两块一排的截图墙 */
+.sub-body[data-type="saves"] .shots { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+.sub-body[data-type="saves"] .shots .shot:first-child { grid-column: 1 / -1; }
+.sub-body[data-type="saves"] .shot { border-radius: 22px; overflow: hidden; margin: 0; }
+.sub-body[data-type="saves"] .shot__img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.sub-body[data-type="saves"] .sub-title { font-size: clamp(40px, 6vw, 66px); }
+
+/* 光影：参数表当技术表，数字等宽、隔行浅底 */
+.sub-body[data-type="shaders"] .table__head {
+  letter-spacing: .16em; text-transform: uppercase; font-size: 10px;
+}
+.sub-body[data-type="shaders"] .table__row { font-variant-numeric: tabular-nums; }
+.sub-body[data-type="shaders"] .table__row:nth-child(even) { background: rgba(16, 16, 16, 0.028); }
+.sub-body[data-type="shaders"] .table__row em { font-family: var(--font-en, monospace); font-style: normal; }
+.sub-body[data-type="shaders"] .shots { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.sub-body[data-type="shaders"] .shot { border-radius: 14px; overflow: hidden; margin: 0; }
+.sub-body[data-type="shaders"] .shot__img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+@media (max-width: 720px) {
+  .sub-body[data-type="saves"] .shots { grid-template-columns: 1fr; }
+  .lib-grid--mods .lib-card__facts { margin: 0; flex-wrap: wrap; }
+  .lib-grid--mods .lib-card__text { gap: 2px 10px; }
+}
+/* ============================================================
+   列表卡 v2：盖住列表页内联 <style> 的基础样式
+   （内联在后、同权重会赢，所以统一加 body 前缀提权）
+   ============================================================ */
+/* 模组：整行一条，一屏扫完版本 / 加载器 / 文件数 */
+body .lib-grid--mods { grid-template-columns: 1fr; gap: 12px; }
+body .lib-grid--mods .lib-card { padding: 20px 24px; }
+body .lib-grid--mods .lib-card__body { margin: 4px 0 0; }
+body .lib-grid--mods .lib-card__thumb { width: 72px; height: 72px; flex: 0 0 72px; border-radius: 16px; }
+body .lib-grid--mods .lib-card__text { flex-direction: row; flex-wrap: wrap; align-items: baseline; column-gap: 14px; row-gap: 6px; }
+body .lib-grid--mods .lib-card__zh { font-size: 24px; }
+body .lib-grid--mods .lib-card__facts { margin-left: auto; }
+
+/* 地图 / 光影：大图在上，文字在下 */
+body .lib-grid--saves { grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 22px; }
+body .lib-grid--shaders { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+body .lib-grid--saves .lib-card__body,
+body .lib-grid--shaders .lib-card__body { display: block; margin: 10px 0 20px; }
+body .lib-grid--saves .lib-card__thumb,
+body .lib-grid--shaders .lib-card__thumb { display: block; width: 100%; height: auto; flex: none; border-radius: 18px; overflow: hidden; }
+body .lib-grid--saves .lib-card__thumb { aspect-ratio: 16 / 10; }
+body .lib-grid--shaders .lib-card__thumb { aspect-ratio: 16 / 9; }
+body .lib-grid--saves .lib-card__text,
+body .lib-grid--shaders .lib-card__text { margin-top: 14px; gap: 8px; }
+body .lib-grid--saves .lib-card__thumb img,
+body .lib-grid--shaders .lib-card__thumb img { transition: transform 0.8s var(--ease-jelly), opacity 0.55s; }
+body .lib-grid--saves .lib-card:hover .lib-card__thumb img,
+body .lib-grid--shaders .lib-card:hover .lib-card__thumb img { transform: scale(1.03); }
+
+@media (max-width: 720px) {
+  body .lib-grid--saves { grid-template-columns: 1fr; }
+  body .lib-grid--shaders { grid-template-columns: 1fr; }
+  body .lib-grid--mods .lib-card__facts { margin-left: 0; }
+  body .lib-grid--mods .lib-card__zh { font-size: 21px; }
+}
+
+
+
+/* v6：地图/光影列表用更大的封面卡（模组保持横向条目） */
+body .lib-grid--saves,
+body .lib-grid--shaders { grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); }
+body .lib-grid--saves .lib-card__thumb,
+body .lib-grid--shaders .lib-card__thumb { border-radius: 14px; }
+
