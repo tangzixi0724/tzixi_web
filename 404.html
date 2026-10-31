@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>找不到这一页｜子茜的小站</title>
+<meta name="robots" content="noindex" />
+<link rel="icon" href="./assets/img/favicon.svg" type="image/svg+xml" />
+<style>
+  @font-face { font-family: "Kuro"; src: url("./assets/fonts/KuroHanaMincho-ExtraBold.ttf") format("truetype"); font-display: swap; }
+  @font-face { font-family: "ZhongSong"; src: url("./assets/fonts/STZHONGS.TTF") format("truetype"); font-display: swap; }
+  @font-face { font-family: "Minecraft"; src: url("./assets/fonts/Minecraft.ttf") format("truetype"); font-display: swap; }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    display: grid; place-items: center; padding: 32px;
+    background:
+      radial-gradient(60vmax 40vmax at 30% 18%, rgba(255,255,255,.9), transparent 70%),
+      radial-gradient(50vmax 40vmax at 78% 82%, rgba(16,16,16,.10), transparent 72%),
+      #f4f4f2;
+    color: #101010; font-family: "ZhongSong", "Songti SC", serif;
+  }
+  .card {
+    max-width: 560px; width: 100%; text-align: center; padding: 56px 36px;
+    border-radius: 34px; background: linear-gradient(160deg, rgba(255,255,255,.86), rgba(255,255,255,.56));
+    border: 1px solid rgba(255,255,255,.9);
+    box-shadow: 0 28px 70px -28px rgba(16,16,16,.28), inset 0 1px 0 rgba(255,255,255,1);
+    backdrop-filter: blur(26px) saturate(190%);
+  }
+  .k { font-size: 12px; letter-spacing: .34em; color: #8d8d88; font-family: "Minecraft", monospace; }
+  h1 { font-family: "Kuro", serif; font-weight: 400; font-size: clamp(44px, 9vw, 82px); letter-spacing: .04em; margin: 14px 0 6px; }
+  h2 { font-family: "Kuro", serif; font-weight: 400; font-size: 22px; margin: 0 0 18px; }
+  p { color: #57574f; line-height: 1.9; font-size: 14px; margin: 0 0 26px; }
+  a {
+    display: inline-flex; align-items: center; gap: 10px; padding: 12px 22px; border-radius: 999px;
+    background: #101010; color: #fff; text-decoration: none; font-size: 13px; letter-spacing: .12em;
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  a:hover { transform: translateY(-2px); box-shadow: 0 12px 24px -12px rgba(16,16,16,.6); }
+  a small { font-family: "Minecraft", monospace; color: #cfcfca; letter-spacing: .18em; }
+</style>
+</head>
+<body>
+  <main class="card">
+    <div class="k">ERROR / 404</div>
+    <h1>404</h1>
+    <h2>这一页不在这里</h2>
+    <p>可能是链接打错了，或者这一页已经被收起。<br />回首页看看模组、地图和光影吧。</p>
+    <a href="./"><span>回到首页</span><small>HOME</small></a>
+  </main>
+</body>
+</html>
