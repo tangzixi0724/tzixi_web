@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#f6f6f4" />
+<title>子茜的小站</title>
+<meta name="description" content="子茜的小站 —— 模组、地图与光影参数，一些安静的黑白收藏。" />
+<link rel="icon" href="./assets/img/favicon.svg" type="image/svg+xml" />
+<link rel="preload" href="./assets/fonts/KuroHanaMincho-ExtraBold.ttf" as="font" type="font/ttf" crossorigin />
+<link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="bg" aria-hidden="true">
+    <span class="blob blob--1"></span>
+    <span class="blob blob--2"></span>
+    <span class="blob blob--3"></span>
+    <span class="blob blob--4"></span>
+    <span class="blob blob--5"></span>
+  </div>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="cursor-light" aria-hidden="true"></div>
+
+  <div class="layout">
+    <header class="hero">
+      <h1 class="title" data-text="子茜的小站">
+        <span class="title__zh">子茜的<span class="title__accent">小站</span></span>
+      </h1>
+      <p class="subtitle">Welcome to Zixi's little website.</p>
+    </header>
+
+    <nav class="nav" aria-label="主要内容">
+      <a class="nav-link" href="./mods/" data-page="模组">
+        <span class="nav-link__glass" aria-hidden="true"></span>
+        <span class="nav-link__glow" aria-hidden="true"></span>
+        <span class="nav-link__zh">模组</span>
+        <span class="nav-link__en">Mod</span>
+        <span class="nav-link__arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="nav-link" href="./saves/" data-page="地图">
+        <span class="nav-link__glass" aria-hidden="true"></span>
+        <span class="nav-link__glow" aria-hidden="true"></span>
+        <span class="nav-link__zh">地图</span>
+        <span class="nav-link__en">saves</span>
+        <span class="nav-link__arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="nav-link" href="./shaders/" data-page="光影参数">
+        <span class="nav-link__glass" aria-hidden="true"></span>
+        <span class="nav-link__glow" aria-hidden="true"></span>
+        <span class="nav-link__zh">光影参数</span>
+        <span class="nav-link__en">shader txt</span>
+        <span class="nav-link__arrow" aria-hidden="true">→</span>
+      </a>
+    </nav>
+
+    <footer class="foot">
+      <button class="about glass-chip" type="button" data-open-about>
+        <span class="about__dot" aria-hidden="true"></span>
+        <span class="about__zh">关于我们</span>
+        <span class="about__en">about</span>
+      </button>
+
+      <figure class="sign">
+        <img class="sign__img" src="./assets/img/signature.png" alt="子茜的手写签名" width="900" height="900" />
+      </figure>
+    </footer>
+  </div>
+
+  <dialog class="about-dialog" id="aboutDialog" aria-labelledby="aboutTitle">
+    <div class="about-dialog__glass">
+      <p class="about-dialog__kicker">ZIXI · EST. 2025</p>
+      <h2 class="about-dialog__title" id="aboutTitle">关于这个小站</h2>
+      <p class="about-dialog__text">
+        这里用来存放一些零碎的收藏：改过的模组、走过无数遍的地图，
+        还有调配了很久才满意的那一份光影参数。
+      </p>
+      <p class="about-dialog__text about-dialog__text--muted">
+        黑白、留白、安静。做给自己看，也欢迎你随便看看。
+      </p>
+      <dl class="about-dialog__meta">
+        <div><dt>内容</dt><dd>模组 / 地图 / 光影</dd></div>
+        <div><dt>风格</dt><dd>极简 · 液体玻璃</dd></div>
+      </dl>
+      <form method="dialog" class="about-dialog__actions">
+        <button class="btn-glass" value="close">知道了</button>
+      </form>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="./app.js" defer></script>
+</body>
+</html>

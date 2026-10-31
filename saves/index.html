@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#f6f6f4" />
+<title>地图 · 全部页面｜子茜的小站</title>
+<meta name="description" content="子茜的小站 · 地图：走过的世界，存档与建筑。" />
+<link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml" />
+<link rel="preload" href="../assets/fonts/STZHONGS.TTF" as="font" type="font/ttf" crossorigin />
+<link rel="stylesheet" href="../styles.css" />
+<link rel="stylesheet" href="../assets/article.css" />
+<style>
+.lib-bar { display: flex; align-items: center; gap: 14px; margin: 0 0 14px; flex-wrap: wrap; }
+.lib-sort { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); letter-spacing: 0.04em; }
+.lib-sort select {
+  appearance: none;
+  padding: 9px 30px 9px 13px;
+  border-radius: 13px;
+  border: 1px solid rgba(16, 16, 16, 0.12);
+  background: rgba(255, 255, 255, 0.62) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23888' stroke-width='1.4'/%3E%3C/svg%3E") no-repeat right 12px center;
+  font-family: var(--font-zh);
+  font-size: 13px;
+  color: var(--ink);
+  cursor: pointer;
+}
+.lib-sort select:focus-visible { outline: none; border-color: rgba(16, 16, 16, 0.4); box-shadow: 0 0 0 4px rgba(16, 16, 16, 0.05); }
+.lib-tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 24px; }
+.lib-chip {
+  padding: 7px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(16, 16, 16, 0.12);
+  background: rgba(255, 255, 255, 0.55);
+  font-family: var(--font-zh);
+  font-size: 12px;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.35s, border-color 0.35s, transform 0.5s var(--ease-jelly);
+}
+.lib-chip:hover { transform: translateY(-1px); border-color: rgba(16, 16, 16, 0.3); }
+.lib-chip[aria-pressed="true"] { background: #101010; border-color: #101010; color: #fff; }
+.lib-chip:focus-visible { outline: 1.5px solid #101010; outline-offset: 2px; }
+.lib-card__thumb img { opacity: 0; transition: opacity 0.55s; }
+.lib-card__thumb img.on { opacity: 1; }
+.lib-search__input {
+  flex: 1;
+  max-width: 420px;
+  padding: 13px 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(16, 16, 16, 0.12);
+  background: rgba(255, 255, 255, 0.62);
+  font-family: var(--font-zh);
+  font-size: 14px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.4s, box-shadow 0.4s;
+}
+.lib-search__input:focus { border-color: rgba(16, 16, 16, 0.32); box-shadow: 0 0 0 4px rgba(16, 16, 16, 0.05); }
+.lib-search__count { font-family: var(--font-en); font-size: 11px; letter-spacing: 0.12em; color: var(--muted); }
+.lib-card[hidden] { display: none; }
+.lib-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(272px, 1fr)); gap: 18px; margin: 0 0 64px; }
+.lib-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 24px 26px 26px;
+  min-height: 168px;
+  border-radius: 26px;
+  text-decoration: none;
+  color: var(--ink);
+  transition: transform 0.6s var(--ease-jelly), border-radius 0.6s var(--ease-jelly);
+}
+.lib-card:hover, .lib-card:focus-visible {
+  transform: translateY(-4px);
+  border-radius: 32px 38px 34px 40px / 38px 32px 40px 34px;
+}
+.lib-card__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-en);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+}
+.lib-card__badge {
+  border: 1px solid rgba(10, 10, 10, 0.16);
+  border-radius: 999px;
+  padding: 3px 9px;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+}
+.lib-card__body { display: flex; align-items: center; gap: 18px; margin: 6px 0 26px; }
+.lib-card__thumb {
+  width: 74px;
+  height: 74px;
+  flex: 0 0 74px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: rgba(10, 10, 10, 0.04);
+}
+.lib-card__thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.lib-card__text { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.lib-card__zh { font-family: var(--font-zh); font-size: 30px; letter-spacing: 0.04em; line-height: 1.25; }
+.lib-card__en { font-family: var(--font-en); font-size: 11px; letter-spacing: 0.14em; color: var(--muted); }
+.lib-card__go { position: absolute; right: 24px; bottom: 24px; font-family: var(--font-en); font-size: 13px; opacity: 0.4; transition: transform 0.5s var(--ease-jelly), opacity 0.4s; }
+.lib-card:hover .lib-card__go { transform: translateX(4px); opacity: 0.9; }
+.lib-card { animation: lib-in 0.7s var(--ease-jelly) backwards; }
+.lib-card:nth-child(1) { animation-delay: 0.04s; }
+.lib-card:nth-child(2) { animation-delay: 0.1s; }
+.lib-card:nth-child(3) { animation-delay: 0.16s; }
+.lib-card:nth-child(4) { animation-delay: 0.22s; }
+.lib-card:nth-child(5) { animation-delay: 0.28s; }
+.lib-card:nth-child(6) { animation-delay: 0.34s; }
+@keyframes lib-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lib-card { animation: none; }
+}
+.lib-empty { font-size: 15px; line-height: 1.9; color: var(--muted); margin: 0 0 64px; }
+@media (max-width: 560px) {
+  .lib-grid { grid-template-columns: 1fr; gap: 14px; }
+  .lib-card { min-height: 148px; padding: 20px 22px 22px; }
+  .lib-card__zh { font-size: 24px; }
+  .lib-card__thumb { width: 60px; height: 60px; flex-basis: 60px; border-radius: 15px; }
+}
+</style>
+</head>
+<body class="sub-body">
+  <div class="bg" aria-hidden="true">
+    <span class="blob blob--1"></span>
+    <span class="blob blob--2"></span>
+    <span class="blob blob--3"></span>
+    <span class="blob blob--4"></span>
+    <span class="blob blob--5"></span>
+  </div>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="cursor-light" aria-hidden="true"></div>
+  <div class="read-progress" aria-hidden="true"><span class="read-progress__fill"></span></div>
+
+  <div class="sub-page">
+    <header class="topbar glass">
+      <a class="topbar__back" href="../index.html">
+        <span class="topbar__arrow" aria-hidden="true">←</span>
+        <span class="topbar__zh">返回首页</span>
+        <span class="topbar__en">home</span>
+      </a>
+      <p class="topbar__crumb">
+        <span class="topbar__zh">地图</span>
+        <span aria-hidden="true">/</span>
+        <em>全部页面</em>
+      </p>
+      <span class="topbar__tag">saves</span>
+    </header>
+
+    <header class="sub-head reveal">
+      <p class="kicker">SAVE / 地图 / INDEX</p>
+      <h1 class="sub-title">地图</h1>
+      </header>
+
+    <form class="lib-bar" role="search" onsubmit="return false">
+      <input id="libq" class="lib-search__input" type="search" placeholder="搜索页面…（按 / 聚焦，支持拼音首字母）" autocomplete="off" spellcheck="false" aria-label="搜索页面" />
+      <label class="lib-sort">
+        <span>排序</span>
+        <select id="libsort" aria-label="排序方式">
+          <option value="new">最近更新</option>
+          <option value="name">按名称</option>
+        </select>
+      </label>
+      <span class="lib-search__count" id="libc">1 个页面</span>
+    </form>
+    <div class="lib-tags" id="libtags" role="group" aria-label="按标签筛选">
+      <button type="button" class="lib-chip" data-tag="" aria-pressed="true">全部</button>
+      <button type="button" class="lib-chip" data-tag="1.21.10+" aria-pressed="false">1.21.10+</button>
+      <button type="button" class="lib-chip" data-tag="复刻" aria-pressed="false">复刻</button>
+    </div>
+    <p class="lib-empty" id="libnone" hidden>没有匹配的页面。换个关键词试试。</p>
+
+    <div class="lib-grid">
+      <a class="lib-card glass" href="./1999fanglun/" data-s="重返未来1999纺轮 1999fanglun 1999fanglun 2026.10.31 1.21.10+ 复刻" data-py="cfwl1999fl1999fanglun12110fk" data-name="重返未来1999纺轮" data-mt="1793444290642.6865" data-tags="1.21.10+|复刻">
+        <span class="lib-card__meta"><span>2026.10.31</span></span>
+        <span class="lib-card__body">
+          <span class="lib-card__thumb" style="background:#f1e8da"><img src="./1999fanglun/img/thumb.webp" alt="" loading="lazy" /></span>
+          <span class="lib-card__text">
+            <span class="lib-card__zh">重返未来1999纺轮</span>
+            <span class="lib-card__en">1999fanglun</span>
+          </span>
+        </span>
+        <span class="lib-card__go" aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+
+  <script src="../assets/article.js" defer></script>
+  <script>
+  (function () {
+    var q = document.getElementById('libq');
+    var c = document.getElementById('libc');
+    var none = document.getElementById('libnone');
+    var sort = document.getElementById('libsort');
+    var tagBox = document.getElementById('libtags');
+    var grid = document.querySelector('.lib-grid');
+    var cards = [].slice.call(document.querySelectorAll('.lib-card'));
+    var total = cards.length;
+    var tag = '';
+
+    /* 缩略图：加载完成后淡入（底色已经是主色，不会先白一块） */
+    cards.forEach(function (el) {
+      var img = el.querySelector('.lib-card__thumb img');
+      if (!img) return;
+      if (img.complete) img.classList.add('on');
+      else img.addEventListener('load', function () { img.classList.add('on'); });
+      img.addEventListener('error', function () { img.style.opacity = '0'; });
+    });
+
+    function apply() {
+      var s = String(q.value || '').trim().toLowerCase();
+      var n = 0;
+      cards.forEach(function (el) {
+        var hay = el.getAttribute('data-s') || '';
+        var py = el.getAttribute('data-py') || '';
+        var tags = el.getAttribute('data-tags') || '';
+        var hitQ = !s || hay.indexOf(s) >= 0 || (py && py.indexOf(s) >= 0);
+        var hitT = !tag || tags.split('|').indexOf(tag) >= 0;
+        var hit = hitQ && hitT;
+        el.hidden = !hit;
+        if (hit) n++;
+      });
+      c.textContent = (s || tag) ? n + ' / ' + total + ' 个页面' : total + ' 个页面';
+      if (none) none.hidden = n !== 0;
+    }
+
+    function resort() {
+      var mode = sort ? sort.value : 'new';
+      var list = cards.slice().sort(function (a, b) {
+        if (mode === 'name') {
+          return (a.getAttribute('data-name') || '').localeCompare(b.getAttribute('data-name') || '', 'zh');
+        }
+        return Number(b.getAttribute('data-mt') || 0) - Number(a.getAttribute('data-mt') || 0);
+      });
+      list.forEach(function (el) { grid.appendChild(el); });
+    }
+
+    q.addEventListener('input', apply);
+    sort && sort.addEventListener('change', resort);
+    if (tagBox) {
+      tagBox.addEventListener('click', function (e) {
+        var btn = e.target.closest('.lib-chip');
+        if (!btn) return;
+        tag = btn.getAttribute('data-tag') || '';
+        Array.prototype.forEach.call(tagBox.querySelectorAll('.lib-chip'), function (b) {
+          b.setAttribute('aria-pressed', String((b.getAttribute('data-tag') || '') === tag));
+        });
+        apply();
+      });
+    }
+    document.addEventListener('keydown', function (e) {
+      if (e.key === '/' && document.activeElement !== q) { e.preventDefault(); q.focus(); }
+      if (e.key === 'Escape' && document.activeElement === q) { q.value = ''; apply(); q.blur(); }
+    });
+    resort();
+    apply();
+  })();
+  </script>
+</body>
+</html>
