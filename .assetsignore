@@ -4,4 +4,5 @@
 .wrangler
 node_modules
 _page.json
+saves/1999fanglun/files/
 *.backup.html

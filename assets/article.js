@@ -227,3 +227,18 @@ document.querySelectorAll("[data-dl]").forEach((root) => {
     });
   });
 })();
+
+/* v6.1：大附件兼容 —— 本机与 GitHub Pages 直接给 ./files/ 里的原件；
+   Cloudflare 上该文件被 .assetsignore 排除，HEAD 探测失败时自动回退到 Release。 */
+document.addEventListener("click", function (e) {
+  var t = e.target;
+  var a = t && t.closest ? t.closest("a[data-fallback]") : null;
+  if (!a) return;
+  e.preventDefault();
+  var local = a.href;
+  var fb = a.getAttribute("data-fallback");
+  fetch(local, { method: "HEAD" })
+    .then(function (r) { window.location.href = r.ok ? local : fb; })
+    .catch(function () { window.location.href = fb; });
+});
+
